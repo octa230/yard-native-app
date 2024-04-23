@@ -1,5 +1,5 @@
 import React, { useContext, useState } from 'react'
-import { TextInput, View, SafeAreaView, Alert, Text, TouchableOpacity } from 'react-native'
+import { TextInput, View, Alert, Text, TouchableOpacity } from 'react-native'
 import { FormStyles } from '../styles'
 import { Button } from 'react-native-paper'
 import { Store } from '../Store'

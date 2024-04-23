@@ -5,19 +5,23 @@ import axios from 'axios'
 import { url } from '../utils'
 import Product from '../components/Product'
 import CategoriesBar from '../components/CategoriesBar'
+import LoadingBox from '../components/LoadingBox'
 
 
 
-const Explore = () => {
+const Explore = ({navigation}) => {
   const [products, setProducts ] = useState([])
   const [categories, setCategories] = useState([])
+  const [isLoading, setIsLoading] = useState(false)
 
   const fetchData = async()=> {
     try{
+      setIsLoading(true)
       const products = await axios.get(`${url}/products`)
       const categories = await axios.get(`${url}/category`)
       setCategories(categories.data)
       setProducts(products.data)
+      setIsLoading(false)
     //console.log(products)
     }catch(error){
       console.log(error)
@@ -29,17 +33,17 @@ const Explore = () => {
   }, [])
 
 
-  return (
-      <View>
+  return isLoading ? (<LoadingBox/>):(
+      <SafeAreaView style={{flex: 1, paddingBottom: 5}}>
         <View>
         <SearchBar/>
-        <CategoriesBar categories={categories}/>
+        <CategoriesBar categories={categories} navigation={navigation}/>
       </View>
         <FlatList data={products}
         renderItem={({item})=> <Product product={item}/>}
         keyExtractor={(item)=> item._id}
         />
-      </View>
+      </SafeAreaView>
   )
 }
 

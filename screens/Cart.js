@@ -1,15 +1,15 @@
 import React, { useContext } from 'react'
-import { View, Text, FlatList, Image, TouchableOpacity } from 'react-native'
+import { View, Text, FlatList, Image, TouchableOpacity, Alert, SafeAreaView, ScrollView } from 'react-native'
 import { Store } from '../Store'
-import { buttonStyles, shopStyles } from '../styles'
-import { Button } from 'react-native-paper'
+import { buttonStyles, profileStyles, shopStyles} from '../styles'
+import { Button, Card } from 'react-native-paper'
 import axios from 'axios'
 import { url } from '../utils'
 
 const Cart = ({navigation}) => {
     const {state, dispatch: ctxDispatch} = useContext(Store)
 
-    const {cart: {cartItems}} = state
+    const {cart: {cartItems, trip, shippingAddress}} = state
 
     const removeItemHandler = (item) => {
         ctxDispatch({ type: 'CART_REMOVE_ITEM', payload: item._id });
@@ -31,13 +31,29 @@ const Cart = ({navigation}) => {
           console.log(error)
         }
       };
+
+
   return (
-    <View>
-      <FlatList
+    <ScrollView style={{flex: 1}}>
+    <View style={{marginVertical: 12}}>
+      <Card.Title title="ORDER ITEMS =>"/>
+      <FlatList horizontal
         data={cartItems}
         renderItem={({item})=> 
-        <View style={shopStyles.container}>
-            <View style={{maxWidth: 80, maxHeight: 30}}>
+        <View style={{
+            alignItems: "center", 
+            //justifyContent:"center", 
+            flexDirection:"row", 
+            padding: 12,
+            marginHorizontal: 12,
+            borderRadius: 12,
+            borderWidth: 1,
+            height: 130,
+            maxHeight: 130,
+            backgroundColor: "white",
+            borderColor:"white"
+            }}>
+            <View style={{maxWidth: 80}}>
                 <Text>{item.name}</Text>
             </View>
             <View style={{flex: 1, justifyContent: 'space-between', alignItems:"center", flexDirection: "row"}}>
@@ -48,19 +64,55 @@ const Cart = ({navigation}) => {
                 <Button icon="plus" textColor='green'
                     onPress={()=> updateCartHandler(item, item.quantity + 1)}
                 />
-                </View>
+              </View>
             <Image source={{uri: item.image || item.photo}}
-                style={{maxWidth: 100, height: 100, width: 100, borderWidth: 1, borderColor: "black", objectFit:"contain"}}
+                style={{maxWidth: 100, height: 100, width: 100, borderWidth: 1, borderColor: "#E5E4E2", borderRadius: 12, objectFit:"contain"}}
             />
             <Button icon="trash-can" textColor='black' onPress={()=> removeItemHandler(item)}/>
-        </View>}
+        </View>
+        }
         keyExtractor={(item) => item._id}
       />
+      </View>
+      
+      <View>
+      <Card style={{padding: 2, margin: 12}}>
+        <Card.Title title = {trip.arrivalDate ? `ARRIVAL:  ${new Date(trip.arrivalDate).toDateString()}` : 'NO TRIP BOOKED FOR THIS ORDER!'}/>
+        <Card.Content>
+          <Button textColor='black' 
+            onPress={()=> navigation.navigate('Trips')}
+            style={{padding: -21, borderRadius: 12, borderColor: "white", borderWidth: 1.5, backgroundColor:"#9FE2BF"}}
+          >
+            BOOKED WEIGHT: {trip.bookedWeight ? trip.bookedWeight : 'BOOK TRIP'}
+          </Button>
+          <Button onPress={()=> {
+            ctxDispatch({type:"UNBOOK_TRIP"})
+            Alert.alert('YOU\'VE GOT NO TRIP ')
+          }}>UNBOOK</Button>
+        </Card.Content>
+      </Card>
+      <Card style={{padding: 23, margin: 12}}>
+        <Card.Title title = 'SHIPPING ADDRESS!'/>
+        <Card.Content>
+          <Button textColor='black' 
+            onPress={()=> navigation.navigate('shipping')}
+            style={{padding: -21, borderRadius: 12, borderColor: "white", borderWidth: 1.5, backgroundColor:"#9FE2BF"}}
+          >
+            EDIT SHIPPING ADDRESS
+          </Button>
+          <Text variant="bodyMedium" style={{ marginVertical: 2, color: "black", fontWeight: 800}}>FULLNAME: {shippingAddress.fullName ||''}</Text>
+          <Text variant="bodyMedium" style={{ marginVertical: 2, color: "black", fontWeight: 800}}>ADDRESS: {shippingAddress.address || ''}</Text>
+          <Text variant="bodyMedium" style={{ marginVertical: 2, color: "black", fontWeight: 800}}>CITY: {shippingAddress.city || ''}</Text>
+          <Text variant="bodyMedium" style={{ marginVertical: 2, color: "black", fontWeight: 800}}>COUNTRY: {shippingAddress.country || ''}</Text>
+        </Card.Content>
+      </Card>
+      </View>
+    
       <View style={{padding: 22, borderWidth: 1, borderColor:"#fefefe", borderRadius: 12, margin: 20}}>
         <Text>
-        Subtotal ({cartItems.reduce((a, c) => a + c.quantity, 0)}{' '}
+        Subtotal ({cartItems?.reduce((a, c) => a + c.quantity, 0)}{' '}
             items) : UGX: 
-            {cartItems.reduce((a, c) => a + c.ugx || c.price * c.quantity, 0)}
+            {cartItems?.reduce((a, c) => a +(c.ugx || c.price * c.quantity), 0)}
         </Text>
       </View>
       <TouchableOpacity style={buttonStyles.button} onPress={()=> navigation.navigate('shipping')}>
@@ -75,7 +127,7 @@ const Cart = ({navigation}) => {
                 ADD ITEMS
             </Button>
       </TouchableOpacity>
-    </View>
+      </ScrollView>
   )
 }
 

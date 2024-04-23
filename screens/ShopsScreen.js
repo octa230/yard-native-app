@@ -1,17 +1,21 @@
 import React, { useState, useEffect } from 'react'
-import { Text, View, SafeAreaView, FlatList } from 'react-native'
+import { View, FlatList, SafeAreaView } from 'react-native'
 import SearchBar from '../components/SearchBar'
 import axios from 'axios'
 import { url } from '../utils'
 import Shop from '../components/Shop'
+import LoadingBox from '../components/LoadingBox'
 
 const ShopsScreen = () => {
   const [shops, setShops] = useState([])
+  const [isLoading, setIsLoading] = useState(false)
 
   const fetchData = async()=>{
     try{
+      setIsLoading(true)
       const shops = await axios.get(`${url}/shops`)
     setShops(shops.data)
+    setIsLoading(false)
     //console.log(shops)
     }catch(error){
       console.log(error)
@@ -22,8 +26,9 @@ const ShopsScreen = () => {
     fetchData()
   }, [])
 
-  return (
-      <View>
+  return isLoading ? (<LoadingBox/>) : 
+  (
+      <SafeAreaView style={{flex: 1, paddingBottom: 5}}>
       <View>
         <SearchBar/>
       </View>
@@ -31,7 +36,7 @@ const ShopsScreen = () => {
         renderItem={({item})=> <Shop shop={item}/>}
         keyExtractor={(item)=> item._id}
         />
-      </View>
+      </SafeAreaView>
   )
 }
 

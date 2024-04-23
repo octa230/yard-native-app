@@ -1,13 +1,22 @@
-import React, { useState } from 'react'
+import React, { useContext, useState } from 'react'
 import { Text, ScrollView, View, TouchableOpacity } from 'react-native'
 import SearchBar from '../components/SearchBar'
 import Icon from 'react-native-vector-icons/FontAwesome5'
 import { profileStyles, shopStyles } from '../styles'
 import { Button } from 'react-native-paper'
+import { Store } from '../Store'
 
 
 const ProfileScreen = ({navigation}) => {
   const [showModel, setShowModel] = useState(false)
+  const {state, dispatch: ctxDispatch} = useContext(Store)
+  const {userInfo} = state
+
+
+  const handleLogout =()=>{
+    ctxDispatch({type:"LOGOUT_USER"})
+    navigation.navigate('login')
+  }
 
 
   return (
@@ -16,7 +25,11 @@ const ProfileScreen = ({navigation}) => {
           <SearchBar/>
         </View> */}
         <View style={profileStyles.topBar}>
-        <TouchableOpacity onPress={()=> navigation.navigate('login')}> 
+        <TouchableOpacity onPress={()=> {
+          if(userInfo){
+             navigation.navigate('signup')
+          }
+        }}> 
           <Icon name="user" size={30}/>
         </TouchableOpacity>
         <Text onPress={()=> navigation.navigate('cart')}>
@@ -29,6 +42,14 @@ const ProfileScreen = ({navigation}) => {
           <TouchableOpacity style={shopStyles.container} onPress={()=> navigation.navigate('user-orders')}>
             <Text>
               My Orders
+            </Text>
+            <Button>
+        <Icon name="angle-right"/>
+      </Button>
+        </TouchableOpacity>
+          <TouchableOpacity style={shopStyles.container} onPress={()=> navigation.navigate('profile-settings')}>
+            <Text>
+              Profile Settings
             </Text>
             <Button>
         <Icon name="angle-right"/>
@@ -114,7 +135,7 @@ const ProfileScreen = ({navigation}) => {
           </TouchableOpacity>
         </View>
           <View style={profileStyles.container}>
-          <TouchableOpacity style={shopStyles.container}>
+          <TouchableOpacity style={shopStyles.container} onPress={()=> handleLogout()}>
             <Text>
             Logout
             </Text>

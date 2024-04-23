@@ -3,9 +3,9 @@ import { View, Text } from 'react-native'
 
 const MyOrders = () => {
   return (
-    <Text>
-      <Text>My Orders</Text>
-    </Text>
+    <View>
+      <Text>my orders</Text>
+    </View>
   )
 }
 

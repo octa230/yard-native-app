@@ -1,8 +1,11 @@
 import 'react-native-gesture-handler';
+import { enGB, registerTranslation } from 'react-native-paper-dates'
+registerTranslation('en-GB', enGB)
+import { Platform } from 'react-native';
 import ProfileScreen from './screens/ProfileScreen';
 import TripScreen from './screens/TripScreen';
 import ShopsScreen from './screens/ShopsScreen';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import ShopViewScreen from './screens/ShopViewScreen';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
@@ -24,10 +27,30 @@ import ShippingAddress from './screens/ShippingAddress';
 import PaymentScreen from './screens/PaymentScreen';
 import { StoreProvider } from './Store';
 import Cart from './screens/Cart';
+import * as ImagePicker from "expo-image-picker"
+import ManageProfile from './screens/ManageProfile';
+import FilteringScreen from './screens/FilteringScreen';
+
 
 export default function App() {
   const [activeScreen, setActiveScreen] = useState('explore')
   const Stack = createNativeStackNavigator()
+
+
+  useEffect(()=>{
+    (async()=>{
+      if(Platform.OS !== "web"){
+        const libraryStatus = await ImagePicker.requestMediaLibraryPermissionsAsync();
+        if(libraryStatus !== "granted"){
+          alert('Sorry, we need camera roll permissions to make this work!');
+        }
+        const cameraStatus = await ImagePicker.requestCameraPermissionsAsync();
+      if (cameraStatus.status !== 'granted') {
+        alert('Sorry, we need camera permissions to make this work!');
+      }
+      }
+    })
+  }, [])
 
 
   return (
@@ -55,6 +78,8 @@ export default function App() {
         <Stack.Screen name='shipping' component={ShippingAddress}/>
         <Stack.Screen name='payment' component={PaymentScreen}/>
         <Stack.Screen name='cart' component={Cart}/>
+        <Stack.Screen name="Filter" component={FilteringScreen}/>
+        <Stack.Screen name="profile-settings" component={ManageProfile}/>
       </Stack.Navigator>
       </NavigationContainer>
     </StoreProvider>

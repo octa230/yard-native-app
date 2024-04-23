@@ -1,69 +1,43 @@
 import { StyleSheet } from "react-native";
 
 export const FormStyles = StyleSheet.create({
-    Form:{
-        flex: 1,
-        justifyContent: "center",
-        alignItems: "center",
-        backgroundColor: "#fefefe",
-        color: "white",
-        borderRadius: 10,
-        borderColor: "#fafffe",
-        borderWidth: 1,
-        margin: 12,
-    },
-    Input:{
-        width: "90%",
-        padding: 8,
-        borderWidth: 1,
-        margin: 12,
-        borderRadius: 8,
-        borderColor: "green"
-    },
 
-    FormHeader:{
-        color: "black",
-        fontWeight: "800",
-        letterSpacing: 10,
-    },
-
-    button:{
-        backgroundColor: "green",
-        flexDirection: "row",
-        width:"90%",
-        padding: 8,
-        marginBottom: 12,
-        borderRadius: 5,
-        alignItems: "center",
-        justifyContent: "center"
-    }
-})
+  Form: {
+      backgroundColor: '#fefefe',
+      flex: 1,
+      alignItems: "center",
+      borderRadius: 10,
+      borderColor: '#fafffe',
+      borderWidth: 1,
+      margin: 12,
+  },
+  Input: {
+      width: '90%',
+      padding: 8,
+      borderWidth: 1,
+      margin: 8,
+      borderRadius: 6,
+      borderColor: '#D3D3D3',
+  },
+  FormHeader: {
+      color: 'black',
+      fontWeight: '800',
+      letterSpacing: 10,
+      padding:12
+  },
+  button: {
+      backgroundColor: 'green',
+      flexDirection: 'row',
+      width: '90%',
+      padding: 8,
+      marginBottom: 12,
+      borderRadius: 5,
+      alignItems: 'center',
+      justifyContent: 'center',
+  },
+});
 
 
-/// BOTTOM NAVIGATION
-export const BottomBarStyles = StyleSheet.create({
-    container: {
-        flexDirection: 'row',
-        justifyContent: 'space-around',
-        alignItems: 'center',
-        borderRadius: 12,
-        backgroundColor: '#fff',
-        height: 50,
-        borderTopWidth: 1,
-        borderTopColor: '#ccc',
-        top: "100%"
-    },
-    tab:{
-        flex: 1,
-        alignItems: "center",
-        justifyContent: "center",
-        padding: 12
-    },
-    activeTab: {
-        backgroundColor: "#e0e0e0",
-        //borderRadius: 22
-    }
-})
 
 export const searchBarStyles = StyleSheet.create({
     searchInputContainer: {
