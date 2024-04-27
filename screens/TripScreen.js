@@ -1,12 +1,14 @@
 import React, { useEffect, useState } from 'react'
-import { View, FlatList} from 'react-native'
+import { View, FlatList, TouchableOpacity, SafeAreaView} from 'react-native'
+import { Button } from 'react-native-paper'
 import axios from 'axios'
 import { url } from '../utils'
 import LoadingBox from '../components/LoadingBox'
+import { buttonStyles } from '../styles'
 import Trip from '../components/Trip'
 
 
-const TripScreen = () => {
+const TripScreen = ({navigation}) => {
   const [trips, setTrips] = useState([])
   const [isLoading, setIsLoading] = useState(false)
 
@@ -18,6 +20,7 @@ const TripScreen = () => {
       const getData = async()=> {
         const {data} = await axios.get(`${url}/trips`)
         setTrips(data)
+        console.log(data.length)
       }
       getData()
       setIsLoading(false)
@@ -29,13 +32,18 @@ const TripScreen = () => {
 
   //console.log(trips)
   return isLoading ? (<LoadingBox/>) : 
-  (
-        <View>
-        <FlatList data={trips}
-          renderItem={({item})=> <Trip trip={item}/>}
+  (     
+        <SafeAreaView>
+{/*         <TouchableOpacity style={buttonStyles.button} onPress={()=> navigation.navigate('new-trip')}>
+        <Button icon="arrow-right" textColor='white'>
+          Create Trip
+        </Button>
+      </TouchableOpacity> */}
+        <FlatList data={trips} 
+          renderItem={({item})=> <Trip trip={item.trip}/>}
           keyExtractor={(item)=> item._id}
         />
-        </View>
+        </SafeAreaView>
   )
 }
 

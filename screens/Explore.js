@@ -13,6 +13,19 @@ const Explore = ({navigation}) => {
   const [products, setProducts ] = useState([])
   const [categories, setCategories] = useState([])
   const [isLoading, setIsLoading] = useState(false)
+  const [searchQuery, setSearchQuery] = useState('');
+
+
+
+
+  const handleSearch=async(query)=>{
+    setSearchQuery(query)
+    const results = products.filter((product)=> {
+      product.name.toLowerCase().includes(query.toLowerCase())
+    })
+    //setProducts(results)
+  }
+
 
   const fetchData = async()=> {
     try{
@@ -36,7 +49,6 @@ const Explore = ({navigation}) => {
   return isLoading ? (<LoadingBox/>):(
       <SafeAreaView style={{flex: 1, paddingBottom: 5}}>
         <View>
-        <SearchBar/>
         <CategoriesBar categories={categories} navigation={navigation}/>
       </View>
         <FlatList data={products}

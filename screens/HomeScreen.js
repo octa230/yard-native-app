@@ -41,7 +41,7 @@ export default function Home() {
         <Tab.Screen name='Explore' component={Explore} />
         <Tab.Screen name='Trips' component={TripScreen} />
         <Tab.Screen name='Stores' component={ShopsScreen} />
-        <Tab.Screen name='Profile' component={ProfileScreen} />
+        <Tab.Screen name='Profile' component={ProfileScreen}/>
       </Tab.Navigator>
   );
 }

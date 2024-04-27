@@ -1,19 +1,18 @@
 import axios from 'axios'
 import React, { useContext, useEffect, useState } from 'react'
 import { View, Text, SafeAreaView, FlatList, TouchableOpacity, Image } from 'react-native'
-import { shopStyles } from '../styles'
+import { shopStyles,buttonStyles } from '../styles'
 import { url } from '../utils'
 import { Store } from '../Store'
 import LoadingBox from '../components/LoadingBox'
 import { Button } from 'react-native-paper'
 
-const MyShops = () => {
+const MyShops = ({navigation}) => {
 
   const {state} = useContext(Store)
   const {userInfo} = state
 
   const [shops, setShops] = useState([])
-  const [selectedShop, setSelectedShop] = useState('')
   const [isLoading, setIsLoading] = useState(false)
 
   const getShops=async()=>{
@@ -31,6 +30,7 @@ const MyShops = () => {
       console.error(error)
     }
   }
+  
 
   useEffect(()=>{
     getShops()
@@ -39,6 +39,14 @@ const MyShops = () => {
 
   return isLoading ? (<LoadingBox/>) : (
     <SafeAreaView>
+      <View style={{flexDirection: 'row', margin:12, alignItems:"center", justifyContent:"space-between"}}>
+      <Text style={{fontWeight: 800}}>Select Shop</Text>
+      <TouchableOpacity style={buttonStyles.button} onPress={()=> navigation.navigate('new-shop')}>
+        <Button icon="arrow-right" textColor='white'>
+          Create Shop
+        </Button>
+      </TouchableOpacity>
+      </View>
       <FlatList
         data={shops}
         renderItem={({item})=> 
@@ -48,7 +56,11 @@ const MyShops = () => {
             </View>
             <View style={{flex: 1, justifyContent: 'space-between', alignItems:"center", flexDirection: "row"}}>
                 <Button icon="pen" textColor='green' 
-                    onPress={()=> {}}
+                    onPress={()=> {
+                      navigation.navigate('new-shop', {
+                        shop: item
+                      })
+                    }}
                     />
                 <Text>{item.quantity}</Text>
                 </View>

@@ -22,8 +22,8 @@ const Trip = (props) => {
 
    const bookTripHandler =async(trip, quantity)=>{
     const {data} = await axios.get(`${url}/trips/${trip._id}`) 
-    if(data.availableWeight < bookedWeight){
-      Alert.alert('BOOK LESSER WEIGHT')
+    if(!bookedWeight || data.availableWeight < bookedWeight){
+      Alert.alert('CHECK WEIGHT')
       return
     }
     ctxDispatch({type:"BOOK_TRIP", payload:{...data, quantity}})
@@ -36,10 +36,10 @@ const Trip = (props) => {
       <Card.Title title = {trip.approved ? "APPROVED" : "NOT APPROVED!"} />
       <Card.Content style={{paddingVertical: 2}}>
         <Text variant="bodyMedium" style={{color:"green", fontWeight: 800}}>
-          FROM K'LA: {new Date(trip.departureDate).toDateString()}
+          FROM K'LA: {new Date(trip.arrivalDate).toDateString()}
         </Text>
         <Text variant="bodyMedium" style={{color: "red", fontWeight: 800}}>
-          BACK TO K'LA: {new Date(trip.arrivalDate).toDateString()}
+          BACK TO K'LA: {new Date(trip.departureDate).toDateString()}
         </Text>
         <Text variant="bodyMedium" style={{color: "red", fontWeight: 800}}>
           PRICE PER KG: {trip.weightPrice}
@@ -53,7 +53,8 @@ const Trip = (props) => {
             onChangeText={(text)=> setBookedWeight(text)}
         />
       </Card.Content>
-      <Card.Actions>
+      {trip.availableWeight > 0 ? (
+        <Card.Actions>
         <TouchableOpacity style={{padding: -21, borderRadius: 22, borderColor: "white", borderWidth: 1.5, backgroundColor:"#E5E4E2"}}>
         <Button onPress={()=> bookTripHandler(trip, bookedWeight)}>Book</Button>
         </TouchableOpacity>
@@ -61,6 +62,11 @@ const Trip = (props) => {
           <Button   onPress={()=> { ctxDispatch({type:"UNBOOK_TRIP"})}}>Cancel</Button>
         </TouchableOpacity> 
       </Card.Actions>
+      ):(
+        <View style={{padding: 12, alignItems:"center"}}>
+          <Text>TRIP OUT BOOKED!</Text>
+        </View>
+      )}
     </Card>
 
 }

@@ -9,6 +9,7 @@ import LoadingBox from '../components/LoadingBox'
 const ShopsScreen = () => {
   const [shops, setShops] = useState([])
   const [isLoading, setIsLoading] = useState(false)
+  const [searchQuery, setSearchQuery] = useState('')
 
   const fetchData = async()=>{
     try{
@@ -22,6 +23,8 @@ const ShopsScreen = () => {
     }
   }
 
+
+
   useEffect(()=>{
     fetchData()
   }, [])
@@ -30,7 +33,7 @@ const ShopsScreen = () => {
   (
       <SafeAreaView style={{flex: 1, paddingBottom: 5}}>
       <View>
-        <SearchBar/>
+        <FlatList />
       </View>
         <FlatList data={shops}
         renderItem={({item})=> <Shop shop={item}/>}

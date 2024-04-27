@@ -13,6 +13,7 @@ const ShopViewScreen = ({route}) => {
   const getData = async()=> {
     const {data} = await axios.get(`${url}/shops/${shop._id}/products`)
     setProducts(data)
+    console.log(data.length)
   }
   useEffect(()=> {
     setIsLoading(true)

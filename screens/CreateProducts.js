@@ -1,45 +1,68 @@
 import React, { useContext, useEffect, useState } from 'react'
-import { View, Text, Alert, TouchableOpacity, ScrollView, TextInput} from 'react-native'
+import { View, Text, Image, TouchableOpacity, ScrollView, TextInput, Alert} from 'react-native'
 import * as ImagePicker from "expo-image-picker"
 import {Picker} from '@react-native-picker/picker';
+import { Button } from 'react-native-paper';
 import axios from 'axios'
 import { url } from '../utils'
 import { Store } from '../Store'
 import { FormStyles } from '../styles'
+import * as FileSystem from 'expo-file-system'
+import ImagePlaceHolder from '../components/ImagePlaceHolder';
+import LoadingBox from '../components/LoadingBox';
 
 
-const CreateProducts = () => {
+const CreateProducts = ({navigation, route}) => {
 
   const {state} = useContext(Store)
   const {userInfo} = state
 
-  const [file, setFile] = useState(null)
-  const [image, setImage] = useState('')
+  const {item} = route.params || {}
+  const product = item
+
+  const [image, setImage] = useState(product?.image || '')
   const [categories, setCategories] = useState([])
-  const [selectedCategory, setSelectedCategory]= useState('')
-  const [selectedSubCategory, setSelectedSubCategory]= useState('')
+  const [selectedCategory, setSelectedCategory]= useState(product?.category || null)
+  const [selectedSubCategory, setSelectedSubCategory]= useState(null)
   const [shops, setShops] = useState([])
-  const [selectedShop, setSelectedShop] = useState('')
-  const [name, setName] = useState('')
-  const [brand, setBrand] = useState('')
-  const [price, setPrice] = useState('')
-  const [inStock, setInStock]= useState('')
-  const [description, setDescription] = useState('')
+  const [selectedShop, setSelectedShop] = useState(product?.shop || '')
+  const [name, setName] = useState(product?.name || '')
+  const [brand, setBrand] = useState(product?.brand || '')
+  const [price, setPrice] = useState(product?.price || '')
+  const [inStock, setInStock]= useState(product?.inStock || '')
+  const [description, setDescription] = useState(product?.description || '')
+  const [isLoading, setIsLoading] = useState(false)
 
 
-  console.log(selectedCategory)
-  console.log(selectedSubCategory)
+  //console.log(selectedCategory)
+  //console.log(selectedSubCategory)
 
   const handleSubmit = async()=>{
-    console.log(image,
-      selectedCategory,
-      selectedSubCategory,
-      selectedShop,
-      name,
-      brand,
-      price,
-      inStock,
-      description)
+    try{
+      const data = await axios.post(`${url}/products/new`, 
+      {
+        image: image,
+        category: selectedCategory,
+        //categoryName: selectedCategory.name,
+        shop: selectedShop,
+        name: name,
+        price: price,
+        inStock: inStock,
+        description: description,
+        brand: brand,
+        subcategory: selectedSubCategory
+      }, 
+      {
+        headers: {
+          authorization: `Bearer ${userInfo.token}`
+        }
+      }) 
+      //console.log(data.data)
+      Alert.alert('PROCUCT SENT FOR REVIEW!')
+
+    }catch(error){
+      console.log(error)
+    }
   }
 
 
@@ -63,111 +86,82 @@ const CreateProducts = () => {
     getShops()
   },[])
 
-  const uploadImage = async () => {
-    console.log(userInfo.token); // Existing logging
-  
-    try {
-      let result = await ImagePicker.launchImageLibraryAsync({
-        mediaTypes: ImagePicker.MediaTypeOptions.Images,
-        allowsEditing: true,
-      });
-  
-      if (!result.canceled) {
-        const formData = new FormData();
-        formData.append('file', {
-          uri: result.uri,
-          type: 'image/jpeg',
-          name: 'photo.jpg',
-        });
-  
-        // Add axios interceptors for logging
-        axios.interceptors.request.use(
-          (config) => {
-            console.log('Request:', config);
-            return config;
-          },
-          (error) => {
-            console.error('Request error:', error);
-            return Promise.reject(error);
-          }
-        );
-  
-        axios.interceptors.response.use(
-          (response) => {
-            console.log('Response:', response);
-            return response;
-          },
-          (error) => {
-            console.error('Response error:', error);
-            return Promise.reject(error);
-          }
-        );
-  
-        try {
-          const { data } = await axios.post(`${url}/upload/one`, formData, {
-            headers: {
-              Authorization: `Bearer ${userInfo.token}`,
-              'Content-Type': 'multipart/form-data',
-            },
-          });
-          setLogo(data);
-          console.log('Image uploaded successfully:', data);
-          toast.success('Done');
-        } catch (error) {
-          console.error('Upload error:', error);
-        } finally {
-          // Remove interceptors after upload (optional)
-          axios.interceptors.request.use = null;
-          axios.interceptors.response.use = null;
-        }
-      }
-    } catch (error) {
-      console.error('Error uploading image:', error);
-    }
-  };
-  
 
-/*   const uploadImage = async () => {
-    console.log(userInfo.token)
-    try {     
-        let result = await ImagePicker.launchImageLibraryAsync({
-          mediaTypes: ImagePicker.MediaTypeOptions.All,
+  const uploadImage = async (mode) => {
+    try {
+      let result;
+  
+      if (mode === "gallery") {
+        const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
+        if (status !== 'granted') {
+          console.error("Gallery permissions denied");
+          return; // Exit if permission not granted
+        }
+        result = await ImagePicker.launchImageLibraryAsync({
+          mediaTypes: ImagePicker.MediaTypeOptions.Images,
           allowsEditing: true,
-          //aspect: [4, 3],
           quality: 1,
         });
-      
-        if (!result.canceled) {
-          //setImage(result.uri);
-          console.log(true)
-
-          const formData = new FormData()
-          formData.append('file', {
-            uri: result.uri,
-            type: 'image/jpeg', // Adjust the type if needed
-            name: 'photo.jpg', // Adjust the file name if needed
-          });
-
-          console.log(formData)
-          try{
-            const {data} = await axios.post(`${url}/upload/one`, formData, {
-              headers: {
-                Authorization: `Bearer ${userInfo.token}`,
-                'Content-Type': 'multipart/form-data'
-              }
-            });
-            setLogo(data);
-            console.log('Image uploaded successfully:', data);
-            toast.success('Done')
-          }catch(error){
-            console.log(error)
-          }
+      } else {
+        const { status } = await ImagePicker.requestCameraPermissionsAsync();
+        if (status !== 'granted') {
+          console.error("Camera permissions denied");
+          return; // Exit if permission not granted
         }
-        //console.log(image)
-    }catch(error){
-      console.log(error)
+        result = await ImagePicker.launchCameraAsync({
+          cameraType: ImagePicker.CameraType.back,
+          allowsEditing: true,
+          quality: 1,
+        });
+      }
+  
+      if (!result.canceled) {
+        await saveImage(result.assets[0].uri);
+      }
+    } catch (error) {
+      console.error("Error selecting image:", error);
+      // Alert user about the error (optional)
     }
-}; */
+  };
+
+  const saveImage = async (imageUri) => {
+    try {
+      setIsLoading(true)
+      if (!imageUri) {
+        throw new Error('Image URI is null or undefined');
+      }
+      const fileInfo = await FileSystem.getInfoAsync(imageUri)
+      if(!fileInfo.exists){
+        throw new Error('File not found')
+      }
+      const file = new FormData();
+      file.append('file', {
+        uri: imageUri,
+        name: "image.jpg",
+        type:"image/jpeg"
+      });
+  
+      const { data } = await axios.post(`${url}/upload`, file, {
+        headers: {
+          Authorization: `Bearer ${userInfo.token}`,
+          'Content-Type': 'multipart/form-data'
+        }
+      });
+  
+      console.log(data);
+      if (data && data.secure_url) {
+        console.log(data.secure_url);
+        // Assuming you have a state management solution:
+        setImage(data.secure_url);
+        setIsLoading(false)
+        Alert.alert("Done");
+      } else {
+        console.error('Unable to upload image:', data);
+      }
+    } catch (error) {
+      console.error("Error uploading image:", error);
+    }
+  };
 
   return (
     <ScrollView>
@@ -246,27 +240,30 @@ const CreateProducts = () => {
                   ))}
                 </Picker>
                 <Text>Description</Text>
-                <TextInput style={FormStyles.Input} type="text"
+                <TextInput style={FormStyles.Input} 
+                  type="text"
+                  multiline={true}
                   value={description}
                   onChangeText={text => setDescription(text)}
                   />
 
-                <View style={{padding:12}}>
-                    {image && (
-                        <View style={styles.imageContainer}>
-                            <Image source={{ uri: image }} style={{height:100, width: 100}} />
-                        </View>
-                    )}
-                </View>
+                 <ImagePlaceHolder source={null || image}/>
 
 
-                <TouchableOpacity style={FormStyles.button} onPress={uploadImage}>
-                    <Text>Choose Image</Text>
+                <TouchableOpacity style={FormStyles.button} onPress={()=> uploadImage("gallery")}>
+                    {isLoading ? (<LoadingBox size="small" color="white"/>) : (<Text>Choose Image</Text>)}
                 </TouchableOpacity>
 
-                <TouchableOpacity style={FormStyles.button} onPress={handleSubmit}>
-                    <Text>Submit</Text>
+    
+                  {product ? (
+                    <TouchableOpacity style={FormStyles.button} onPress={()=>handleUpdate()}>
+                    <Button>update</Button>
                 </TouchableOpacity>
+                  ):(
+                    <TouchableOpacity style={FormStyles.button} onPress={()=>handleSubmit()}>
+                    <Button textColor='white' style={{alignSelf: "center"}}>Submit</Button>
+                </TouchableOpacity>
+                  )}
             </View>
         </ScrollView>
   )

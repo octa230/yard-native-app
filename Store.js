@@ -162,7 +162,7 @@ function reducer (state, action){
                 }
             }
             removeTrip()
-            return{...state, cart:{...state, trip:{}}}
+            return{...state, cart:{...state.cart, trip:{}}}
             
         case "ADD_CART_ITEM":
                 const newItem = action.payload;

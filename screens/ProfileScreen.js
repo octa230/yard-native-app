@@ -1,16 +1,15 @@
 import React, { useContext, useState } from 'react'
 import { Text, ScrollView, View, TouchableOpacity } from 'react-native'
-import SearchBar from '../components/SearchBar'
 import Icon from 'react-native-vector-icons/FontAwesome5'
 import { profileStyles, shopStyles } from '../styles'
-import { Button } from 'react-native-paper'
+import { Badge, Button } from 'react-native-paper'
 import { Store } from '../Store'
 
 
 const ProfileScreen = ({navigation}) => {
   const [showModel, setShowModel] = useState(false)
   const {state, dispatch: ctxDispatch} = useContext(Store)
-  const {userInfo} = state
+  const {userInfo, cart} = state
 
 
   const handleLogout =()=>{
@@ -32,6 +31,9 @@ const ProfileScreen = ({navigation}) => {
         }}> 
           <Icon name="user" size={30}/>
         </TouchableOpacity>
+        <Badge style={{alignSelf:"center"}}>
+          {cart.cartItems?.length}
+        </Badge>
         <Text onPress={()=> navigation.navigate('cart')}>
           <Icon name='shopping-basket' size={30}/>
         </Text>
@@ -99,16 +101,17 @@ const ProfileScreen = ({navigation}) => {
       </Button>
           </TouchableOpacity>
         </View>
+        
         <View style={profileStyles.container}>
           <Text>TRANSPORTER ACTIONS</Text>
-          <TouchableOpacity style={shopStyles.container} onPress={()=> navigation.navigate('trip-bookings')}>
+           <TouchableOpacity style={shopStyles.container} onPress={()=> navigation.navigate('trip-bookings')}>
             <Text>
               My Bookings
             </Text>
             <Button>
         <Icon name="angle-right"/>
       </Button>
-          </TouchableOpacity>
+          </TouchableOpacity> 
           <TouchableOpacity style={shopStyles.container} onPress={()=> navigation.navigate('new-trip')}>
             <Text>
               Create Trip
@@ -125,14 +128,14 @@ const ProfileScreen = ({navigation}) => {
         <Icon name="angle-right"/>
       </Button>
           </TouchableOpacity>
-          <TouchableOpacity style={shopStyles.container} onPress={()=> navigation.navigate('my-trips')}>
+           <TouchableOpacity style={shopStyles.container} onPress={()=> navigation.navigate('transporter-profile')}>
             <Text>
-            My Trips
+              Create Profile
             </Text>
             <Button>
         <Icon name="angle-right"/>
       </Button>
-          </TouchableOpacity>
+          </TouchableOpacity> 
         </View>
           <View style={profileStyles.container}>
           <TouchableOpacity style={shopStyles.container} onPress={()=> handleLogout()}>

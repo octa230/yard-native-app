@@ -24,6 +24,9 @@ const ManageProfile = ({navigation}) => {
       })
       ctxDispatch({type: "UPDATE_USER", payload: data})
     }
+
+
+    
     useEffect(()=> {
         if(!userInfo){
             navigation.navigate('login')
@@ -48,8 +51,8 @@ const ManageProfile = ({navigation}) => {
           NAME: {userInfo?.name}
           </Text>
       <Text style={{
-        padding: 12, fontWeight: 800, borderWidth: 1, color:"white", margin: 14, backgroundColor: "white",
-        borderColor:"#fefefe", borderRadius:8, backgroundColor: "green" }}>
+        padding: 12, fontWeight: 800, borderWidth: 1, color:"white", margin: 12, backgroundColor: "white",
+        borderColor:"#fefefe", borderRadius:6, backgroundColor: "green" }}>
 
           YOU CAN'T UNDO THESE ACTIONS 
           </Text>
@@ -59,12 +62,32 @@ const ManageProfile = ({navigation}) => {
         >
       <Text style={{maxWidth: 100}}>SELLER: {userInfo?.seller ? "YES" : "NO"}</Text>
       <Switch value={seller} onValueChange={()=> setSeller(!seller)}/>
+      {userInfo?.seller && (
+        <TouchableOpacity style={{
+          padding: 12, fontWeight: 800, borderWidth: 1, backgroundColor: "white",
+          borderColor:"#fefefe", borderRadius:8, backgroundColor: "green" }}
+          onPress={()=> navigation.navigate('new-shop')}
+        >
+            <Text style={{color:"white"}}>CREATE SHOP</Text>
+        </TouchableOpacity>
+      )}
       </View>
+
       <View style={{justifyContent: "space-between", flexDirection: "row", alignItems:"center", padding: 3, 
         fontWeight: 800, borderWidth: 1, borderColor:"#fefefe", borderRadius:8, margin: 4, backgroundColor: "white"}}
         >
       <Text style={{maxWidth: 100}}>TRANSPORTER: {userInfo?.transporter ? "YES" : "NO"}</Text>
       <Switch value={transporter} onValueChange={()=> setTransporter(!transporter)}/>
+
+      {userInfo?.transporter && (
+        <TouchableOpacity style={{
+          padding: 12, fontWeight: 800, borderWidth: 1, color:"white", backgroundColor: "white",
+          borderColor:"#fefefe", borderRadius:8, backgroundColor: "green" }}
+          onPress={()=> navigation.navigate("transporter-profile")}
+        >
+            <Text style={{color:"white"}}>EDIT PROFILE</Text>
+        </TouchableOpacity>
+      )}
       </View>
     </View>
   )

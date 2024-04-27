@@ -1,12 +1,13 @@
 import axios from 'axios'
 import React, { useContext, useEffect, useState } from 'react'
-import { View, Text, SafeAreaView, FlatList, TouchableOpacity } from 'react-native'
+import { View, Text, SafeAreaView, FlatList, Image, TouchableOpacity, Alert } from 'react-native'
 import { Picker } from '@react-native-picker/picker'
 import { url } from '../utils'
 import { Store } from '../Store'
 import { buttonStyles, FormStyles } from '../styles'
 import LoadingBox from '../components/LoadingBox'
 import { Button } from 'react-native-paper'
+import { shopStyles } from '../styles'
 
 const ManageProducts = ({navigation}) => {
 
@@ -29,6 +30,7 @@ const ManageProducts = ({navigation}) => {
         }
       })
       setShops(data)
+      //console.log(data)
       setIsLoading(false)
     }catch(error){
       console.error(error)
@@ -38,65 +40,86 @@ const ManageProducts = ({navigation}) => {
   const getProducts =async()=>{
     try{
       setIsLoading(true)
-      const {data} = await axios.get(`${url}/shops/seller/${selectedShop}/products`)
-      setProducts(data)
+      if(shops && shops.length > 0){
+        const {data} = await axios.get(`${url}/shops/seller/${selectedShop ? selectedShop : shops[0]._id }/products`)
+        setProducts(data)
+      }
+      //console.log(data)
     }catch(error){
       console.error(error)
     }
   }
 
+
+  const deleteProduct = async(product)=>{
+    await axios.delete(`${url}/products/${product._id}`, {
+      headers:{
+        Authorization: `Bearer ${userInfo.token}`
+      }
+    })
+    Alert.alert('DELETED!')
+  }
   useEffect(()=> {
     getShops()
-    if(selectedShop){
-      getProducts()
-    }
+    getProducts()
   }, [selectedShop])
+
+
+  
   return(
     <SafeAreaView>
       <View style={{flexDirection: 'row', margin:12, alignItems:"center", justifyContent:"space-between"}}>
       <Text style={{fontWeight: 800}}>Select Shop</Text>
       <TouchableOpacity style={buttonStyles.button} onPress={()=> navigation.navigate('new-product')}>
         <Button icon="arrow-right" textColor='white'>
-          Create Shop
+          Create Product
         </Button>
       </TouchableOpacity>
       </View>
       <View>
-        <Picker style={FormStyles.Input}
-                  prompt='options'
-                  selectedValue={selectedShop}
-                  onValueChange={(item)=> setSelectedShop(item)}
-                  >
-                  {shops && shops.map(shop => (
-                    <Picker.Item key={shop} label={shop.name} value={shop._id} 
-                  />
-                  ))}
-          </Picker>
+      <Picker
+      style={FormStyles.Input}
+      prompt='options'
+      selectedValue={selectedShop}
+      onValueChange={(item) => setSelectedShop(item)}
+  >
+    {shops && shops.length > 0 ? (
+      shops.map((shop) => (
+        <Picker.Item key={shop._id} label={shop.name} value={shop._id} />
+      ))
+    ) : (
+      <Picker.Item label="No shops available" value="" />
+    )}
+  </Picker>
       </View>
       {isLoading ? (
         <LoadingBox/>
-      ):(
+      ): products ? (
         <FlatList
         data={products}
-        renderItem={({product})=> 
+        renderItem={({item})=> 
         <View style={shopStyles.container}>
             <View style={{maxWidth: 80, maxHeight: 30}}>
-                <Text>{product.name}</Text>
+                <Text>{item.name || ""}</Text>
             </View>
             <View style={{flex: 1, justifyContent: 'space-between', alignItems:"center", flexDirection: "row"}}>
                 <Button icon="pen" textColor='green' 
-                    onPress={()=> {}}
+                    onPress={()=> {
+                      navigation.navigate('new-product', {
+                        item: item
+                      })
+                    }}
                     />
                 <Text>{item.quantity}</Text>
                 </View>
-            <Image source={{uri: product.image || product.photo}}
-                style={{maxWidth: 100, height: 100, width: 100, borderWidth: 1, borderColor: "black", objectFit:"contain"}}
+            <Image source={{uri: item.image || item.photo}}
+                style={{maxWidth: 100, height: 100, width: 100, borderWidth: 1.5, borderColor: "white", objectFit: "scale-down", borderRadius: 8}}
             />
-            <Button icon="trash-can" textColor='black'/>
+            <Button icon="trash-can" textColor='black' onPress={()=>deleteProduct(item)}/>
         </View>}
         keyExtractor={(item) => item._id}
       />
-      )}
+      ):(<Text>SELECT SHOP</Text>)}
     </SafeAreaView>
   )
 }

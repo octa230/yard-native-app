@@ -1,15 +1,42 @@
-import React from 'react'
-import { TextInput, SafeAreaView, View } from 'react-native'
+import React, { useState } from 'react'
+import { TextInput, FlatList, View } from 'react-native'
 import Icon  from 'react-native-vector-icons/FontAwesome'
 import { searchBarStyles } from '../styles'
 
-const SearchBar = () => {
+
+
+const SearchBar = ({ placeholder, onSearch }) => {
+  const [searchQuery, setSearchQuery] = useState('');
+  const [searchResults, setSearchResults] = useState([]);
+
+  const handleSearch = (text) => {
+    setSearchQuery(text);
+
+    // Perform search logic
+    if (onSearch) {
+      const results = onSearch(text);
+      setSearchResults(results);
+    }
+  };
+
   return (
+    <View style={searchBarStyles.container}>
       <View style={searchBarStyles.searchInputContainer}>
         <Icon name="search" size={20} style={searchBarStyles.searchIcon} />
-        <TextInput placeholder="Search" style={searchBarStyles.searchInput} />
+        <TextInput
+          placeholder={placeholder}
+          style={searchBarStyles.searchInput}
+          onChangeText={handleSearch}
+        />
       </View>
-  )
-}
-
-export default SearchBar
+      {searchResults.length > 0 ? (
+        <FlatList
+          data={searchResults}
+          renderItem={({ item }) => <Text>{item}</Text>}
+          keyExtractor={(item, index) => index.toString()}
+        />
+      ) : null}
+    </View>
+  );
+};
+export default SearchBar;

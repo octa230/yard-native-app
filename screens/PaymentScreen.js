@@ -7,12 +7,14 @@ import { SafeAreaView } from 'react-native';
 import { Button } from 'react-native-paper';
 import { DatePickerModal } from 'react-native-paper-dates';
 import {url} from '../utils'
+import LoadingBox from '../components/LoadingBox'
 
 const PaymentScreen = ({navigation}) => {
   const [selectedPaymentMethod, setSelectedPaymentMethod] = useState('');
   const [deliveryDate, setdeliveryDate] = useState(undefined)
   const [open, setOpen] = useState(false)
   const [deliveryMessage, setDeliveryMessage] = useState('')
+  const [isLoading, setIsLoading] = useState(false)
 
   
   const {state, dispatch: ctxDispatch} = useContext(Store)
@@ -60,7 +62,8 @@ const PaymentScreen = ({navigation}) => {
   }
 
   const placeOrderHandler = async()=>{
-    console.log({"cart":cart})
+    //console.log({"cart":cart})
+    setIsLoading(true)
      const { data } = await Axios.post(
       `${url}/orders`,
       {
@@ -86,6 +89,7 @@ const PaymentScreen = ({navigation}) => {
       }
     );
     ctxDispatch({type: "EMPTY_CART"})
+    setIsLoading(false)
     navigation.navigate("user-orders") 
   }
 
@@ -128,7 +132,9 @@ const PaymentScreen = ({navigation}) => {
           // Render form for cash payment
           <View style={{alignItems: "center"}}>
             <TouchableOpacity style={FormStyles.button} onPress={()=> placeOrderHandler()}>
-            <Button textColor='white'>PlaceOrder: {paymentMethod}</Button>
+            {isLoading ? (<LoadingBox size="small" color="white"/> ) :
+            (<Button textColor='white'>PlaceOrder: {paymentMethod}</Button>) 
+            }
           </TouchableOpacity>
           </View>
         );;

@@ -28,12 +28,14 @@ export const FormStyles = StyleSheet.create({
   button: {
       backgroundColor: 'green',
       flexDirection: 'row',
-      width: '90%',
+      width: '80%',
       padding: 8,
-      marginBottom: 12,
+      margin: 12,
       borderRadius: 5,
+      maxHeight: 100,
+      alignContent: "center",
       alignItems: 'center',
-      justifyContent: 'center',
+      justifyContent: 'space-around',
   },
 });
 

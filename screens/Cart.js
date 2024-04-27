@@ -38,7 +38,7 @@ const Cart = ({navigation}) => {
     <View style={{marginVertical: 12}}>
       <Card.Title title="ORDER ITEMS =>"/>
       <FlatList horizontal
-        data={cartItems}
+        data={cartItems ?  cartItems : []}
         renderItem={({item})=> 
         <View style={{
             alignItems: "center", 
@@ -76,8 +76,10 @@ const Cart = ({navigation}) => {
       </View>
       
       <View>
-      <Card style={{padding: 2, margin: 12}}>
-        <Card.Title title = {trip.arrivalDate ? `ARRIVAL:  ${new Date(trip.arrivalDate).toDateString()}` : 'NO TRIP BOOKED FOR THIS ORDER!'}/>
+      {trip && (
+        <Card style={{padding: 2, margin: 12}}>
+        <Card.Title title = {trip.arrivalDate ? `FROM K'LA:  ${new Date(trip.arrivalDate).toDateString()}` : 'NO TRIP BOOKED FOR THIS ORDER!'}/>
+        <Card.Title title = {trip.arrivalDate ? `BACK TO K'LA:  ${new Date(trip.departureDate).toDateString()}` : 'NO TRIP BOOKED FOR THIS ORDER!'}/>
         <Card.Content>
           <Button textColor='black' 
             onPress={()=> navigation.navigate('Trips')}
@@ -86,12 +88,14 @@ const Cart = ({navigation}) => {
             BOOKED WEIGHT: {trip.bookedWeight ? trip.bookedWeight : 'BOOK TRIP'}
           </Button>
           <Button onPress={()=> {
-            ctxDispatch({type:"UNBOOK_TRIP"})
+            ctxDispatch({type: "UNBOOK_TRIP"})
             Alert.alert('YOU\'VE GOT NO TRIP ')
           }}>UNBOOK</Button>
         </Card.Content>
       </Card>
-      <Card style={{padding: 23, margin: 12}}>
+      )}
+      {shippingAddress && (
+        <Card style={{padding: 23, margin: 12}}>
         <Card.Title title = 'SHIPPING ADDRESS!'/>
         <Card.Content>
           <Button textColor='black' 
@@ -106,13 +110,19 @@ const Cart = ({navigation}) => {
           <Text variant="bodyMedium" style={{ marginVertical: 2, color: "black", fontWeight: 800}}>COUNTRY: {shippingAddress.country || ''}</Text>
         </Card.Content>
       </Card>
+      )}
       </View>
     
       <View style={{padding: 22, borderWidth: 1, borderColor:"#fefefe", borderRadius: 12, margin: 20}}>
         <Text>
         Subtotal ({cartItems?.reduce((a, c) => a + c.quantity, 0)}{' '}
-            items) : UGX: 
-            {cartItems?.reduce((a, c) => a +(c.ugx || c.price * c.quantity), 0)}
+            items + 1 Trip) : UGX: 
+            {cartItems?.reduce((a, c) => a +(c.ugx || c.price * c.quantity), 0) + (trip.bookedWeight * trip.weightPrice)}
+        </Text>
+      </View>
+      <View style={{padding: 22, borderWidth: 1, borderColor:"#fefefe", borderRadius: 12, margin: 20}}>
+        <Text>
+         TRIP PRICE: {(trip.bookedWeight * trip.weightPrice)}
         </Text>
       </View>
       <TouchableOpacity style={buttonStyles.button} onPress={()=> navigation.navigate('shipping')}>
