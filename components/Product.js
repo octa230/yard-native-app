@@ -66,7 +66,7 @@ const Product = React.memo(({...props}) => {
         Add to cart
       </Button>
     </TouchableOpacity>
-    <Text>****LONG PRESS FOR ADDITIONAL DETAILS****</Text>
+    <Text>LONG PRESS</Text>
     {/* Modal for additional details */}
     <Modal
       animationType="slide"

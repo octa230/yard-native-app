@@ -5,6 +5,11 @@ import * as FileSystem from 'expo-file-system';
 import { Alert } from 'react-native';
 
 export const uploadImage = async (mode, userInfo, setImage) => {
+
+  if(!userInfo){
+    Alert.alert('SIGN IN TO UPLOAD PHOTOS')
+    return
+  }
   try {
     let result;
 

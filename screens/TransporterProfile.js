@@ -27,7 +27,7 @@ const TransporterProfile = ({route}) => {
 
   const submitHandler = async () => {
     try {
-      if (!userInfo.transporter) {
+      if (!userInfo || !userInfo.transporter) {
         Alert.alert('FIRST ACTIVATE TRANSPORTER ACCOUNT', 'GO TO MANAGE PROFILE')
         return
       }
@@ -117,7 +117,7 @@ const TransporterProfile = ({route}) => {
       {transporter ? (
         <TouchableOpacity style={{padding: 4, width: 200}} onPress={updateHandler} >
         <Button buttonColor='green' textColor='white' mode='contained' style={{borderRadius: 3}}>
-          SUBMIT
+          UPDATE
         </Button>
       </TouchableOpacity>
       ):(

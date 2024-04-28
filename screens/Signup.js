@@ -72,6 +72,7 @@ const Signup = ({navigation}) => {
                 placeholder='password'
                 onChangeText={text => setPassword(text)}
                 value={password}
+                secureTextEntry={true}
                 type="text"
                 required
             />
@@ -79,6 +80,7 @@ const Signup = ({navigation}) => {
                 placeholder='confirm password'
                 onChangeText={text => setComfirmPassword(text)}
                 value={confirmPassword}
+                secureTextEntry={true}
                 type="text"
                 required
             />

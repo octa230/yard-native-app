@@ -1,11 +1,12 @@
 import axios from 'axios'
 import React, { useContext, useEffect, useState } from 'react'
-import { View, FlatList, Text, SafeAreaView, Image } from 'react-native'
+import { View, FlatList, Text, SafeAreaView, Image, Alert } from 'react-native'
 import { url } from '../utils'
 import { Store } from '../Store'
 import { Picker } from '@react-native-picker/picker'
 import { FormStyles } from '../styles'
 import { Card } from 'react-native-paper'
+import LoadingBox from '../components/LoadingBox'
 
 
 
@@ -60,14 +61,15 @@ const MyOrders = () => {
   }
 
   useEffect(()=> {
-
-    getShops()
-    getData()
+    if(userInfo && userInfo.seller){
+      getShops()
+      getData()
+    }
 
   }, [selectedShop])
 
 
-  return (
+  return isLoading ? (<LoadingBox/>):(
       <SafeAreaView style={{flex: 1}}>
       <Picker
       style={FormStyles.Input}

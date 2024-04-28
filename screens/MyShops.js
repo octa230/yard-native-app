@@ -1,6 +1,6 @@
 import axios from 'axios'
 import React, { useContext, useEffect, useState } from 'react'
-import { View, Text, SafeAreaView, FlatList, TouchableOpacity, Image } from 'react-native'
+import { View, Text, SafeAreaView, FlatList, TouchableOpacity, Image, Alert } from 'react-native'
 import { shopStyles,buttonStyles } from '../styles'
 import { url } from '../utils'
 import { Store } from '../Store'
@@ -16,6 +16,12 @@ const MyShops = ({navigation}) => {
   const [isLoading, setIsLoading] = useState(false)
 
   const getShops=async()=>{
+
+    if(!userInfo || !userInfo.seller){
+      Alert.alert('ACTIVATE SELLER ACCOUNT FIRST')
+      navigation.navigate('profile-settings')
+      return
+    }
     try{
       setIsLoading(true)
       const {data} = await axios.get(`${url}/shops/mine`, {

@@ -10,7 +10,7 @@ import axios from 'axios';
 import { url } from '../utils';
 import LoadingBox from '../components/LoadingBox';
 
-const CreateTrip = () => {
+const CreateTrip = ({navigation}) => {
 
 
 
@@ -49,18 +49,30 @@ const CreateTrip = () => {
     setIsLoading(false)
   }
   const handleSubmit=async(e)=>{
-    e.preventDefault()
-    if(!availableWeight || !ticketCopy || !visaCopy || !date){
-      Alert.alert('FILL ALL DATA')
-      return
-    }
-    //const trip = {}
-    await axios.post(`${url}/trips/new`, {
-      availableWeight, ticketCopy, visaCopy, arrivalDate: date.startDate, departureDate: date.endDate, weightPrice
+   
+    if(userInfo && userInfo.transporter){
+      e.preventDefault()
+      if(!availableWeight || !ticketCopy || !visaCopy || !date){
+        Alert.alert('FILL ALL DATA')
+        return
+      }
+      //const trip = {}
+      await axios.post(`${url}/trips/new`, {
+      availableWeight, 
+      ticketCopy, 
+      visaCopy, 
+      arrivalDate: date.startDate, 
+      departureDate: date.endDate, 
+      weightPrice
     }, {
       headers: { Authorization: `Bearer ${userInfo.token}` },
     })
     Alert.alert("DONE")
+    }else{
+      Alert.alert('LOGIN & ACTIVATE TRANSPORTER ACCOUNT!')
+      navigation.navigate('profile-settings')
+    }
+    
   }
   return (
     <ScrollView>

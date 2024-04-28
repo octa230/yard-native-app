@@ -13,8 +13,8 @@ const ShopsScreen = () => {
 
   const fetchData = async()=>{
     try{
-      setIsLoading(true)
-      const shops = await axios.get(`${url}/shops`)
+    setIsLoading(true)
+    const shops = await axios.get(`${url}/shops`)
     setShops(shops.data)
     setIsLoading(false)
     //console.log(shops)

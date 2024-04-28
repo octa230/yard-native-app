@@ -6,7 +6,7 @@ import axios from 'axios'
 import { url } from '../utils'
 import { Button } from 'react-native-paper'
 
-const UserOrders = () => {
+const UserOrders = ({navigation}) => {
 
   const {state} = useContext(Store)
   const {userInfo} = state
@@ -85,6 +85,11 @@ const UserOrders = () => {
     );
   
   useEffect(()=> {
+    if(!userInfo){
+      Alert.alert('LOGIN TO SEE ORDERS FOR YOUR ACCOUNT!')
+      navigation.navigate("login")
+      return
+    }
     fetchData()
   }, [userInfo, updatedOrder])
   

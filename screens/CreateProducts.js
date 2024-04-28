@@ -28,8 +28,8 @@ const CreateProducts = ({navigation, route}) => {
   const [selectedShop, setSelectedShop] = useState(product?.shop || '')
   const [name, setName] = useState(product?.name || '')
   const [brand, setBrand] = useState(product?.brand || '')
-  const [price, setPrice] = useState(product?.price || '')
-  const [inStock, setInStock]= useState(product?.inStock || '')
+  const [price, setPrice] = useState(product?.price || '').toString()
+  const [inStock, setInStock]= useState(product?.inStock || '').toString()
   const [description, setDescription] = useState(product?.description || '')
   const [isLoading, setIsLoading] = useState(false)
 
@@ -38,6 +38,10 @@ const CreateProducts = ({navigation, route}) => {
   //console.log(selectedSubCategory)
 
   const handleSubmit = async()=>{
+    if(!userInfo || !userInfo.seller){
+      Alert.alert('LOGIN & CREATE SHOP FIRST!')
+      return
+    }
     try{
       const data = await axios.post(`${url}/products/new`, 
       {
@@ -68,12 +72,15 @@ const CreateProducts = ({navigation, route}) => {
 
 
   const getShops =async()=>{
-    const {data} = await axios.get(`${url}/shops/mine`, {
-      headers:{
-        Authorization: `Bearer ${userInfo.token}`
-      }
-    })
-    setShops(data)
+    if(userInfo && userInfo.seller){
+      const {data} = await axios.get(`${url}/shops/mine`, {
+        headers:{
+          Authorization: `Bearer ${userInfo.token}`
+        }
+      })
+      setShops(data)
+    }
+
   }
 
 
@@ -88,6 +95,11 @@ const CreateProducts = ({navigation, route}) => {
 
 
   const uploadImage = async (mode) => {
+
+    if(!userInfo){
+      Alert.alert('SIGN IN TO UPLOAD PHOTOS')
+      return
+    }
     try {
       let result;
   
@@ -191,9 +203,6 @@ const CreateProducts = ({navigation, route}) => {
                   value={inStock}
                   onChangeText={text => setInStock(text)}
                   />
-
-
-
                 <Text style={{marginTop:12, fontWeight: 800,  borderBottomWidth: 1}}>Category{selectedCategory?.name || ''}</Text>
                 
                 <Picker style={FormStyles.Input}
@@ -257,7 +266,7 @@ const CreateProducts = ({navigation, route}) => {
     
                   {product ? (
                     <TouchableOpacity style={FormStyles.button} onPress={()=>handleUpdate()}>
-                    <Button>update</Button>
+                    <Button textColor='white'>update</Button>
                 </TouchableOpacity>
                   ):(
                     <TouchableOpacity style={FormStyles.button} onPress={()=>handleSubmit()}>

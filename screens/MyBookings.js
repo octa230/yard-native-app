@@ -34,7 +34,7 @@ const MyBookings = () => {
 
   useEffect(() => {
     const getData = async () => {
-      if (!userInfo.transporter) {
+      if (!userInfo || userInfo.transporter) {
         Alert.alert("Activate Transporter Account!");
         return;
       } else {

@@ -47,6 +47,7 @@ const Login = ({navigation}) => {
                 placeholder='password'
                 type="text"
                 value={password}
+                secureTextEntry={true}
                 onChangeText={text => setPassword(text)}
             />
             <TouchableOpacity style={FormStyles.button} onPress={()=> handleSubmit()}>

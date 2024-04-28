@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useState } from 'react'
 import { Store } from '../Store'
-import { View, Text, TouchableOpacity } from 'react-native'
+import { View, Text, TouchableOpacity, Alert } from 'react-native'
 import { Switch} from 'react-native-paper'
 import axios from 'axios'
 import { url } from '../utils'
@@ -15,7 +15,7 @@ const ManageProfile = ({navigation}) => {
     const [transporter, setTransporter] = useState(userInfo?.transporter || false)
 
 
-    const updateAccount = async()=> { 
+    const updateAccount = async()=> {
       const {data} = await axios.put(`${url}/users/profile`, {
         seller: seller,
         transporter: transporter
@@ -29,11 +29,11 @@ const ManageProfile = ({navigation}) => {
     
     useEffect(()=> {
         if(!userInfo){
-            navigation.navigate('login')
+          navigation.navigate('login')
         }else{
           updateAccount()
         }
-    }, [seller, transporter])
+    }, [seller, transporter, userInfo])
 
     //add userInfo to effect array
 

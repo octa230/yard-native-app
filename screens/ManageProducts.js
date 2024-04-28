@@ -60,8 +60,11 @@ const ManageProducts = ({navigation}) => {
     Alert.alert('DELETED!')
   }
   useEffect(()=> {
-    getShops()
-    getProducts()
+    if(userInfo && userInfo.seller){
+      getShops()
+      getProducts()
+    }
+    
   }, [selectedShop])
 
 

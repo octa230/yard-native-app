@@ -25,8 +25,8 @@ const ProfileScreen = ({navigation}) => {
         </View> */}
         <View style={profileStyles.topBar}>
         <TouchableOpacity onPress={()=> {
-          if(userInfo){
-             navigation.navigate('signup')
+          if(!userInfo){
+             navigation.navigate('login')
           }
         }}> 
           <Icon name="user" size={30}/>
