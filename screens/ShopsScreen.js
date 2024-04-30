@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { View, FlatList, SafeAreaView } from 'react-native'
-import SearchBar from '../components/SearchBar'
+import SearchBar from '../components/ProductSearchBar'
 import axios from 'axios'
 import { url } from '../utils'
 import Shop from '../components/Shop'

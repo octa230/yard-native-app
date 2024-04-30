@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from 'react'
 import { Text, View, SafeAreaView, ScrollView, FlatList } from 'react-native'
-import SearchBar from '../components/SearchBar'
+import SearchBar from '../components/ProductSearchBar'
 import axios from 'axios'
 import { url } from '../utils'
 import Product from '../components/Product'
 import CategoriesBar from '../components/CategoriesBar'
 import LoadingBox from '../components/LoadingBox'
+import ProductSearchBar from '../components/ProductSearchBar'
 
 
 
@@ -49,6 +50,7 @@ const Explore = ({navigation}) => {
   return isLoading ? (<LoadingBox/>):(
       <SafeAreaView style={{flex: 1, paddingBottom: 5}}>
         <View>
+        <ProductSearchBar/>
         <CategoriesBar categories={categories} navigation={navigation}/>
       </View>
         <FlatList data={products}

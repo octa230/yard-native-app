@@ -10,7 +10,7 @@ import { Button } from 'react-native-paper'
 const FilteringScreen = ({route, navigation}) => {
 
 
-    const {category, subcategory} = route.params
+    const {category, subcategory, searchQuery} = route.params
     const [isLoading, setIsLoading] = useState(false)
     const [products, setProducts] = useState([])
     const [brands, setBrands] = useState([])
@@ -19,26 +19,26 @@ const FilteringScreen = ({route, navigation}) => {
 
     const getData = async () => {
         try {
-            setIsLoading(true)
-            const queryParams = { subcategory };
-            const query = new URLSearchParams(queryParams);
-
-            const searchUrl = `${url}/products/q?${query}`
-            console.log(searchUrl)
-           
-            const { data } = await axios.get(`${url}/products/q?${query}`); // Make the request
-            //console.log('Response data:', data); // Log the response data
-            setBrands(data.brands)
-            setCategories(data.categories)
-            setProducts(data.products)
+          setIsLoading(true);
+          const queryParams = {};
+          if (subcategory) queryParams.subcategory = subcategory;
+          if (searchQuery) queryParams.searchQuery = searchQuery;
+        
+          const query = new URLSearchParams(queryParams);
+          const searchUrl = `${url}/products/q?${query}`;
+          console.log('Search URL:', searchUrl);
     
-            setIsLoading(false)
- 
+          const { data } = await axios.get(searchUrl);
+          console.log('Response data:', data);
+          setBrands(data.brands);
+          setCategories(data.categories);
+          setProducts(data.products);
+    
+          setIsLoading(false);
         } catch (error) {
-            console.log('Error:', error);
+          console.log('Error:', error);
         }
-    }
-    
+      };
 
     useEffect(()=> {
         getData()

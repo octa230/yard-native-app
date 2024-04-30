@@ -33,17 +33,12 @@ const TripScreen = ({navigation}) => {
   //console.log(trips)
   return isLoading ? (<LoadingBox/>) : 
   (     
-        <SafeAreaView>
-{/*         <TouchableOpacity style={buttonStyles.button} onPress={()=> navigation.navigate('new-trip')}>
-        <Button icon="arrow-right" textColor='white'>
-          Create Trip
-        </Button>
-      </TouchableOpacity> */}
+      <SafeAreaView>
         <FlatList data={trips} 
           renderItem={({item})=> <Trip trip={item.trip}/>}
           keyExtractor={(item)=> item._id}
         />
-        </SafeAreaView>
+      </SafeAreaView>
   )
 }
 

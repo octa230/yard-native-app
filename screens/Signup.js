@@ -58,7 +58,7 @@ const Signup = ({navigation}) => {
                 placeholder='phone'
                 onChangeText={text => setPhone(text)}
                 value={phone}
-                type="text"
+                keyboardType='phone-pad'
                 required
             />
             <TextInput style={FormStyles.Input}
