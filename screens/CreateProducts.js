@@ -67,7 +67,7 @@ const CreateProducts = ({navigation, route}) => {
       return
     }
     try{
-      const {data} = await axios.post(`${url}/products/new`, 
+        await axios.post(`${url}/products/new`, 
       {
         image: image,
         category: selectedCategory,
@@ -290,10 +290,10 @@ const CreateProducts = ({navigation, route}) => {
     
                   {product ? (
                     <TouchableOpacity style={FormStyles.button} onPress={()=>handleUpdate(product)}>
-                    <Button textColor='white'>update</Button>
+                    <Button textColor='white'>Update</Button>
                 </TouchableOpacity>
                   ):(
-                    <TouchableOpacity style={FormStyles.button} onPress={handleSubmit}>
+                    <TouchableOpacity style={FormStyles.button} onPress={()=>handleSubmit()}>
                     <Button textColor='white' style={{alignSelf: "center"}}>Submit</Button>
                 </TouchableOpacity>
                   )}
