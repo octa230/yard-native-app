@@ -11,14 +11,15 @@ const ShopViewScreen = ({route}) => {
   const [isLoading, setIsLoading] = useState(false)
 
   const getData = async()=> {
+    setIsLoading(true)
     const {data} = await axios.get(`${url}/shops/${shop._id}/products`)
     setProducts(data)
-    console.log(data.length)
+    //console.log(data.length)
+    setIsLoading(false)
+
   }
   useEffect(()=> {
-    setIsLoading(true)
     getData()
-    setIsLoading(false)
   }, [])
   return isLoading ? (<LoadingBox/>):
   (

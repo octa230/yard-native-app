@@ -33,7 +33,7 @@ const ManageProfile = ({navigation}) => {
         }else{
           updateAccount()
         }
-    }, [seller, transporter, userInfo])
+    }, [seller, transporter])
 
     //add userInfo to effect array
 

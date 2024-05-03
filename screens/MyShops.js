@@ -30,7 +30,7 @@ const MyShops = ({navigation}) => {
         }
       })
       setShops(data)
-      console.log(shops)
+      //console.log(shops)
       setIsLoading(false)
     }catch(error){
       console.error(error)

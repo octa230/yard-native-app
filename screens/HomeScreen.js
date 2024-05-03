@@ -8,7 +8,6 @@ import { FontAwesome5 } from '@expo/vector-icons';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 
 export default function Home() {
-  const [activeScreen, setActiveScreen] = useState('explore')
   const Tab = createBottomTabNavigator()
 
 

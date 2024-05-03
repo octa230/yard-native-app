@@ -1,8 +1,8 @@
 {
   "expo": {
-    "name": "yard-native-app",
-    "slug": "yard-native-app",
-    "version": "1.0.0",
+    "name": "UGYARD",
+    "slug": "ugyard",
+    "version": "1.0.1",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "light",
@@ -21,10 +21,35 @@
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
-      }
+      },
+      "package": "com.mervynstunner.ugyard"
     },
     "web": {
       "favicon": "./assets/favicon.png"
+    },
+    "build": {
+      "preview": {
+        "android": {
+          "buildType": "apk"
+        }
+      },
+      "preview2": {
+        "android": {
+          "gradleCommand": ":app:assembleRelease"
+        }
+      },
+      "preview3": {
+        "developmentClient": true
+      },
+      "preview4": {
+        "distribution": "internal"
+      },
+      "production": {}
+    },
+    "extra": {
+      "eas": {
+        "projectId": "48f5a844-2833-4b13-a417-baa50fcb090d"
+      }
     }
   }
 }

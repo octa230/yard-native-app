@@ -32,25 +32,7 @@ import TransporterProfile from './screens/TransporterProfile';
 
 
 export default function App() {
-  const [activeScreen, setActiveScreen] = useState('explore')
   const Stack = createNativeStackNavigator()
-
-
-/*   useEffect(()=>{
-    (async()=>{
-      if(Platform.OS !== "web"){
-        const libraryStatus = await ImagePicker.requestMediaLibraryPermissionsAsync();
-        if(libraryStatus !== "granted"){
-          Alert.alert('We\'ll need Permissions Later!');
-        }
-        const cameraStatus = await ImagePicker.requestCameraPermissionsAsync();
-      if (cameraStatus.status !== 'granted') {
-        alert('Enable Camera permissions later!');
-      }
-      }
-    })
-  }, [])
- */
 
   return (
     <StoreProvider>

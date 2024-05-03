@@ -28,26 +28,19 @@ const CreateProducts = ({navigation, route}) => {
   const [selectedShop, setSelectedShop] = useState(product?.shop || '')
   const [name, setName] = useState(product?.name || '')
   const [brand, setBrand] = useState(product?.brand || '')
-  const [price, setPrice] = useState(product?.price || '').toString()
-  const [inStock, setInStock]= useState(product?.inStock || '').toString()
+  const [price, setPrice] = useState(product?.price || '')
+  const [inStock, setInStock]= useState(product?.inStock || '')
   const [description, setDescription] = useState(product?.description || '')
   const [isLoading, setIsLoading] = useState(false)
 
 
-  //console.log(selectedCategory)
-  //console.log(selectedSubCategory)
-
-  const handleSubmit = async()=>{
-    if(!userInfo || !userInfo.seller){
-      Alert.alert('LOGIN & CREATE SHOP FIRST!')
-      return
-    }
+  const handleUpdate = async(product)=>{
     try{
-      const data = await axios.post(`${url}/products/new`, 
+      await axios.put(`${url}/products/${product._id}`, 
       {
         image: image,
         category: selectedCategory,
-        //categoryName: selectedCategory.name,
+        categoryName: selectedCategory.name,
         shop: selectedShop,
         name: name,
         price: price,
@@ -58,7 +51,38 @@ const CreateProducts = ({navigation, route}) => {
       }, 
       {
         headers: {
-          authorization: `Bearer ${userInfo.token}`
+          Authorization: `Bearer ${userInfo.token}`
+        }
+      }) 
+      //console.log(data.data)
+      Alert.alert('PROCUCT SENT FOR REVIEW!')
+
+    }catch(error){
+      console.log(error)
+    }
+  }
+  const handleSubmit = async()=>{
+    if(!userInfo || !userInfo.seller){
+      Alert.alert('LOGIN & CREATE SHOP FIRST!')
+      return
+    }
+    try{
+      const {data} = await axios.post(`${url}/products/new`, 
+      {
+        image: image,
+        category: selectedCategory,
+        categoryName: selectedCategory.name,
+        shop: selectedShop,
+        name: name,
+        price: price,
+        inStock: inStock,
+        description: description,
+        brand: brand,
+        subcategory: selectedSubCategory
+      }, 
+      {
+        headers: {
+          Authorization: `Bearer ${userInfo.token}`
         }
       }) 
       //console.log(data.data)
@@ -207,7 +231,7 @@ const CreateProducts = ({navigation, route}) => {
                 
                 <Picker style={FormStyles.Input}
                   selectedValue={selectedCategory}
-                  prompt='Options'
+                  prompt='options'
                   onValueChange={(item)=> {
                     setSelectedCategory(item)
                     setSelectedSubCategory('')
@@ -265,11 +289,11 @@ const CreateProducts = ({navigation, route}) => {
 
     
                   {product ? (
-                    <TouchableOpacity style={FormStyles.button} onPress={()=>handleUpdate()}>
+                    <TouchableOpacity style={FormStyles.button} onPress={()=>handleUpdate(product)}>
                     <Button textColor='white'>update</Button>
                 </TouchableOpacity>
                   ):(
-                    <TouchableOpacity style={FormStyles.button} onPress={()=>handleSubmit()}>
+                    <TouchableOpacity style={FormStyles.button} onPress={handleSubmit}>
                     <Button textColor='white' style={{alignSelf: "center"}}>Submit</Button>
                 </TouchableOpacity>
                   )}

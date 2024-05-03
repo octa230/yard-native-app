@@ -23,11 +23,11 @@ const CreateShop = ({ route }) => {
 
 
     const [industries, setIndustries] = useState([])
-    const [industry, setIndustry]= useState(shop?.industry|| '')
-    const [country, setCountry]= useState(shop?.country|| '')
-    const [logo, setLogo]= useState(shop?.logo|| '')
-    const [area, setArea] = useState(shop?.area|| '')
-    const [name, setName] = useState(shop?.name|| '')
+    const [industry, setIndustry]= useState(shop?.industry || '')
+    const [country, setCountry]= useState(shop?.country || '')
+    const [logo, setLogo]= useState(shop?.logo || '')
+    const [area, setArea] = useState(shop?.area || '')
+    const [name, setName] = useState(shop?.name || '')
     const [isLoading, setIsLoading] = useState(false)
 
 
@@ -46,6 +46,33 @@ const CreateShop = ({ route }) => {
         setIsLoading(true)
         uploadImage(mode, userInfo, setLogo); 
         setIsLoading(false)
+      }
+
+      const handleUpdate = async(shop)=>{
+        const {data} = await axios.put(`${url}/shops/update/${shop._id}`, {
+          industry,
+          logo,
+          area,
+          storeName: name
+        }, {
+          headers: {
+            Authorization: `Bearer ${userInfo.token}`
+          }
+        })
+        Alert.alert('UPDATED')
+      }
+      const handleSubmit = async()=>{
+        const {data} = await axios.put(`${url}/shops/new`, {
+          industry,
+          logo,
+          area,
+          name
+        }, {
+          headers: {
+            Authorization: `Bearer ${userInfo.token}`
+          }
+        }) 
+        Alert.alert('CREATED')
       }
 
       
@@ -104,7 +131,7 @@ const CreateShop = ({ route }) => {
         </TouchableOpacity>
 
           {shop ? (
-            <TouchableOpacity style={FormStyles.button} onPress={()=>handleUpdate()}>
+            <TouchableOpacity style={FormStyles.button} onPress={()=>handleUpdate(shop)}>
             <Button textColor='white'>UPDATE</Button>
         </TouchableOpacity>
           ):(

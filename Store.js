@@ -25,8 +25,8 @@ function reducer (state, action){
         const saveUser = async () => {
         try {
             await AsyncStorage.setItem('userInfo', JSON.stringify(userInfo));
-            const savedUser = await AsyncStorage.getItem('userInfo');
-            console.log({"saved user": JSON.parse(savedUser)})
+            await AsyncStorage.getItem('userInfo');
+            //console.log({"saved user": JSON.parse(savedUser)})
         } catch (error) {
             console.error('Error saving user data:', error);
         }
@@ -230,7 +230,7 @@ export function StoreProvider({ children }) {
                 };
 
                 dispatch({ type: 'SET_STATE', payload: newState });
-                console.log({"new state": newState})
+                //console.log({"new state": newState})
             } catch (error) {
                 console.log('Error fetching data from AsyncStorage:', error);
             }
