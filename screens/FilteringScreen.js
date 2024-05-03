@@ -1,13 +1,11 @@
 import React, { useEffect, useState } from 'react'
-import {GestureHandlerRootView} from 'react-native-gesture-handler'
 import LoadingBox from '../components/LoadingBox'
 import Product from '../components/Product'
-import { View, ScrollView, Text, SafeAreaView, FlatList} from 'react-native'
+import { View, Text, FlatList} from 'react-native'
 import axios from 'axios'
 import { url } from '../utils'
-import { Button } from 'react-native-paper'
 
-const FilteringScreen = ({route, navigation}) => {
+const FilteringScreen = ({route}) => {
 
 
     const {category, subcategory, searchQuery} = route.params
@@ -26,11 +24,11 @@ const FilteringScreen = ({route, navigation}) => {
         
           const query = new URLSearchParams(queryParams);
           const searchUrl = `${url}/products/q?${query}`;
-          console.log('Search URL:', searchUrl);
+          //console.log('Search URL:', searchUrl);
     
           const { data } = await axios.get(searchUrl);
-          console.log('Response data:', data);
-          setBrands(data.brands);
+          //console.log('Response data:', data);
+          //setBrands(data.brands);
           setCategories(data.categories);
           setProducts(data.products);
     

@@ -74,7 +74,7 @@ export const saveImage = async (imageUri, userInfo, setImage) => {
       }
     });
 
-    console.log(data);
+    //console.log(data);
     if (data && data.secure_url) {
       //console.log(data.secure_url);
       setImage(data.secure_url);

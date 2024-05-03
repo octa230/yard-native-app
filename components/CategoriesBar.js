@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { Button } from 'react-native-paper'
-import { View, ScrollView } from 'react-native'
+import { View, ScrollView, Text } from 'react-native'
 
 const CategoriesBar = ({categories, navigation}) => {
 
@@ -15,22 +15,22 @@ const CategoriesBar = ({categories, navigation}) => {
     }
   return (
     <View>
-    <ScrollView horizontal style={{ padding: 5, borderBottomWidth: 1, backgroundColor: "#fefefe" }}>
+    <ScrollView horizontal style={{ padding: 5, borderBottomWidth: 1, backgroundColor: "'#e0e0e0'" }}>
         {categories.map((category) => (
             <Button onPress={() => showSubcategories(category)} key={category._id}>
-                {category.name}
+                <Text style={{fontWeight: 700, fontSize: 20}}>{category.name}</Text>
             </Button>
         ))}
     </ScrollView>
     <ScrollView horizontal style={{ backgroundColor: "green" }}>
         {subcategories.map((item, index) => (
-            <Button key={index} textColor='white' onPress={() => {
+            <Button key={index} textColor='#e0e0e0' onPress={() => {
                 navigation.navigate('Filter', {
                     category: selectedCategory,
                     subcategory: item
                 });
             }}>
-                {item}
+            <Text style={{fontSize: 13, fontWeight: 500}}>{item}</Text>
             </Button>
         ))}
     </ScrollView>

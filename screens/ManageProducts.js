@@ -85,7 +85,8 @@ const ManageProducts = ({navigation}) => {
       prompt='options'
       selectedValue={selectedShop}
       onValueChange={(item) => setSelectedShop(item)}
-  >
+      >
+      <Picker.Item label="Select" value="" />
     {shops && shops.length > 0 ? (
       shops.map((shop) => (
         <Picker.Item key={shop._id} label={shop.name} value={shop._id} />

@@ -61,36 +61,39 @@ const CreateProducts = ({navigation, route}) => {
       console.log(error)
     }
   }
+
+
   const handleSubmit = async()=>{
     if(!userInfo || !userInfo.seller){
       Alert.alert('LOGIN & CREATE SHOP FIRST!')
       return
     }
-    try{
-        await axios.post(`${url}/products/new`, 
-      {
-        image: image,
-        category: selectedCategory,
-        categoryName: selectedCategory.name,
-        shop: selectedShop,
-        name: name,
-        price: price,
-        inStock: inStock,
-        description: description,
-        brand: brand,
-        subcategory: selectedSubCategory
-      }, 
-      {
-        headers: {
-          Authorization: `Bearer ${userInfo.token}`
-        }
-      }) 
-      //console.log(data.data)
-      Alert.alert('PROCUCT SENT FOR REVIEW!')
 
-    }catch(error){
-      console.log(error)
-    }
+    try{
+      await axios.post(`${url}/products/new`, 
+    {
+      image: image,
+      category: selectedCategory,
+      //categoryName: selectedCategory.name,
+      shop: selectedShop,
+      name: name,
+      price: price,
+      inStock: inStock,
+      description: description,
+      brand: brand,
+      subcategory: selectedSubCategory
+    }, 
+    {
+      headers: {
+        Authorization: `Bearer ${userInfo.token}`
+      }
+    }) 
+    //console.log(data.data)
+    Alert.alert('PROCUCT SENT FOR REVIEW!')
+
+  }catch(error){
+    console.log(error)
+  }
   }
 
 
@@ -201,104 +204,106 @@ const CreateProducts = ({navigation, route}) => {
 
   return (
     <ScrollView>
-            <View style={FormStyles.Form}>
-                <Text style={FormStyles.FormHeader}>CreateProducts</Text>
-                <Text>Product Name</Text>
+      <View style={FormStyles.Form}>
+      <Text style={FormStyles.FormHeader}>CreateProducts</Text>
+        <Text>Product Name</Text>
 
-                <TextInput style={FormStyles.Input} 
-                  value={name}
-                  onChangeText={text => setName(text)}
-                
-                  />
-                <Text>Price in Ugx</Text>
-                <TextInput style={FormStyles.Input} 
-                  keyboardType='numeric'
-                  value={price}
-                  onChangeText={text => setPrice(text)}
-                  />
-                <Text>Brand</Text>
-                <TextInput style={FormStyles.Input}
-                  value={brand}
-                  onChangeText={text => setBrand(text)}
-                  />
-                <Text>In Stock</Text>
-                <TextInput style={FormStyles.Input} 
-                  keyboardType='numeric'
-                  value={inStock}
-                  onChangeText={text => setInStock(text)}
-                  />
-                <Text style={{marginTop:12, fontWeight: 800,  borderBottomWidth: 1}}>Category{selectedCategory?.name || ''}</Text>
-                
-                <Picker style={FormStyles.Input}
-                  selectedValue={selectedCategory}
-                  prompt='options'
-                  onValueChange={(item)=> {
-                    setSelectedCategory(item)
-                    setSelectedSubCategory('')
-                  }}
-                  >
-                  {categories && categories.map(category => (
-                    <Picker.Item 
-                      key={category._id} 
-                      value={category._id} 
-                      label={category.name}
-                    />
-                  ))}
-                </Picker>
-
-
-                <Text style={{marginTop:12, fontWeight: 800,  borderBottomWidth: 1}}>SubCategory{selectedCategory?.name || ''}</Text>
-                
-                <Picker style={FormStyles.Input}
-                  prompt='options'
-                  selectedValue={selectedSubCategory}
-                  onValueChange={(item)=> setSelectedSubCategory(item)}
-                  >
-                  {categories?.find(category => category._id === selectedCategory)
-                    ?.subcategories.map(subcategory => (
-                    <Picker.Item key={subcategory} label={subcategory} value={subcategory} 
-                  />
-                  ))}
-                </Picker>
-
-                <Text style={{marginTop:12, fontWeight: 800,  borderBottomWidth: 1}}>Select Shop</Text>
-                <Picker style={FormStyles.Input}
-                  prompt='options'
-                  selectedValue={selectedShop}
-                  onValueChange={(item)=> setSelectedShop(item)}
-                  >
-                  {shops && shops.map(shop => (
-                    <Picker.Item key={shop} label={shop.name} value={shop._id} 
-                  />
-                  ))}
-                </Picker>
-                <Text>Description</Text>
-                <TextInput style={FormStyles.Input} 
-                  type="text"
-                  multiline={true}
-                  value={description}
-                  onChangeText={text => setDescription(text)}
-                  />
-
-                 <ImagePlaceHolder source={null || image}/>
+        <TextInput style={FormStyles.Input} 
+          value={name}
+          onChangeText={text => setName(text)}
+        
+          />
+        <Text>Price in Ugx</Text>
+        <TextInput style={FormStyles.Input} 
+          keyboardType='numeric'
+          value={price}
+          onChangeText={text => setPrice(text)}
+          />
+        <Text>Brand</Text>
+        <TextInput style={FormStyles.Input}
+          value={brand}
+          onChangeText={text => setBrand(text)}
+          />
+        <Text>In Stock</Text>
+        <TextInput style={FormStyles.Input} 
+          keyboardType='numeric'
+          value={inStock}
+          onChangeText={text => setInStock(text)}
+          />
+        <Text style={{marginTop:12, fontWeight: 800,  borderBottomWidth: 1}}>Category{selectedCategory?.name || ''}</Text>
+        
+        <Picker style={FormStyles.Input}
+          selectedValue={selectedCategory}
+          prompt='options'
+          onValueChange={(item)=> {
+            setSelectedCategory(item)
+            setSelectedSubCategory('')
+          }}
+          >
+          <Picker.Item label="Select" value="" />
+          {categories && categories.map(category => (
+            <Picker.Item 
+              key={category._id} 
+              value={category._id} 
+              label={category.name}
+            />
+          ))}
+        </Picker>
 
 
-                <TouchableOpacity style={FormStyles.button} onPress={()=> uploadImage("gallery")}>
-                    {isLoading ? (<LoadingBox size="small" color="white"/>) : (<Text>Choose Image</Text>)}
-                </TouchableOpacity>
+        <Text style={{marginTop:12, fontWeight: 800,  borderBottomWidth: 1}}>SubCategory{selectedCategory?.name || ''}</Text>
+        
+        <Picker style={FormStyles.Input}
+          prompt='options'
+          selectedValue={selectedSubCategory}
+          onValueChange={(item)=> setSelectedSubCategory(item)}
+          >
+          <Picker.Item label="Select" value="" />
+          {categories?.find(category => category._id === selectedCategory)
+            ?.subcategories.map(subcategory => (
+            <Picker.Item key={subcategory} label={subcategory} value={subcategory} 
+          />
+          ))}
+        </Picker>
 
-    
-                  {product ? (
-                    <TouchableOpacity style={FormStyles.button} onPress={()=>handleUpdate(product)}>
-                    <Button textColor='white'>Update</Button>
-                </TouchableOpacity>
-                  ):(
-                    <TouchableOpacity style={FormStyles.button} onPress={()=>handleSubmit()}>
-                    <Button textColor='white' style={{alignSelf: "center"}}>Submit</Button>
-                </TouchableOpacity>
-                  )}
-            </View>
-        </ScrollView>
+        <Text style={{marginTop:12, fontWeight: 800,  borderBottomWidth: 1}}>Select Shop</Text>
+        <Picker style={FormStyles.Input}
+          prompt='options'
+          selectedValue={selectedShop}
+          onValueChange={(item)=> setSelectedShop(item)}
+          >
+          <Picker.Item label="Select Shop" value="" />
+          {shops && shops.map(shop => (
+            <Picker.Item key={shop} label={shop.name} value={shop._id} 
+          />
+          ))}
+        </Picker>
+        <Text>Description</Text>
+        <TextInput style={FormStyles.Input} 
+          type="text"
+          multiline={true}
+          value={description}
+          onChangeText={text => setDescription(text)}
+          />
+
+          <ImagePlaceHolder source={null || image}/>
+
+
+        <TouchableOpacity style={FormStyles.button} onPress={()=> uploadImage("gallery")}>
+            {isLoading ? (<LoadingBox size="small" color="white"/>) : (<Text>Choose Image</Text>)}
+        </TouchableOpacity>
+
+    {product ? (
+        <TouchableOpacity style={FormStyles.button} onPress={()=>handleUpdate(product)}>
+        <Button textColor='white'>Update</Button>
+    </TouchableOpacity>
+      ):(
+        <TouchableOpacity style={FormStyles.button} onPress={()=>handleSubmit()}>
+        <Button textColor='white' style={{alignSelf: "center"}}>Submit</Button>
+    </TouchableOpacity>
+      )}
+      </View> 
+    </ScrollView>
   )
 }
 

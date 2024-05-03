@@ -88,7 +88,7 @@ const CreateShop = ({ route }) => {
       <TextInput type="text"
         style={FormStyles.Input}
         value={area}
-        onChangeText={text => setArea(area)}
+        onChangeText={text => setArea(text)}
       />
       <TextInput type="text"/>
 

@@ -7,6 +7,7 @@ import axios from 'axios'
 import { FormStyles, buttonStyles } from '../styles'
 import { Alert, SafeAreaView, Text, View, TextInput, TouchableOpacity } from 'react-native'
 import { Button } from 'react-native-paper'
+import LoadingBox from '../components/LoadingBox'
 
 const TransporterProfile = ({route}) => {
 
@@ -19,10 +20,13 @@ const TransporterProfile = ({route}) => {
   const [area, setArea] = useState(transporter?.area || '')
   const [photo, setPhoto] = useState(transporter?.photo || '')
   const [phone, setPhone] = useState(transporter?.phone || '')
+  const [isLoading, setIsLoading] = useState(false)
 
-  const uploadProfilePic=()=>{
+  const uploadProfilePic= async()=>{
     const mode = "gallery"
-    uploadImage(mode, userInfo, setPhoto)
+    setIsLoading(true)
+    await uploadImage(mode, userInfo, setPhoto)
+    setIsLoading(false)
   }
 
   const submitHandler = async () => {
@@ -36,6 +40,7 @@ const TransporterProfile = ({route}) => {
         Alert.alert("ALL FIELDS NEEDED")
         return
       }
+        setIsLoading(true)
         await axios.post(`${url}/transporters/create-profile`, {
         userId: userInfo._id,
         name: name,
@@ -47,7 +52,7 @@ const TransporterProfile = ({route}) => {
           Authorization: `Bearer ${userInfo.token}`
         }
       })
-  
+      setIsLoading(false)
       Alert.alert('SUCESSFULLY CREATED WAIT FOR APPROVAL')
     } catch (error) {
       console.error(error)
@@ -110,7 +115,11 @@ const TransporterProfile = ({route}) => {
             
     <ImagePlaceHolder source={null || photo}/>
     <TouchableOpacity style={buttonStyles.button} onPress={uploadProfilePic}>
-        <Button icon="camera" textColor='white'>Profile Photo</Button>
+        {isLoading ? (
+          <LoadingBox size="small" color="white"/>
+        ): (
+          <Button icon="camera" textColor='white'>Profile Photo</Button>
+        )}
     </TouchableOpacity>
 
     <View>

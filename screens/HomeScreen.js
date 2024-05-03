@@ -3,7 +3,6 @@ import ProfileScreen from '../screens/ProfileScreen';
 import TripScreen from './TripScreen';
 import Explore from '../screens/Explore';
 import ShopsScreen from '../screens/ShopsScreen';
-import { useState } from 'react';
 import { FontAwesome5 } from '@expo/vector-icons'; 
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 
@@ -25,7 +24,7 @@ export default function Home() {
                 iconName = focused ? 'plane' : 'plane';
                 break;
               case 'Stores':
-                iconName = focused ? 'home' : 'home'; // Change to your preferred store icon
+                iconName = focused ? 'home' : 'home';
                 break;
               case 'Profile':
                 iconName = focused ? 'user' : 'user';
