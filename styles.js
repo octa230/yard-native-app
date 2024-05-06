@@ -32,10 +32,8 @@ export const FormStyles = StyleSheet.create({
       padding: 8,
       margin: 12,
       borderRadius: 5,
-      maxHeight: 100,
-      alignContent: "center",
       alignItems: 'center',
-      justifyContent: 'space-around',
+      justifyContent: 'center',
   },
 });
 

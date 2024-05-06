@@ -4,6 +4,7 @@ import { View, Text, TouchableOpacity, Alert } from 'react-native'
 import { Switch} from 'react-native-paper'
 import axios from 'axios'
 import { url } from '../utils'
+import SafeScreen from '../components/SafeScreen'
 
 const ManageProfile = ({navigation}) => {
     const {state, dispatch: ctxDispatch} = useContext(Store)
@@ -39,7 +40,8 @@ const ManageProfile = ({navigation}) => {
 
     
   return (
-    <View style={{padding: 12, flexDirection: "column", flex: 1}}>
+    <SafeScreen>
+      <View style={{padding: 12, flexDirection: "column", flex: 1}}>
       <Text style={{
         padding: 8, fontWeight: 800, borderWidth: 1, margin: 4, borderColor:"#fefefe", borderRadius:8, margin: 4, backgroundColor: "white", padding:12}}>
 
@@ -90,6 +92,7 @@ const ManageProfile = ({navigation}) => {
       )}
       </View>
     </View>
+    </SafeScreen>
   )
 }
 

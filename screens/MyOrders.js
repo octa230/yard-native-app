@@ -7,6 +7,7 @@ import { Picker } from '@react-native-picker/picker'
 import { FormStyles } from '../styles'
 import { Card } from 'react-native-paper'
 import LoadingBox from '../components/LoadingBox'
+import SafeScreen from '../components/SafeScreen'
 
 
 
@@ -44,8 +45,8 @@ const MyOrders = () => {
 
   const getData = async()=> {
     try{
-      const resource = `${url}/shops/${selectedShop}/orders`
-      console.log(resource )
+      //const resource = `${url}/shops/${selectedShop}/orders`
+      //console.log(resource )
 
       if(shops && shops.length > 0){
         const {data} = await axios.get(`${url}/shops/${selectedShop ? selectedShop : shops[0]._id}/orders`, {
@@ -70,7 +71,8 @@ const MyOrders = () => {
 
 
   return isLoading ? (<LoadingBox/>):(
-      <SafeAreaView style={{flex: 1}}>
+    <SafeScreen>
+    <View>
       <Picker
       style={FormStyles.Input}
       prompt='options'
@@ -104,7 +106,8 @@ const MyOrders = () => {
     )}
       keyExtractor={(item) => item._id}
       />
-    </SafeAreaView>
+    </View>
+    </SafeScreen>
   )
 }
 

@@ -8,6 +8,7 @@ import CategoriesBar from '../components/CategoriesBar'
 import LoadingBox from '../components/LoadingBox'
 import ProductSearchBar from '../components/ProductSearchBar'
 import { Ionicons } from '@expo/vector-icons';
+import SafeScreen from '../components/SafeScreen'
 
 
 
@@ -67,7 +68,7 @@ const Explore = ({navigation}) => {
 
 
   return isLoading ? (<LoadingBox/>):(
-      <SafeAreaView style={{flex: 1, paddingBottom: 5}}>
+        <SafeAreaView style={{flex: 1}}>
         <View>
         <CategoriesBar categories={categories} navigation={navigation}/>
         <ProductSearchBar/>

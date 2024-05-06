@@ -5,6 +5,7 @@ import { url } from '../utils'
 import { Store } from '../Store'
 import Trip from '../components/Trip'
 import LoadingBox from '../components/LoadingBox'
+import SafeScreen from '../components/SafeScreen'
 import { Button } from 'react-native-paper'
 
 
@@ -39,7 +40,7 @@ const ManageTrips = ({navigation}) => {
   }, [userInfo])
 
   return isLoading ? (<LoadingBox/>):(
-    <View>
+    <SafeScreen>
       {!userInfo ? (
         <View style={{padding: 12, alignItems:"center"}}>
           <TouchableOpacity onPress={()=>{
@@ -57,7 +58,7 @@ const ManageTrips = ({navigation}) => {
         keyExtractor={(item)=> item._id}
       />
       )}
-    </View>
+    </SafeScreen>
   )
 }
 

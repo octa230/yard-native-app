@@ -10,6 +10,7 @@ import { FormStyles } from '../styles'
 import * as FileSystem from 'expo-file-system'
 import ImagePlaceHolder from '../components/ImagePlaceHolder';
 import LoadingBox from '../components/LoadingBox';
+import SafeScreen from '../components/SafeScreen';
 
 
 const CreateProducts = ({navigation, route}) => {
@@ -187,7 +188,7 @@ const CreateProducts = ({navigation, route}) => {
         }
       });
   
-      console.log(data);
+      //console.log(data);
       if (data && data.secure_url) {
         console.log(data.secure_url);
         // Assuming you have a state management solution:
@@ -203,7 +204,8 @@ const CreateProducts = ({navigation, route}) => {
   };
 
   return (
-    <ScrollView>
+    <SafeScreen>
+      <ScrollView>
       <View style={FormStyles.Form}>
       <Text style={FormStyles.FormHeader}>CreateProducts</Text>
         <Text>Product Name</Text>
@@ -290,7 +292,11 @@ const CreateProducts = ({navigation, route}) => {
 
 
         <TouchableOpacity style={FormStyles.button} onPress={()=> uploadImage("gallery")}>
-            {isLoading ? (<LoadingBox size="small" color="white"/>) : (<Text>Choose Image</Text>)}
+            {isLoading ? (<LoadingBox size="small" color="white"/>) : (
+              <Button textColor='white'>
+                <Text>Choose Image</Text>
+              </Button>
+            )}
         </TouchableOpacity>
 
     {product ? (
@@ -304,6 +310,7 @@ const CreateProducts = ({navigation, route}) => {
       )}
       </View> 
     </ScrollView>
+    </SafeScreen>
   )
 }
 

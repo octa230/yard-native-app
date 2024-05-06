@@ -6,6 +6,7 @@ import { Store } from '../Store'
 import LoadingBox from '../components/LoadingBox'
 import { TouchableOpacity } from 'react-native'
 import { Button } from 'react-native-paper'
+import SafeScreen from '../components/SafeScreen'
 
 
 const MyBookings = () => {
@@ -86,7 +87,8 @@ const MyBookings = () => {
   return isLoading ? (
     <LoadingBox />
   ) : (
-    <View>
+    <SafeScreen>
+      <View>
       {bookings.length > 0 ? (
         <FlatList
         data={bookings}
@@ -94,9 +96,10 @@ const MyBookings = () => {
         keyExtractor={(item) => item._id} // Assuming _id is unique for each booking
       />
       ): (
-        <Text style={{alignSelf: "center"}}>NO ORDERS YET</Text>
+        <Text style={{alignSelf: "center", padding: 20}}>NO BOOKINGS YET</Text>
       )}
     </View>
+    </SafeScreen>
   );
 };
 

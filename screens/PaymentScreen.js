@@ -8,6 +8,7 @@ import { Button } from 'react-native-paper';
 import { DatePickerModal } from 'react-native-paper-dates';
 import {url} from '../utils'
 import LoadingBox from '../components/LoadingBox'
+import SafeScreen from '../components/SafeScreen';
 
 const PaymentScreen = ({navigation}) => {
   const [selectedPaymentMethod, setSelectedPaymentMethod] = useState('');
@@ -141,7 +142,8 @@ const PaymentScreen = ({navigation}) => {
     }
   };
   return (
-    <SafeAreaView style={{margin: 18, borderWidth: 1, borderColor:"white", borderRadius: 12, backgroundColor: "white"}}>
+    <SafeScreen>
+         <View style={{margin: 18, borderWidth: 1, borderColor:"white", borderRadius: 12, backgroundColor: "white"}}>
       <View style={{alignItems: "center", padding: 22, borderWidth: 1.5, borderRadius:8, borderColor:"#fafafa", backgroundColor: "#fafafa", margin: 5}}>
       <Text style={{alignSelf: "center", fontWeight: 800}}>Delivery Message / Notes</Text>
       </View>
@@ -188,7 +190,8 @@ const PaymentScreen = ({navigation}) => {
       </TouchableOpacity>
     </View>
     {renderForm()}
-    </SafeAreaView>
+    </View>
+    </SafeScreen>
   );
 };
 

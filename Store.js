@@ -40,7 +40,7 @@ function reducer (state, action){
                 try{
                     await AsyncStorage.setItem('userInfo', JSON.stringify(updatedUserData))
                     const savedUser = await AsyncStorage.getItem('userInfo')
-                    console.log(savedUser)
+                    //console.log(savedUser)
                 }catch(error){
                     console.log(error)
                 }

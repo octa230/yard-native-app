@@ -10,6 +10,7 @@ import { url } from '../utils'
 import { View, Text,SafeAreaView, TextInput, TouchableOpacity, Alert } from 'react-native'
 import { Store } from '../Store'
 import LoadingBox from '../components/LoadingBox'
+import SafeScreen from '../components/SafeScreen'
 
 
 
@@ -77,7 +78,8 @@ const CreateShop = ({ route }) => {
 
       
   return (
-    <SafeAreaView style={FormStyles.Form}>
+    <SafeScreen>
+      <SafeAreaView style={FormStyles.Form}>
         <Text>SHOP NAME:</Text>
       <TextInput type="text"
         style={FormStyles.Input}
@@ -140,6 +142,7 @@ const CreateShop = ({ route }) => {
         </TouchableOpacity>
           )}
     </SafeAreaView>
+    </SafeScreen>
   )
 }
 

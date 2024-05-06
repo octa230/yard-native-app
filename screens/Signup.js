@@ -5,6 +5,7 @@ import { Button } from 'react-native-paper'
 import { Store } from '../Store'
 import axios from 'axios'
 import { url } from '../utils'
+import SafeScreen from '../components/SafeScreen'
 
 const Signup = ({navigation}) => {
     const [name, setName] = useState('')
@@ -43,7 +44,8 @@ const Signup = ({navigation}) => {
     }
 
   return (
-        <SafeAreaView style={FormStyles.Form}>
+    <SafeScreen>
+        <View style={FormStyles.Form}>
             <View>
                 <Text style={FormStyles.FormHeader}>Create Account</Text>
             </View>
@@ -90,7 +92,8 @@ const Signup = ({navigation}) => {
             <Button onPress={()=> navigation.goBack()}>
                 <Text>Login</Text>
             </Button>
-        </SafeAreaView>
+        </View>
+    </SafeScreen>
   )
 }
 

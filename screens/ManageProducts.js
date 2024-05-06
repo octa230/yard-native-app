@@ -8,6 +8,7 @@ import { buttonStyles, FormStyles } from '../styles'
 import LoadingBox from '../components/LoadingBox'
 import { Button } from 'react-native-paper'
 import { shopStyles } from '../styles'
+import SafeScreen from '../components/SafeScreen'
 
 const ManageProducts = ({navigation}) => {
 
@@ -70,7 +71,7 @@ const ManageProducts = ({navigation}) => {
 
   
   return(
-    <SafeAreaView>
+    <SafeScreen>
       <View style={{flexDirection: 'row', margin:12, alignItems:"center", justifyContent:"space-between"}}>
       <Text style={{fontWeight: 800}}>Select Shop</Text>
       <TouchableOpacity style={buttonStyles.button} onPress={()=> navigation.navigate('new-product')}>
@@ -124,7 +125,7 @@ const ManageProducts = ({navigation}) => {
         keyExtractor={(item) => item._id}
       />
       ):(<Text>SELECT SHOP</Text>)}
-    </SafeAreaView>
+    </SafeScreen>
   )
 }
 

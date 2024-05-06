@@ -4,6 +4,7 @@ import Product from '../components/Product'
 import { View, Text, FlatList} from 'react-native'
 import axios from 'axios'
 import { url } from '../utils'
+import SafeScreen from '../components/SafeScreen'
 
 const FilteringScreen = ({route}) => {
 
@@ -52,27 +53,7 @@ const FilteringScreen = ({route}) => {
 
 
   return isLoading ? (<LoadingBox/>):(
-    <View>
-        {/* <View style={{padding: 2, borderColor: "white", borderWidth: 1, marginVertical: 3, backgroundColor: "white"}}>
-        <Text>Brands</Text>
-        <ScrollView horizontal>
-            {brands.map((brand)=> (
-                <Button>
-                    <Text key={brand}>{brand}</Text>
-                </Button>
-            ))}
-        </ScrollView>
-        </View>
-        <View style={{padding: 2, borderRadius: 8, borderWidth: 1}}>
-        <Text>Brands</Text>
-        <ScrollView horizontal>
-            {categories.map((brand)=> (
-                <Button>
-                    <Text key={brand}>{brand}</Text>
-                </Button>
-            ))}
-        </ScrollView>
-        </View> */}
+    <SafeScreen>
         {products.length > 0 ? (
             <FlatList data={products}
             renderItem={({item})=> <Product product={item.product}/>}
@@ -81,7 +62,7 @@ const FilteringScreen = ({route}) => {
         ):(
             <Text>NO PRODUCTS ADDED YET</Text>
         )}
-    </View>
+    </SafeScreen>
   )
 }
 

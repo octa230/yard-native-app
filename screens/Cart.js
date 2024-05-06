@@ -5,6 +5,7 @@ import { buttonStyles, profileStyles, shopStyles} from '../styles'
 import { Button, Card } from 'react-native-paper'
 import axios from 'axios'
 import { url } from '../utils'
+import SafeScreen from '../components/SafeScreen'
 
 const Cart = ({navigation}) => {
     const {state, dispatch: ctxDispatch} = useContext(Store)
@@ -34,9 +35,9 @@ const Cart = ({navigation}) => {
 
 
   return (
+    <SafeScreen>
     <ScrollView style={{flex: 1}}>
     <View style={{marginVertical: 12}}>
-      <Card.Title title="ORDER ITEMS =>"/>
       <FlatList horizontal
         data={cartItems ?  cartItems : []}
         renderItem={({item})=> 
@@ -145,7 +146,8 @@ const Cart = ({navigation}) => {
                 ADD ITEMS
             </Button>
       </TouchableOpacity>
-      </ScrollView>
+    </ScrollView>
+    </SafeScreen>
   )
 }
 

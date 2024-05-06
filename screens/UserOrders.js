@@ -5,6 +5,7 @@ import { Store } from '../Store'
 import axios from 'axios'
 import { url } from '../utils'
 import { Button } from 'react-native-paper'
+import SafeScreen from '../components/SafeScreen'
 
 const UserOrders = ({navigation}) => {
 
@@ -94,7 +95,8 @@ const UserOrders = ({navigation}) => {
   }, [userInfo, updatedOrder])
   
   return isLoading ? (<LoadingBox/>):(
-    <View style={{flex: 1}}>
+    <SafeScreen>
+      <View style={{flex: 1}}>
       {orders.length > 0 ? (
         <FlatList data={orders}
           renderItem={renderOrderItem}
@@ -102,6 +104,7 @@ const UserOrders = ({navigation}) => {
         />
       ): (<Text style={{alignSelf: "center"}}>NO ORDERS YET</Text>)}
     </View>
+    </SafeScreen>
   )
 }
 

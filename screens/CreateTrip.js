@@ -1,7 +1,7 @@
 import React, { useState, useCallback, useContext } from 'react'
 import { View, Text,ScrollView, TextInput, TouchableOpacity, Alert } from 'react-native'
 import { DatePickerModal } from 'react-native-paper-dates';
-import { buttonStyles, FormStyles } from '../styles';
+import { FormStyles } from '../styles';
 import { Button } from 'react-native-paper';
 import ImagePlaceHolder from '../components/ImagePlaceHolder';
 import { uploadImage } from '../middleware/Imageupload';
@@ -9,6 +9,7 @@ import { Store } from '../Store';
 import axios from 'axios';
 import { url } from '../utils';
 import LoadingBox from '../components/LoadingBox';
+import SafeScreen from '../components/SafeScreen';
 
 const CreateTrip = ({navigation}) => {
 
@@ -75,7 +76,8 @@ const CreateTrip = ({navigation}) => {
     
   }
   return (
-    <ScrollView>
+    <SafeScreen>
+      <ScrollView>
         <View style={FormStyles.Form}>
           <Text style={FormStyles.FormHeader}>Create Trip</Text>
           <Text>Total Trip KGs</Text>
@@ -95,7 +97,7 @@ const CreateTrip = ({navigation}) => {
 
           <Text>TicketCopy</Text>
           <ImagePlaceHolder source={ticketCopy}/>
-          <TouchableOpacity style={buttonStyles.button} onPress={ticketUpload}>
+          <TouchableOpacity style={FormStyles.button} onPress={ticketUpload}>
             {isLoading ? (<LoadingBox size="small" color="white"/>) : 
             (<Button icon="camera" textColor='white'>
               TicketCopy Photo
@@ -105,20 +107,20 @@ const CreateTrip = ({navigation}) => {
 
           <Text>VisaCopy</Text>
           <ImagePlaceHolder source={visaCopy}/>
-          <View>
-          <TouchableOpacity style={buttonStyles.button} onPress={visaUpload}>
+          <TouchableOpacity style={FormStyles.button} onPress={visaUpload}>
             {isLoading ? (<LoadingBox size="small" color="white"/>) : 
             (<Button icon="camera" textColor='white'>
-              Visa Photo
+              VISA PHOTO
             </Button>)}
           </TouchableOpacity>
-          </View>
 
-          <View style={{ justifyContent: 'center', flex: 1, alignItems: 'center' }}>
           <Text style={{padding: 8, fontWeight: 800, color:"red"}}>PLEASE SELECT DATES FOR WHEN YOU LEAVE AND TRAVEL BACK TO KAMPALA</Text>
-            <TouchableOpacity style={buttonStyles.button} onPress={() => setOpen(true)}>
+            <TouchableOpacity style={FormStyles.button} onPress={() => setOpen(true)}>
               <Button icon="calendar" textColor='white'>
-                {isLoading ? (<LoadingBox size="small"/>) : (<Text style={{color: "white"}}>Select Dates Range</Text>)}
+                {isLoading ? (<LoadingBox size="small" color="white"/>) : 
+                (
+                  <Button textColor='white'>SELECT TRIP DATES</Button>
+                )}
               </Button>
             </TouchableOpacity>
           <DatePickerModal
@@ -130,12 +132,12 @@ const CreateTrip = ({navigation}) => {
             endDate={date.endDate}
             onConfirm={onConfirm}
           />
-          </View>
           <TouchableOpacity style={FormStyles.button} onPress={handleSubmit}>
               <Button textColor='white'>Submit</Button>
           </TouchableOpacity>
           </View>
     </ScrollView>
+    </SafeScreen>
   )
 }
 

@@ -5,6 +5,7 @@ import axios from 'axios'
 import { url } from '../utils'
 import Shop from '../components/Shop'
 import LoadingBox from '../components/LoadingBox'
+import SafeScreen from '../components/SafeScreen'
 
 const ShopsScreen = () => {
   const [shops, setShops] = useState([])
@@ -31,15 +32,14 @@ const ShopsScreen = () => {
 
   return isLoading ? (<LoadingBox/>) : 
   (
-      <SafeAreaView style={{flex: 1, paddingBottom: 5}}>
-      <View>
-        <FlatList />
-      </View>
+    <SafeScreen>
+      <View style={{flex: 1}}>
         <FlatList data={shops}
         renderItem={({item})=> <Shop shop={item}/>}
         keyExtractor={(item)=> item._id}
         />
-      </SafeAreaView>
+      </View>
+    </SafeScreen>
   )
 }
 

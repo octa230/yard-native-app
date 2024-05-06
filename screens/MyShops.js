@@ -6,6 +6,7 @@ import { url } from '../utils'
 import { Store } from '../Store'
 import LoadingBox from '../components/LoadingBox'
 import { Button } from 'react-native-paper'
+import SafeScreen from '../components/SafeScreen'
 
 const MyShops = ({navigation}) => {
 
@@ -44,9 +45,9 @@ const MyShops = ({navigation}) => {
 
 
   return isLoading ? (<LoadingBox/>) : (
-    <SafeAreaView>
-      <View style={{flexDirection: 'row', margin:12, alignItems:"center", justifyContent:"space-between"}}>
-      <Text style={{fontWeight: 800}}>Select Shop</Text>
+    <SafeScreen>
+      <View style={{flexDirection: 'row', margin: 10, alignItems:"center", justifyContent:"space-between"}}>
+      <Text style={{fontWeight: 800}}>{' '}</Text>
       <TouchableOpacity style={buttonStyles.button} onPress={()=> navigation.navigate('new-shop')}>
         <Button icon="arrow-right" textColor='white'>
           Create Shop
@@ -73,11 +74,11 @@ const MyShops = ({navigation}) => {
             <Image source={{uri: item.logo}}
                 style={
                   {
-                    maxWidth: 80, 
-                    height: 80, 
-                    width: 80, 
-                    borderWidth: 1.5, 
-                    borderColor: "grey", 
+                    maxWidth: 70, 
+                    height: 70, 
+                    width: 70, 
+                    borderWidth: 5.5, 
+                    borderColor: "#fafafa", 
                     objectFit:"contain",
                     borderRadius: 50
                   }
@@ -87,7 +88,7 @@ const MyShops = ({navigation}) => {
         </View>}
         keyExtractor={(item) => item._id}
       />
-    </SafeAreaView>
+    </SafeScreen>
   )
 }
 

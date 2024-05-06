@@ -4,6 +4,7 @@ import { View, Text, FlatList } from 'react-native'
 import { url } from '../utils'
 import Product from '../components/Product'
 import LoadingBox from '../components/LoadingBox'
+import SafeScreen from '../components/SafeScreen'
 
 const ShopViewScreen = ({route}) => {
   const {shop} = route.params
@@ -23,7 +24,8 @@ const ShopViewScreen = ({route}) => {
   }, [])
   return isLoading ? (<LoadingBox/>):
   (
-    <View>
+    <SafeScreen>
+      <View>
       <Text style={{padding: 7, alignSelf:"center", fontSize: 21, color: "green", fontWeight: 800}} 
       >
         {shop.name}
@@ -33,6 +35,7 @@ const ShopViewScreen = ({route}) => {
           keyExtractor={(item)=> item._id}
         />
     </View>
+    </SafeScreen>
   )
 }
 

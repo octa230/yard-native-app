@@ -6,6 +6,7 @@ import { url } from '../utils'
 import LoadingBox from '../components/LoadingBox'
 import { buttonStyles } from '../styles'
 import Trip from '../components/Trip'
+import SafeScreen from '../components/SafeScreen'
 
 
 const TripScreen = ({navigation}) => {
@@ -20,7 +21,7 @@ const TripScreen = ({navigation}) => {
       const getData = async()=> {
         const {data} = await axios.get(`${url}/trips`)
         setTrips(data)
-        console.log(data.length)
+        //console.log(data.length)
       }
       getData()
       setIsLoading(false)
@@ -31,14 +32,15 @@ const TripScreen = ({navigation}) => {
   }, [])
 
   //console.log(trips)
-  return isLoading ? (<LoadingBox/>) : 
-  (     
-      <SafeAreaView>
+  return isLoading ? (<LoadingBox/>) : (     
+      <SafeScreen>
+        <View>
         <FlatList data={trips} 
           renderItem={({item})=> <Trip trip={item.trip}/>}
           keyExtractor={(item)=> item._id}
         />
-      </SafeAreaView>
+      </View>
+      </SafeScreen>
   )
 }
 

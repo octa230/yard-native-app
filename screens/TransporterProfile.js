@@ -4,10 +4,11 @@ import ImagePlaceHolder from '../components/ImagePlaceHolder'
 import { url } from '../utils'
 import { Store } from '../Store'
 import axios from 'axios'
-import { FormStyles, buttonStyles } from '../styles'
-import { Alert, SafeAreaView, Text, View, TextInput, TouchableOpacity } from 'react-native'
+import { FormStyles} from '../styles'
+import { Alert, Text, View, TextInput, TouchableOpacity } from 'react-native'
 import { Button } from 'react-native-paper'
 import LoadingBox from '../components/LoadingBox'
+import SafeScreen from '../components/SafeScreen'
 
 const TransporterProfile = ({route}) => {
 
@@ -69,6 +70,7 @@ const TransporterProfile = ({route}) => {
         Alert.alert("ALL FIELDS NEEDED")
         return
       }
+        setIsLoading(true)
         await axios.post(`${url}/transporters/update/${transporter._id}`, {
         userId: userInfo._id,
         name: name,
@@ -80,14 +82,15 @@ const TransporterProfile = ({route}) => {
           Authorization: `Bearer ${userInfo.token}`
         }
       })
-  
+      setIsLoading(false)
       Alert.alert('SUCCESSFULLY UPDATED WAIT FOR APPROVAL')
     } catch (error) {
       console.error(error)
     }
   }
   return (
-    <SafeAreaView style={FormStyles.Form}>
+  <SafeScreen>
+    <View style={FormStyles.Form}>
     <Text>BUSINESS NAME:</Text>
   <TextInput type="text"
     style={FormStyles.Input}
@@ -114,7 +117,7 @@ const TransporterProfile = ({route}) => {
   <Text style={{marginTop: 2, fontWeight: 800}}>FACE PROFILE PHOTO</Text>
             
     <ImagePlaceHolder source={null || photo}/>
-    <TouchableOpacity style={buttonStyles.button} onPress={uploadProfilePic}>
+    <TouchableOpacity style={FormStyles.button} onPress={uploadProfilePic}>
         {isLoading ? (
           <LoadingBox size="small" color="white"/>
         ): (
@@ -122,22 +125,23 @@ const TransporterProfile = ({route}) => {
         )}
     </TouchableOpacity>
 
-    <View>
       {transporter ? (
-        <TouchableOpacity style={{padding: 4, width: 200}} onPress={updateHandler} >
-        <Button buttonColor='green' textColor='white' mode='contained' style={{borderRadius: 3}}>
+        <TouchableOpacity style={FormStyles.button} onPress={updateHandler} >
+        {isLoading ? (<LoadingBox size="small" color="white"/>) : (
+          <Button buttonColor='green' textColor='white'>
           UPDATE
         </Button>
+        )}
       </TouchableOpacity>
       ):(
-        <TouchableOpacity style={{padding: 4, width: 200}} onPress={submitHandler} >
-        <Button buttonColor='green' textColor='white' mode='contained' style={{borderRadius: 3}}>
-          SUBMIT
-        </Button>
+        <TouchableOpacity style={FormStyles.button} onPress={submitHandler} >
+        {isLoading ? (<LoadingBox/>) : (
+          <Button textColor='white'>SUBMIT</Button>
+        )}
       </TouchableOpacity>
       )}
-    </View>
-</SafeAreaView>
+</View>
+  </SafeScreen>
   )
 }
 

@@ -4,7 +4,6 @@ registerTranslation('en-GB', enGB)
 import ProfileScreen from './screens/ProfileScreen';
 import TripScreen from './screens/TripScreen';
 import ShopsScreen from './screens/ShopsScreen';
-import { useState } from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import ShopViewScreen from './screens/ShopViewScreen';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
@@ -16,7 +15,6 @@ import CreateTrip from './screens/CreateTrip';
 import ManageProducts from './screens/ManageProducts';
 import ManageTrips from './screens/ManageTrips';
 import UserOrders from './screens/UserOrders';
-import MyAddresses from './screens/MyAddresses';
 import MyBookings from './screens/MyBookings';
 import MyOrders from './screens/MyOrders';
 import MyShops from './screens/MyShops';
@@ -37,7 +35,7 @@ export default function App() {
   return (
     <StoreProvider>
       <NavigationContainer>
-      <Stack.Navigator>
+      <Stack.Navigator screenOptions={{headerShown: false}}>
         <Stack.Screen name="UGYARD" component={Home}/>
         <Stack.Screen name="Shop" component={ShopViewScreen}/>
         <Stack.Screen name="Trips" component={TripScreen}/>
@@ -51,7 +49,6 @@ export default function App() {
         <Stack.Screen name='manage-trips' component={ManageTrips}/>
         <Stack.Screen name='transporter-profile' component={TransporterProfile}/>
         <Stack.Screen name='user-orders' component={UserOrders}/>
-        <Stack.Screen name='my-addresses' component={MyAddresses}/>
         <Stack.Screen name='trip-bookings' component={MyBookings}/>
         <Stack.Screen name='my-orders' component={MyOrders}/>
         <Stack.Screen name='my-shops' component={MyShops}/>

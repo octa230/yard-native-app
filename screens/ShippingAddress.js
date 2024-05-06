@@ -3,6 +3,7 @@ import { TextInput, View, Alert, Text, TouchableOpacity } from 'react-native'
 import { FormStyles } from '../styles'
 import { Button } from 'react-native-paper'
 import { Store } from '../Store'
+import SafeScreen from '../components/SafeScreen'
 
 const ShippingAddress = ({navigation}) => {
 
@@ -43,6 +44,7 @@ const ShippingAddress = ({navigation}) => {
     }
 
   return (
+    <SafeScreen>
         <View style={FormStyles.Form}>
             <View>
                 <Text style={FormStyles.FormHeader}>NEW ADDRESS</Text>
@@ -89,6 +91,7 @@ const ShippingAddress = ({navigation}) => {
                 <Text>Back</Text>
             </Button>
         </View>
+    </SafeScreen>
   )
 }
 

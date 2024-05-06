@@ -4,10 +4,10 @@ import Icon from 'react-native-vector-icons/FontAwesome5'
 import { profileStyles, shopStyles } from '../styles'
 import { Badge, Button } from 'react-native-paper'
 import { Store } from '../Store'
+import SafeScreen from '../components/SafeScreen'
 
 
 const ProfileScreen = ({navigation}) => {
-  const [showModel, setShowModel] = useState(false)
   const {state, dispatch: ctxDispatch} = useContext(Store)
   const {userInfo, cart} = state
 
@@ -19,10 +19,8 @@ const ProfileScreen = ({navigation}) => {
 
 
   return (
-    <ScrollView>
-        {/* <View>
-          <SearchBar/>
-        </View> */}
+    <SafeScreen>
+      <ScrollView>
         <View style={profileStyles.topBar}>
         <TouchableOpacity onPress={()=> {
           if(!userInfo){
@@ -57,7 +55,7 @@ const ProfileScreen = ({navigation}) => {
         <Icon name="angle-right"/>
       </Button>
         </TouchableOpacity>
-          <TouchableOpacity style={shopStyles.container} onPress={()=> navigation.navigate('my-addresses')}>
+          <TouchableOpacity style={shopStyles.container} onPress={()=> navigation.navigate('shipping')}>
             <Text>
               My addresses
             </Text>
@@ -148,30 +146,9 @@ const ProfileScreen = ({navigation}) => {
           </TouchableOpacity>
           </View>
         </View>
-
     </ScrollView>
+    </SafeScreen>
   )
 }
 
 export default ProfileScreen
-
-
-{/* <Modal 
-visible={showModel}
-animationType='slide'
-transparent={true}
-onRequestClose={()=> setShowModel(false)}
->
-<View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-<View style={{ backgroundColor: 'white', padding: 12, borderRadius: 10 }}>
-  <Text>Cart Empty</Text>
-  <Button title="Close" 
-    onPress={() => setShowModel(false)} 
-    icon="cancel"
-    style={{padding: 20}}
-    >
-    Close
-  </Button>
-</View>
-</View>
-</Modal> */}
