@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useState, useRef } from 'react'
-import { Text, View, SafeAreaView, RefreshControl, FlatList, TouchableOpacity } from 'react-native'
+import {Text, Image, View, SafeAreaView, RefreshControl, FlatList, TouchableOpacity } from 'react-native'
 import SearchBar from '../components/ProductSearchBar'
 import axios from 'axios'
 import { url } from '../utils'
@@ -7,8 +7,6 @@ import Product from '../components/Product'
 import CategoriesBar from '../components/CategoriesBar'
 import LoadingBox from '../components/LoadingBox'
 import ProductSearchBar from '../components/ProductSearchBar'
-import { Ionicons } from '@expo/vector-icons';
-import SafeScreen from '../components/SafeScreen'
 
 
 
@@ -18,7 +16,7 @@ const Explore = ({navigation}) => {
   const [isLoading, setIsLoading] = useState(false)
   const [searchQuery, setSearchQuery] = useState('');
   const [refreshing, setRefreshing] = useState(false);
-
+  const [showCase, setShowCase] = useState([])
 
 
 
@@ -36,6 +34,8 @@ const Explore = ({navigation}) => {
       setIsLoading(true)
       const products = await axios.get(`${url}/products`)
       const categories = await axios.get(`${url}/category`)
+      const showCase = await axios.get(`${url}/category/showcase`)
+      setShowCase(showCase.data)
       setCategories(categories.data)
       setProducts(products.data)
       setIsLoading(false)
@@ -54,10 +54,6 @@ const Explore = ({navigation}) => {
   }, [])
 
 
-  const scrollToTop = () => {
-    // Scroll to the top of the FlatList
-    flatListRef.current.scrollToOffset({ animated: true, offset: 0 });
-  };
 
   const flatListRef = useRef(null); // Create a ref for the FlatList
 
@@ -68,30 +64,44 @@ const Explore = ({navigation}) => {
 
 
   return isLoading ? (<LoadingBox/>):(
-        <SafeAreaView style={{flex: 1}}>
+      <SafeAreaView style={{flex: 1}}>
         <View>
         <CategoriesBar categories={categories} navigation={navigation}/>
         <ProductSearchBar/>
       </View>
-        <FlatList data={products}
-          renderItem={({item})=> <Product product={item}/>}
-          keyExtractor={(item)=> item._id}
-          refreshControl={
-          <RefreshControl refreshing={refreshing}
-          onRefresh={onRefresh}
-          /> 
-        }
-        
+      <View style={{ flex: 1 }}>
+        {/* Horizontal List of Showcase Items */}
+        <FlatList
+          data={showCase}
+          horizontal
+          renderItem={({ item }) => (
+            <TouchableOpacity 
+              style={{ margin: 6, paddingVertical: 12 }} 
+              onPress={()=>{navigation.navigate(
+              'Filter', {
+                categoryName: item.name
+              }
+            )}}>
+            <Text numberOfLines={1} ellipsizeMode="tail" style={{ maxWidth: 40}}>
+              {item.name}
+            </Text>
+              <Image
+                style={{ width: 50, height: 50, borderRadius: 50 }}
+                source={{ uri: item.icon }}
+              />
+            </TouchableOpacity>
+          )}
         />
-        <TouchableOpacity
-        //style={styles.floatingButton}
-        onPress={() => {
-          onRefresh();
-          scrollToTop();
-        }}
-      >
-      </TouchableOpacity>
-      </SafeAreaView>
+
+        {/* Vertical List of Products */}
+        <FlatList
+          data={products}
+          renderItem={({ item }) => <Product product={item} />}
+          keyExtractor={(item) => item._id}
+          refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}
+        />
+      </View>
+    </SafeAreaView>
   )
 }
 

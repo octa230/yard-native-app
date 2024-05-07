@@ -52,7 +52,7 @@ const Product = React.memo(({...props}) => {
   return (
     <TouchableOpacity style={productStyles.container} onLongPress={toggleModal}>
     <Text style={productStyles.cardHeader}>{product.name}</Text>
-    <Image source={{ uri: product.image }} style={{ width: 300, height: 300, borderRadius: 5, objectFit: "contain" }} />
+    <Image source={{ uri: product.image }} style={{ width: 250, height: 250, borderRadius: 5, objectFit: "contain" }} />
     <View style={productStyles.cardDetails}>
       <Text>Brand: {product.brand}</Text>
       <Text>Available: {product.inStock}</Text>

@@ -9,27 +9,26 @@ import SafeScreen from '../components/SafeScreen'
 const FilteringScreen = ({route}) => {
 
 
-    const {category, subcategory, searchQuery} = route.params
+    const {categoryName, category, subcategory, searchQuery} = route.params
     const [isLoading, setIsLoading] = useState(false)
     const [products, setProducts] = useState([])
-    const [brands, setBrands] = useState([])
+    //const [brands, setBrands] = useState([])
     const [categories, setCategories] = useState([])
 
 
     const getData = async () => {
         try {
           setIsLoading(true);
-          const queryParams = {};
-          if (subcategory) queryParams.subcategory = subcategory;
-          if (searchQuery) queryParams.searchQuery = searchQuery;
-        
-          const query = new URLSearchParams(queryParams);
-          const searchUrl = `${url}/products/q?${query}`;
+          const queryParams = new URLSearchParams();
+          if (category) queryParams.append('category', category);
+          if (subcategory) queryParams.append('subcategory', subcategory);
+          if (searchQuery) queryParams.append('searchQuery', searchQuery);
+          if (categoryName) queryParams.append('categoryName', categoryName);
+
+          const searchUrl = `${url}/products/q?${queryParams}`;
           //console.log('Search URL:', searchUrl);
     
           const { data } = await axios.get(searchUrl);
-          //console.log('Response data:', data);
-          //setBrands(data.brands);
           setCategories(data.categories);
           setProducts(data.products);
     
@@ -60,7 +59,7 @@ const FilteringScreen = ({route}) => {
             keyExtractor={(item)=> item.product._id}
         />
         ):(
-            <Text>NO PRODUCTS ADDED YET</Text>
+          <Text style={{alignSelf:"center", paddingVertical: 22}}>NO PRODUCTS ADDED YET</Text>
         )}
     </SafeScreen>
   )

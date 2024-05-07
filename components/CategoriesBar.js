@@ -26,7 +26,7 @@ const CategoriesBar = ({categories, navigation}) => {
         {subcategories.map((item, index) => (
             <Button key={index} textColor='#e0e0e0' onPress={() => {
                 navigation.navigate('Filter', {
-                    category: selectedCategory,
+                    //category: selectedCategory._id,
                     subcategory: item
                 });
             }}>
