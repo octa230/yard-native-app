@@ -118,7 +118,7 @@ const ManageProducts = ({navigation}) => {
                 <Text>{item.quantity}</Text>
                 </View>
             <Image source={{uri: item.image || item.photo}}
-                style={{maxWidth: 100, height: 100, width: 100, borderWidth: 1.5, borderColor: "white", objectFit: "scale-down", borderRadius: 8}}
+              style={{maxWidth: 100, height: 100, width: 100, borderWidth: 1.5, borderColor: "white", objectFit: "scale-down", borderRadius: 8}}
             />
             <Button icon="trash-can" textColor='black' onPress={()=>deleteProduct(item)}/>
         </View>}

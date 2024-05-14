@@ -65,10 +65,8 @@ const Explore = ({navigation}) => {
 
   return isLoading ? (<LoadingBox/>):(
       <SafeAreaView style={{flex: 1}}>
-        <View>
         <CategoriesBar categories={categories} navigation={navigation}/>
         <ProductSearchBar/>
-      </View>
       <View style={{ flex: 1 }}>
         {/* Horizontal List of Showcase Items */}
         <FlatList
@@ -76,7 +74,7 @@ const Explore = ({navigation}) => {
           horizontal
           renderItem={({ item }) => (
             <TouchableOpacity 
-              style={{ margin: 6, paddingVertical: 12 }} 
+              style={{ margin: 4, paddingVertical: 8 }} 
               onPress={()=>{navigation.navigate(
               'Filter', {
                 categoryName: item.name

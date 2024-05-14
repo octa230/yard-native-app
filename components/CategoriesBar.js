@@ -15,10 +15,10 @@ const CategoriesBar = ({categories, navigation}) => {
     }
   return (
     <View>
-    <ScrollView horizontal style={{ padding: 5, borderBottomWidth: 1, backgroundColor: "'#e0e0e0'" }}>
+    <ScrollView horizontal style={{ padding: 5, backgroundColor: "'#e0e0e0'" }}>
         {categories.map((category) => (
             <Button onPress={() => showSubcategories(category)} key={category._id}>
-                <Text style={{fontWeight: 700, fontSize: 20}}>{category.name}</Text>
+                <Text style={{fontWeight: 700, fontSize: 18}}>{category.name}</Text>
             </Button>
         ))}
     </ScrollView>

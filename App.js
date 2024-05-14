@@ -36,7 +36,7 @@ export default function App() {
     <StoreProvider>
       <NavigationContainer>
       <Stack.Navigator screenOptions={{headerShown: false}}>
-        <Stack.Screen name="UGYARD" component={Home}/>
+        <Stack.Screen name="UGYARD" component={Home} />
         <Stack.Screen name="Shop" component={ShopViewScreen}/>
         <Stack.Screen name="Trips" component={TripScreen}/>
         <Stack.Screen name="Profile" component={ProfileScreen}/>

@@ -7,7 +7,6 @@ import { url } from '../utils';
 
 const ProductSearchBar = () => {
   const [searchQuery, setSearchQuery] = useState('');
-  const [searchResults, setSearchResults] = useState([]);
   const navigation = useNavigation()
   const handleSearch = async() => {
     try {

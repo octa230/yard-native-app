@@ -19,6 +19,7 @@ const Shop = (props) => {
         <Text>Name: {shop.name}</Text>
         <Text>Industry: {shop.industry}</Text>
         <Text>Country:{shop.country}</Text>
+        <Text>Area: {shop.area ? shop.area : 'Not specified'}</Text>
       </View>
       <Button>
         <Icon name="angle-right"/>

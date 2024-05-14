@@ -37,6 +37,25 @@ export const FormStyles = StyleSheet.create({
   },
 });
 
+export const badge = StyleSheet.create({
+  badge : {
+    position: 'absolute',
+    top: 0,
+    right: 0,
+    backgroundColor: 'red',
+    borderRadius: 10,
+    width: 20,
+    height: 20,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  badgeText: {
+    color: 'white',
+    fontSize: 12,
+  },
+  
+})
+
 
 
 export const searchBarStyles = StyleSheet.create({
@@ -73,45 +92,62 @@ export const WrapperStyles = StyleSheet.create({
   });
 
 
-export const productStyles = StyleSheet.create({
-  container: {
-    borderRadius: 12,
-    flexDirection: 'column',
-    borderColor: "#f5f5fd",
-    alignItems: 'center',
-    justifyContent:"center",
-    padding: 12, // Add horizontal padding for aesthetics
-    backgroundColor: '#fefefe',
-    borderWidth: 1,
-    margin: 12
-  },
+  export const productStyles = {
+    container: {
+      margin: 10,
+    },
+    card: {
+      borderRadius: 10,
+      backgroundColor:"white"
 
-  cardHeader:{
-    fontSize: 30,
-    borderBottomWidth: 1,
-    marginBottom: 2
-  },
-  cardDetails:{
-    flex: 1,
-    justifyContent: "space-between",
-    flexDirection: "row",
-    width: "100%",
-    padding: 10,
-    alignItems:"flex-end",
-    borderTopWidth: 0.20,
-    marginTop: 15
-  },
-  modalContainer:{
-    flex: 1,
-    justifyContent: "center",
-    alignContent:"center",
-    //alignItems: "center",
-    backgroundColor: "#fefefe",
-    flexDirection: "column",
-    margin: 22,
-    padding: 12
-  }
-})
+    },
+    cardHeader: {
+      fontSize: 20,
+      fontWeight: 'bold',
+      marginBottom: 10,
+    },
+    cardDetails: {
+      flexDirection: 'row',
+      justifyContent: 'space-between',
+      marginBottom: 5,
+    },
+    cardDetailText: {
+      fontSize: 16,
+    },
+    addButton: {
+      marginTop: 10,
+    },
+    modalContainer: {
+      flex: 1,
+      justifyContent: 'center',
+      alignItems: 'center',
+      backgroundColor: 'rgba(0, 0, 0, 0.5)',
+    },
+    modalContent: {
+      backgroundColor: 'white',
+      padding: 20,
+      borderRadius: 10,
+      elevation: 5,
+    },
+    modalHeader: {
+      fontSize: 24,
+      fontWeight: 'bold',
+      marginBottom: 10,
+    },
+    modalText: {
+      fontSize: 16,
+      marginBottom: 10,
+    },
+    modalImage: {
+      height: 200,
+      marginBottom: 10,
+    },
+    thumbnailImage: {
+      height: 80,
+      width: 80,
+      marginRight: 10,
+    },
+  };
 
 export const buttonStyles = StyleSheet.create({
   button:{
