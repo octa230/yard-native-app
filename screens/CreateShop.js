@@ -29,6 +29,7 @@ const CreateShop = ({ route }) => {
     const [logo, setLogo]= useState(shop?.logo || '')
     const [area, setArea] = useState(shop?.area || '')
     const [name, setName] = useState(shop?.name || '')
+    const [description, setDescription] = useState('')
     const [isLoading, setIsLoading] = useState(false)
 
 
@@ -45,12 +46,12 @@ const CreateShop = ({ route }) => {
       const logoUpload = async()=>{
         const mode = "gallery"
         setIsLoading(true)
-        uploadImage(mode, userInfo, setLogo); 
+        await uploadImage(mode, userInfo, setLogo); 
         setIsLoading(false)
       }
 
        const handleUpdate = async(shop)=>{
-        const {data} = await axios.put(`${url}/shops/update/${shop._id}`, {
+        await axios.put(`${url}/shops/update/${shop._id}`, {
           industry,
           logo,
           area,
@@ -64,8 +65,9 @@ const CreateShop = ({ route }) => {
       } 
 
       const handleSubmit = async()=>{
-        await axios.put(`${url}/shops/new`, {
+        await axios.post(`${url}/shops/new`, {
           industry,
+          description,
           logo,
           area,
           name
@@ -103,7 +105,7 @@ const CreateShop = ({ route }) => {
             selectedValue={industry}
             onValueChange={(item)=> { setIndustry(item)}} 
         >
-            {industries && industries.map(industry => (
+          {industries && industries.map(industry => (
             <Picker.Item 
                 key={industry._id} 
                 value={industry.name} 
@@ -124,6 +126,14 @@ const CreateShop = ({ route }) => {
             ))}
         </Picker>
         <ImagePlaceHolder source={null || logo}/>
+        <Text>Shop Description</Text>
+        <TextInput style={FormStyles.Input} 
+          type="text"
+          multiline={true}
+          value={description}
+          onChangeText={text => setDescription(text)}
+          />
+
         <TouchableOpacity style={buttonStyles.button} onPress={logoUpload}>
             {isLoading ? (<LoadingBox size="small"/>) :
             (<Button icon="camera" textColor='white'>Logo</Button>)

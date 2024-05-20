@@ -4,7 +4,7 @@ export const FormStyles = StyleSheet.create({
 
   Form: {
       backgroundColor: '#fefefe',
-      flex: 1,
+      //flex: 1,
       alignItems: "center",
       borderRadius: 10,
       borderColor: '#fafffe',

@@ -1,6 +1,6 @@
 import axios from 'axios'
 import React, { useContext, useEffect, useState } from 'react'
-import { View, Text, SafeAreaView, FlatList, TouchableOpacity, Image, Alert } from 'react-native'
+import { View, Text, FlatList, TouchableOpacity, Image, Alert } from 'react-native'
 import { shopStyles,buttonStyles } from '../styles'
 import { url } from '../utils'
 import { Store } from '../Store'
@@ -38,6 +38,14 @@ const MyShops = ({navigation}) => {
     }
   }
   
+  const handleDelete = async(shop)=>{
+    await axios.put(`${url}/shops/delete-shop/${shop._id}`, {}, {
+      headers: {
+        Authorization: `Bearer ${userInfo.token}`
+      }
+    })
+    Alert.alert('Scheduled For Deletion In 30 Days')
+  }
 
   useEffect(()=>{
     getShops()
@@ -71,7 +79,8 @@ const MyShops = ({navigation}) => {
                     />
                 <Text>{item.quantity}</Text>
                 </View>
-            <Image source={{uri: item.logo}}
+            <Image source={{uri: item.logo ? item.logo 
+                  : "https://res.cloudinary.com/dxcnizqeq/image/upload/v1705585082/xyocibbonj5rbuqzf14m.png"}}
                 style={
                   {
                     maxWidth: 70, 
@@ -84,7 +93,7 @@ const MyShops = ({navigation}) => {
                   }
                 }
             />
-            <Button icon="trash-can" textColor='black'/>
+            <Button icon="trash-can" textColor='black' onPress={()=> handleDelete(item)}/>
         </View>}
         keyExtractor={(item) => item._id}
       />
