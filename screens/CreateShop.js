@@ -49,7 +49,7 @@ const CreateShop = ({ route }) => {
         setIsLoading(false)
       }
 
-      const handleUpdate = async(shop)=>{
+       const handleUpdate = async(shop)=>{
         const {data} = await axios.put(`${url}/shops/update/${shop._id}`, {
           industry,
           logo,
@@ -61,9 +61,10 @@ const CreateShop = ({ route }) => {
           }
         })
         Alert.alert('UPDATED')
-      }
+      } 
+
       const handleSubmit = async()=>{
-        const {data} = await axios.put(`${url}/shops/new`, {
+        await axios.put(`${url}/shops/new`, {
           industry,
           logo,
           area,
@@ -98,13 +99,10 @@ const CreateShop = ({ route }) => {
       <Text style={{marginTop: 2, fontWeight: 800}}>INDUSTRY: {industry?.name || ''}</Text>
                 
         <Picker style={FormStyles.Input}
+            prompt='options'
             selectedValue={industry}
-            prompt='Options'
-            onValueChange={(item)=> {
-            setIndustry(item)
-            setIndustry('')
-            }}
-            >
+            onValueChange={(item)=> { setIndustry(item)}} 
+        >
             {industries && industries.map(industry => (
             <Picker.Item 
                 key={industry._id} 
