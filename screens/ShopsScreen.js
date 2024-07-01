@@ -123,7 +123,7 @@ const ShopsScreen = () => {
       renderItem={({item})=> <Shop shop={item}/>}
       keyExtractor={(item)=> item._id}
     />
-    </SafeScreen>
+   </SafeScreen>
   )
 }
 

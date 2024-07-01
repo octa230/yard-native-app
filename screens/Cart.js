@@ -1,7 +1,7 @@
 import React, { useContext } from 'react'
-import { View, Text, FlatList, Image, TouchableOpacity, Alert, SafeAreaView, ScrollView } from 'react-native'
+import { View, Text, FlatList, Image, TouchableOpacity, Alert, ScrollView } from 'react-native'
 import { Store } from '../Store'
-import { buttonStyles, profileStyles, shopStyles} from '../styles'
+import { buttonStyles} from '../styles'
 import { Button, Card } from 'react-native-paper'
 import axios from 'axios'
 import { url } from '../utils'
@@ -38,7 +38,8 @@ const Cart = ({navigation}) => {
     <SafeScreen>
     <ScrollView style={{flex: 1}}>
     <View style={{marginVertical: 12}}>
-      <FlatList horizontal
+      <FlatList 
+        horizontal
         data={cartItems ?  cartItems : []}
         renderItem={({item})=> 
         <View style={{
@@ -47,7 +48,7 @@ const Cart = ({navigation}) => {
             flexDirection:"row", 
             padding: 12,
             marginHorizontal: 12,
-            borderRadius: 12,
+            borderRadius: 1,
             borderWidth: 1,
             height: 130,
             maxHeight: 130,
@@ -78,21 +79,20 @@ const Cart = ({navigation}) => {
       
       <View>
       {trip && (
-        <Card style={{padding: 2, margin: 12}}>
+        <Card style={{padding: 2, margin: 4, backgroundColor: "white", borderRadius: 0}}>
         {!trip == {} ? (
           <View>
             <Card.Title title = {trip.arrivalDate ? `FROM K'LA:  ${new Date(trip.arrivalDate).toDateString()}` : ''}/>
             <Card.Title title = {trip.departureDate ? `BACK TO K'LA:  ${new Date(trip.departureDate).toDateString()}` : ''}/>
           </View>
         ):(
-          <View style={{padding: 12, alignItems:"center"}}>
-            <Text>NO TRIP BOOKED FOR THIS ORDER!</Text>
-          </View>
+          <Card.Title title="NO TRIP BOOKED FOR THIS ORDER!"/>
         )}
         <Card.Content>
-          <Button textColor='black' icon="arrow-right"
+          <Button textColor='black'
+            icon={'plus'}
             onPress={()=> navigation.navigate('Trips')}
-            style={{padding: -21, borderRadius: 12, borderColor: "white", borderWidth: 1.5, backgroundColor:"#9FE2BF"}}
+            style={{borderRadius: 12, borderColor: "white", borderWidth: 1.5}}
           >
             BOOKED WEIGHT: {trip.bookedWeight ? trip.bookedWeight : 0}
           </Button>
@@ -104,46 +104,38 @@ const Cart = ({navigation}) => {
       </Card>
       )}
       {shippingAddress && (
-        <Card style={{padding: 23, margin: 12}}>
+        <Card style={{padding: 3, margin: 4, borderRadius: 0, backgroundColor: "white"}}>
         <Card.Title title = 'SHIPPING ADDRESS!'/>
         <Card.Content>
+          <Text variant="bodyMedium" style={{ marginVertical: 2, color: "black", fontWeight: 800, padding:10}}>FULLNAME: {shippingAddress.fullName ||''}</Text>
+          <Text variant="bodyMedium" style={{ marginVertical: 2, color: "black", fontWeight: 800, padding:10}}>ADDRESS: {shippingAddress.address || ''}</Text>
+          <Text variant="bodyMedium" style={{ marginVertical: 2, color: "black", fontWeight: 800, padding:10}}>CITY: {shippingAddress.city || ''}</Text>
+          <Text variant="bodyMedium" style={{ marginVertical: 2, color: "black", fontWeight: 800, padding:10}}>COUNTRY: {shippingAddress.country || ''}</Text>
           <Button textColor='black' icon='pencil'
             onPress={()=> navigation.navigate('shipping')}
-            style={{padding: -21, borderRadius: 12, borderColor: "white", borderWidth: 1.5, backgroundColor:"#9FE2BF"}}
+            style={{padding: -21, borderRadius: 12, borderColor: "white", borderWidth: 1.5}}
           >
             EDIT SHIPPING ADDRESS
           </Button>
-          <Text variant="bodyMedium" style={{ marginVertical: 2, color: "black", fontWeight: 800}}>FULLNAME: {shippingAddress.fullName ||''}</Text>
-          <Text variant="bodyMedium" style={{ marginVertical: 2, color: "black", fontWeight: 800}}>ADDRESS: {shippingAddress.address || ''}</Text>
-          <Text variant="bodyMedium" style={{ marginVertical: 2, color: "black", fontWeight: 800}}>CITY: {shippingAddress.city || ''}</Text>
-          <Text variant="bodyMedium" style={{ marginVertical: 2, color: "black", fontWeight: 800}}>COUNTRY: {shippingAddress.country || ''}</Text>
         </Card.Content>
       </Card>
       )}
       </View>
     
-      <View style={{padding: 22, borderWidth: 1, borderColor:"#fefefe", borderRadius: 12, margin: 20}}>
-        <Text>
+      <Card style={{padding: 3, borderRadius: 0, backgroundColor: "white", margin: 4}}>
+      <Text style={{ marginVertical: 2, color: "black", fontWeight: 800, padding:10}}>
         Subtotal ({cartItems?.reduce((a, c) => a + c.quantity, 0)}{' '}
             items + trip) : UGX: 
             {cartItems?.reduce((a, c) => a +(c.ugx || c.price * c.quantity), 0) + (trip.bookedWeight * trip.weightPrice) || 0}
         </Text>
-      </View>
-      <View style={{padding: 22, borderWidth: 1, borderColor:"#fefefe", borderRadius: 12, margin: 20}}>
-        <Text>
+        <Text style={{ marginVertical: 2, color: "black", fontWeight: 800, padding:10}}>
          TRIP PRICE: {(trip.bookedWeight * trip.weightPrice) || 0}
         </Text>
-      </View>
+      </Card>
       <TouchableOpacity style={buttonStyles.button} onPress={()=> navigation.navigate('shipping')}>
         <Button textColor='white'
             icon="arrow-right">
                 Proceed
-            </Button>
-      </TouchableOpacity>
-      <TouchableOpacity onPress={()=> navigation.navigate('UGYARD')}>
-        <Button textColor='black'
-            icon="arrow-left">
-                ADD ITEMS
             </Button>
       </TouchableOpacity>
     </ScrollView>

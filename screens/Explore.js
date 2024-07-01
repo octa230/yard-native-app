@@ -1,12 +1,15 @@
 import React, { useCallback, useEffect, useState, useRef } from 'react'
-import {Text, Image, View, SafeAreaView, RefreshControl, FlatList, TouchableOpacity } from 'react-native'
+import {Text, Image, FlatList, TouchableOpacity } from 'react-native'
 import SearchBar from '../components/ProductSearchBar'
+import SafeScreen from '../components/SafeScreen'
 import axios from 'axios'
 import { url } from '../utils'
 import Product from '../components/Product'
 import CategoriesBar from '../components/CategoriesBar'
 import LoadingBox from '../components/LoadingBox'
 import ProductSearchBar from '../components/ProductSearchBar'
+import { Card } from 'react-native-paper'
+import { productStyles } from '../styles'
 
 
 
@@ -32,7 +35,7 @@ const Explore = ({navigation}) => {
   const fetchData = async()=> {
     try{
       setIsLoading(true)
-      const products = await axios.get(`${url}/products`)
+      const products = await axios.get(`${url}/products/featured`)
       const categories = await axios.get(`${url}/category`)
       const showCase = await axios.get(`${url}/category/showcase`)
       setShowCase(showCase.data)
@@ -45,61 +48,46 @@ const Explore = ({navigation}) => {
     }
   }
 
-  const onRefresh = useCallback(()=> {
-    setRefreshing(true)
-    setTimeout(()=> {
-      fetchData()
-      setRefreshing(false)
-    }, 2000)
-  }, [])
-
-
-
-  const flatListRef = useRef(null); // Create a ref for the FlatList
 
   useEffect(()=>{
     fetchData()
-    flatListRef.current = flatListRef;
   }, [])
 
 
   return isLoading ? (<LoadingBox/>):(
-      <SafeAreaView style={{flex: 1}}>
-        <CategoriesBar categories={categories} navigation={navigation}/>
+    <SafeScreen style={{flex: 1}}>
+      <CategoriesBar categories={categories} navigation={navigation}/>
         <ProductSearchBar/>
-      <View style={{ flex: 1 }}>
-        {/* Horizontal List of Showcase Items */}
+        
         <FlatList
           data={showCase}
           horizontal
           renderItem={({ item }) => (
-            <TouchableOpacity 
-              style={{ margin: 4, paddingVertical: 8 }} 
+            <TouchableOpacity style={{margin: 4}}>
+              <Card style={{ padding: 8, backgroundColor:"white" }} 
               onPress={()=>{navigation.navigate(
               'Filter', {
                 categoryName: item.name
               }
             )}}>
-            <Text numberOfLines={1} ellipsizeMode="tail" style={{ maxWidth: 40}}>
+              <Text numberOfLines={1} ellipsizeMode="tail" style={{ maxWidth: 100}}>
               {item.name}
             </Text>
               <Image
-                style={{ width: 50, height: 50, borderRadius: 50 }}
+                style={{ width: 100, height: 100, borderRadius: 50 }}
                 source={{ uri: item.icon }}
               />
+            </Card>
             </TouchableOpacity>
           )}
-        />
-
-        {/* Vertical List of Products */}
-        <FlatList
-          data={products}
-          renderItem={({ item }) => <Product product={item} />}
-          keyExtractor={(item) => item._id}
-          refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}
-        />
-      </View>
-    </SafeAreaView>
+        />   
+        <Text style={productStyles.cardHeader}>FEATURED PRODUCTS</Text>
+      <FlatList data={products}
+        horizontal
+        renderItem={({item})=> <Product product={item}/>}
+      />      
+  
+    </SafeScreen>
   )
 }
 

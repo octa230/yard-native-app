@@ -30,11 +30,11 @@ const ShopViewScreen = ({route}) => {
       >
         {shop.name}
       </Text>
+      </View>
         <FlatList data={products}
           renderItem={({item})=> <Product product={item}/>}
           keyExtractor={(item)=> item._id}
         />
-    </View>
     </SafeScreen>
   )
 }

@@ -94,58 +94,44 @@ export const WrapperStyles = StyleSheet.create({
 
   export const productStyles = {
     container: {
-      margin: 10,
-    },
-    card: {
+      margin: 4,
       borderRadius: 10,
-      backgroundColor:"white"
-
+      backgroundColor:"white",
+      padding: 12
+      
     },
+
     cardHeader: {
       fontSize: 20,
       fontWeight: 'bold',
-      marginBottom: 10,
+      padding: 4,
+      alignSelf: "center",
+      maxWidth: 200
     },
     cardDetails: {
       flexDirection: 'row',
       justifyContent: 'space-between',
-      marginBottom: 5,
+      padding: 3
     },
     cardDetailText: {
-      fontSize: 16,
+      fontSize: 18,
+      //fontWeight: "bold",
     },
-    addButton: {
-      marginTop: 10,
+    overlay: {
+      position: 'absolute',
+      top: 0,
+      right: 0,
+      bottom: 0,
+      left: 0,
+      justifyContent: 'flex-end',
+      alignItems: 'flex-end',
+      padding: 23,
     },
-    modalContainer: {
-      flex: 1,
-      justifyContent: 'center',
-      alignItems: 'center',
-      backgroundColor: 'rgba(0, 0, 0, 0.5)',
-    },
-    modalContent: {
-      backgroundColor: 'white',
-      padding: 20,
-      borderRadius: 10,
-      elevation: 5,
-    },
-    modalHeader: {
-      fontSize: 24,
-      fontWeight: 'bold',
-      marginBottom: 10,
-    },
-    modalText: {
-      fontSize: 16,
-      marginBottom: 10,
-    },
-    modalImage: {
-      height: 200,
-      marginBottom: 10,
-    },
-    thumbnailImage: {
-      height: 80,
-      width: 80,
-      marginRight: 10,
+    iconButton: {
+      backgroundColor: 'rgba(0, 100,0, 10)',
+      borderRadius: 50,
+      //margin: 5,
+      padding: 6
     },
   };
 

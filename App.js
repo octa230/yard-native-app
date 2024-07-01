@@ -27,6 +27,8 @@ import CreateShop from './screens/CreateShop';
 import ManageProfile from './screens/ManageProfile';
 import FilteringScreen from './screens/FilteringScreen';
 import TransporterProfile from './screens/TransporterProfile';
+import { SafeAreaView } from 'react-native';
+import ProductScreen from './screens/ProductScreen';
 
 
 export default function App() {
@@ -38,6 +40,7 @@ export default function App() {
       <Stack.Navigator screenOptions={{headerShown: false}}>
         <Stack.Screen name="UGYARD" component={Home} />
         <Stack.Screen name="Shop" component={ShopViewScreen}/>
+        <Stack.Screen name="Product" component={ProductScreen}/>
         <Stack.Screen name="Trips" component={TripScreen}/>
         <Stack.Screen name="Profile" component={ProfileScreen}/>
         <Stack.Screen name="Shops" component={ShopsScreen}/>

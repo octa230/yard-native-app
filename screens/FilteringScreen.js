@@ -52,7 +52,7 @@ const FilteringScreen = ({route}) => {
 
 
   return isLoading ? (<LoadingBox/>):(
-    <SafeScreen>
+    <View>
         {products.length > 0 ? (
             <FlatList data={products}
             renderItem={({item})=> <Product product={item.product}/>}
@@ -61,7 +61,7 @@ const FilteringScreen = ({route}) => {
         ):(
           <Text style={{alignSelf:"center", paddingVertical: 22}}>NO PRODUCTS ADDED YET</Text>
         )}
-    </SafeScreen>
+    </View>
   )
 }
 

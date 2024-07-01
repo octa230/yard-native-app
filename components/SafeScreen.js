@@ -8,9 +8,10 @@ const SafeScreen = ({ children }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    flexGrow: 1
     //backgroundColor: 'white',
-    paddingVertical: 10, // Adjust padding as needed
-    marginVertical: 12,
+    //paddingVertical: 1, // Adjust padding as needed
+    //marginVertical: 12,
   },
 });
 
