@@ -1,6 +1,7 @@
 import React, { useContext, useState } from 'react'
 import {TouchableOpacity, ScrollView, Text, Image, View, StyleSheet, FlatList, Alert} from 'react-native'
-import { Button } from 'react-native-paper'
+import { Button, IconButton } from 'react-native-paper'
+import { FontAwesome5 } from '@expo/vector-icons'; 
 import { Store } from '../Store'
 import axios from 'axios'
 import { url } from '../utils'
@@ -41,7 +42,7 @@ const ProductScreen = ({route}) => {
             resizeMode: "cover"
         }}/>
       <Text style={styles.name}>{product.name}</Text>
-      <Text style={styles.name}>SELLER: {product.shopName}</Text>
+      <Text style={{fontWeight: 500}}>{product.shopName}</Text>
       <View style={styles.row}>
         <View style={styles.cell}>
           <Text style={styles.header}>UGX</Text>
@@ -61,7 +62,8 @@ const ProductScreen = ({route}) => {
         </View>
     </View>
     <TouchableOpacity>
-    <Button onPress={() => addToCartHandler(product)} textColor='white' style={{backgroundColor: 'rgb(0, 100, 0)', margin: 3}}>
+    <Button onPress={() => addToCartHandler(product)} textColor='white' style={{backgroundColor: 'rgb(0, 100, 0)', margin: 3, padding:2, borderRadius: 4}}>
+      <FontAwesome5 name={'plus'} mode="contained" color={'white'} size={12} />
         ADD TO BASKET
     </Button>
     </TouchableOpacity>
@@ -118,7 +120,7 @@ const styles = StyleSheet.create({
       flex: 1,
       alignItems: 'center',
       borderColor: '#ccc',
-      borderWidth: 1,
+      borderWidth: 0.5,
       padding: 4
     },
     header: {
@@ -127,7 +129,10 @@ const styles = StyleSheet.create({
     },
     description:{
         fontSize: 18,
-        paddingStart: 12
+        padding: 12,
+        lineHeight: 22,
+        backgroundColor:"white"
+
     }
   });
 export default ProductScreen

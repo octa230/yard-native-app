@@ -25,12 +25,10 @@ const ShopViewScreen = ({route}) => {
   return isLoading ? (<LoadingBox/>):
   (
     <SafeScreen>
-      <View>
       <Text style={{padding: 7, alignSelf:"center", fontSize: 21, color: "green", fontWeight: 800}} 
       >
         {shop.name}
       </Text>
-      </View>
         <FlatList data={products}
           renderItem={({item})=> <Product product={item}/>}
           keyExtractor={(item)=> item._id}

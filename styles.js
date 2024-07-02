@@ -111,11 +111,11 @@ export const WrapperStyles = StyleSheet.create({
     cardDetails: {
       flexDirection: 'row',
       justifyContent: 'space-between',
-      padding: 3
+      paddingVertical: 3
     },
     cardDetailText: {
-      fontSize: 18,
-      //fontWeight: "bold",
+      fontSize: 14,
+      fontWeight: "light",
     },
     overlay: {
       position: 'absolute',

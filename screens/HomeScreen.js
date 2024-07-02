@@ -30,7 +30,7 @@ export default function Home() {
                 iconName = focused ? 'shopping-cart' : 'shopping-cart';
                 break;
               case 'Trips':
-                iconName = focused ? 'plane' : 'plane';
+                iconName = focused ? 'paper-plane' : 'paper-plane';
                 break;
               case 'Stores':
                 iconName = focused ? 'home' : 'home';

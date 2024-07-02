@@ -10,7 +10,7 @@ const ProductSearchBar = () => {
   const navigation = useNavigation()
   const handleSearch = async() => {
     try {
-      const {data} = await axios.get(`${url}/products/q?searchQuery=${searchQuery}`);
+      await axios.get(`${url}/products/q?searchQuery=${searchQuery}`);
       //console.log(response.data)
       navigation.navigate('Filter', { searchQuery: searchQuery});
     } catch (error) {
@@ -19,15 +19,15 @@ const ProductSearchBar = () => {
   };
 
   return (
-    <SearchBar placeholder="search"
+    <SearchBar placeholder="search products"
     onChangeText={setSearchQuery}
     value={searchQuery}
     platform="default"
     lightTheme
     onSubmitEditing={handleSearch}
     round
-    containerStyle={{ backgroundColor: '#fff' }}
-    inputContainerStyle={{ backgroundColor: '#f0f0f0' }}
+    containerStyle={{ backgroundColor: '#f0f0f0' }}
+    inputContainerStyle={{ backgroundColor: '#fff' }}
   />
   )
 };

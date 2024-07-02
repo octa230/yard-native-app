@@ -1,5 +1,5 @@
-import React, { useCallback, useEffect, useState, useRef } from 'react'
-import {Text, Image, FlatList, TouchableOpacity } from 'react-native'
+import React, { useCallback, useEffect, useState } from 'react'
+import {Text, Image, FlatList, TouchableOpacity, View, ScrollView } from 'react-native'
 import SearchBar from '../components/ProductSearchBar'
 import SafeScreen from '../components/SafeScreen'
 import axios from 'axios'
@@ -10,6 +10,7 @@ import LoadingBox from '../components/LoadingBox'
 import ProductSearchBar from '../components/ProductSearchBar'
 import { Card } from 'react-native-paper'
 import { productStyles } from '../styles'
+import { FontAwesome5 } from '@expo/vector-icons'; 
 
 
 
@@ -17,20 +18,12 @@ const Explore = ({navigation}) => {
   const [products, setProducts ] = useState([])
   const [categories, setCategories] = useState([])
   const [isLoading, setIsLoading] = useState(false)
-  const [searchQuery, setSearchQuery] = useState('');
-  const [refreshing, setRefreshing] = useState(false);
   const [showCase, setShowCase] = useState([])
 
 
 
-  const handleSearch=async(query)=>{
-    setSearchQuery(query)
-    const results = products.filter((product)=> {
-      product.name.toLowerCase().includes(query.toLowerCase())
-    })
-    //setProducts(results)
-  }
-
+  //const navigation = useNavigation()
+  
 
   const fetchData = async()=> {
     try{
@@ -55,7 +48,8 @@ const Explore = ({navigation}) => {
 
 
   return isLoading ? (<LoadingBox/>):(
-    <SafeScreen style={{flex: 1}}>
+    <SafeScreen>
+      <ScrollView>
       <CategoriesBar categories={categories} navigation={navigation}/>
         <ProductSearchBar/>
         
@@ -85,7 +79,35 @@ const Explore = ({navigation}) => {
       <FlatList data={products}
         horizontal
         renderItem={({item})=> <Product product={item}/>}
-      />      
+      /> 
+      <View style={{display: "flex", justifyContent:"space-between", flexDirection:"row", flexWrap:"wrap", padding: 4}}>
+      <Card 
+        style={{width: "48%", margin: 2, height: 150, backgroundColor:"white",  justifyContent:"center",}}>
+        <Card.Title title="COOKED FOOD"/>
+        <FontAwesome5 name='hamburger' size={50} style={{alignSelf:"center"}} color={'#004d25'}/>
+      </Card> 
+      <Card style={{width: "48%", margin: 2, height: 150, backgroundColor:"white",  justifyContent:"center",}}>
+        <Card.Title title="RAW FOOD"/>
+        <FontAwesome5 name='mortar-pestle' size={50} style={{alignSelf:"center"}} color={'#004d25'}/>
+      </Card> 
+      <Card style={{width: "48%", margin: 2, height: 150, backgroundColor:"white",  justifyContent:"center"}}>
+        <Card.Title title="SELL ON UGYARD"/>
+        <FontAwesome5 name='money-bill' size={50} style={{alignSelf:"center"}} color={'#004d25'}/>
+      </Card> 
+      <Card style={{width: "48%", margin: 2, height: 150, backgroundColor:"white",  justifyContent:"center"}}>
+        <Card.Title title="TRANSPORT ON UGYARD"/>
+        <FontAwesome5 name='plane-departure' size={50} style={{alignSelf:"center"}} color={'#004d25'}/>
+      </Card> 
+      <Card style={{width: "48%", margin: 2, height: 150, backgroundColor:"white",  justifyContent:"center"}}>
+        <Card.Title title="STORES UAE"/>
+        <FontAwesome5 name='store-alt' size={50} style={{alignSelf:"center"}} color={'#004d25'}/>
+      </Card> 
+      <Card style={{width: "48%", margin: 2, height: 150, backgroundColor:"white",  justifyContent:"center"}}>
+        <Card.Title title="STORES KAMPALA"/>
+        <FontAwesome5 name='warehouse' size={50} style={{alignSelf:"center"}} color={'#004d25'}/>
+      </Card> 
+        </View>    
+      </ScrollView>
   
     </SafeScreen>
   )

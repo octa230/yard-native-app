@@ -60,7 +60,7 @@ const Product = React.memo(({ product }) => {
         <Card.Content>
           <View style={productStyles.cardDetails}>
             <Text style={productStyles.cardDetailText}>Brand: {product.brand}</Text>
-            <Text style={productStyles.cardDetailText}>Available: {product.inStock}</Text>
+            <Text style={productStyles.cardDetailText}>Stock: {product.inStock}</Text>
           </View>
           <View style={productStyles.cardDetails}>
             <Text style={productStyles.cardDetailText}>AED: {product.aed}</Text>
