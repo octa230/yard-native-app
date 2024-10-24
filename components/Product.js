@@ -1,6 +1,6 @@
 import React, { useContext, useState } from 'react';
 import { Alert, View, Text, Image, Modal, Button as RNButton } from 'react-native';
-import { Card, IconButton } from 'react-native-paper';
+import { Button, Card, IconButton } from 'react-native-paper';
 import { url } from '../utils';
 import { Store } from '../Store';
 import { FontAwesome5 } from '@expo/vector-icons'; 
@@ -34,39 +34,33 @@ const Product = React.memo(({ product }) => {
 
 
   return (
-    <Card style={productStyles.container} elevation={0.02} onPress={()=> navigation.navigate('Product', {
-      product
-      })}>
-        <View>
-        <Text numberOfLines={1} ellipsizeMode="tail" style={productStyles.cardHeader}>{product.name}</Text>
+    <Card style={{width: "100%", height: 170, margin: 4, backgroundColor: 'white'}}elevation={0.01} 
+      onPress={()=> navigation.navigate('Product', { product })}>
+      <Text numberOfLines={2} ellipsizeMode="tail" style={productStyles.cardHeader}>{product.name}</Text>
+      <View style={{flexDirection: "row"}}>
+      <View style={{width: "60%"}}>
         <Image source={{ uri: product.image }} style={{
-          //width: "100%", 
-          height:200, 
+          width: "100%", 
+          height:100, 
           resizeMode:"contain",
         }} />
-        <View style={productStyles.overlay}>
-        <IconButton
-            icon={()=> <FontAwesome5 name={'plus'} mode="contained" color={'white'} size={23}
-            style={productStyles.iconButton}
-            onPress={() => addToCartHandler(product)}/>}
-          />            
-          <IconButton
-            icon={()=> <FontAwesome5 name={'eye'} mode="contained" color={'white'} size={23}
-            style={productStyles.iconButton}
-            onPress={() => {navigation.navigate('Product', {product})}}/>}
-          />      
         </View>
-        </View>
-        <Card.Content>
-          <View style={productStyles.cardDetails}>
-            <Text style={productStyles.cardDetailText}>Brand: {product.brand}</Text>
+        <Card.Content style={{width:"40%", flexDirection:"column"}}>
+          <View>
             <Text style={productStyles.cardDetailText}>Stock: {product.inStock}</Text>
           </View>
-          <View style={productStyles.cardDetails}>
+          <View>
             <Text style={productStyles.cardDetailText}>AED: {product.aed}</Text>
             <Text style={productStyles.cardDetailText}>UGX: {product.ugx}</Text>
-          </View>      
+            <Button
+              icon='basket' mode='contained' labelStyle={{ fontWeight:"800", textColor:"#004d25"}}
+              onPress={()=> addToCartHandler(product)}
+            >
+              BUY
+            </Button>
+          </View> 
         </Card.Content>
+      </View>
     </Card>
   );
 });

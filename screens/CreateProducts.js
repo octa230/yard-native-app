@@ -1,8 +1,8 @@
 import React, { useContext, useEffect, useState } from 'react'
-import { View, Text, Image, TouchableOpacity, ScrollView, TextInput, Alert} from 'react-native'
+import { View, Text, Image, TouchableOpacity, ScrollView, Alert} from 'react-native'
 import * as ImagePicker from "expo-image-picker"
 import {Picker} from '@react-native-picker/picker';
-import { Button } from 'react-native-paper';
+import { Button, TextInput } from 'react-native-paper';
 import axios from 'axios'
 import { url } from '../utils'
 import { Store } from '../Store'
@@ -10,7 +10,6 @@ import { FormStyles } from '../styles'
 import * as FileSystem from 'expo-file-system'
 import ImagePlaceHolder from '../components/ImagePlaceHolder';
 import LoadingBox from '../components/LoadingBox';
-import SafeScreen from '../components/SafeScreen';
 
 
 const CreateProducts = ({navigation, route}) => {
@@ -33,6 +32,7 @@ const CreateProducts = ({navigation, route}) => {
   const [inStock, setInStock]= useState(product?.inStock || '')
   const [description, setDescription] = useState(product?.description || '')
   const [isLoading, setIsLoading] = useState(false)
+  const [isLoadingUpload, setIsLoadingUpload] = useState(false)
 
 
   const handleUpdate = async(product)=>{
@@ -166,7 +166,7 @@ const CreateProducts = ({navigation, route}) => {
 
   const saveImage = async (imageUri) => {
     try {
-      setIsLoading(true)
+      setIsLoadingUpload(true)
       if (!imageUri) {
         throw new Error('Image URI is null or undefined');
       }
@@ -193,7 +193,7 @@ const CreateProducts = ({navigation, route}) => {
         console.log(data.secure_url);
         // Assuming you have a state management solution:
         setImage(data.secure_url);
-        setIsLoading(false)
+        setIsLoadingUpload(false)
         Alert.alert("Done");
       } else {
         console.error('Unable to upload image:', data);
@@ -204,37 +204,42 @@ const CreateProducts = ({navigation, route}) => {
   };
 
   return (
-    <SafeScreen>
-      <ScrollView>
-      <View style={FormStyles.Form}>
-      <Text style={FormStyles.FormHeader}>CreateProducts</Text>
-        <Text>Product Name</Text>
-
-        <TextInput style={FormStyles.Input} 
+    <ScrollView>
+        <TextInput 
+          style={FormStyles.Input} 
           value={name}
+          mode='outlined'
+          label='PRODUCT NAME'
           onChangeText={text => setName(text)}
         
           />
-        <Text>Price in Ugx</Text>
-        <TextInput style={FormStyles.Input} 
+        <TextInput 
+          style={FormStyles.Input} 
+          mode='outlined'
+          label='UGX PRICE'
           keyboardType='numeric'
           value={price}
           onChangeText={text => setPrice(text)}
           />
-        <Text>Brand</Text>
-        <TextInput style={FormStyles.Input}
+        <TextInput 
+          style={FormStyles.Input}
+          mode='outlined'
+          label='BRAND'
           value={brand}
           onChangeText={text => setBrand(text)}
           />
-        <Text>In Stock</Text>
-        <TextInput style={FormStyles.Input} 
+        <TextInput 
+          style={FormStyles.Input} 
+          mode='outlined'
+          label='INSTOCK'
           keyboardType='numeric'
           value={inStock}
           onChangeText={text => setInStock(text)}
-          />
-        <Text style={{marginTop:12, fontWeight: 800,  borderBottomWidth: 1}}>Category{selectedCategory?.name || ''}</Text>
-        
-        <Picker style={FormStyles.Input}
+          />        
+        <Picker 
+          style={FormStyles.Input}
+          mode='outlined'
+          label=''
           selectedValue={selectedCategory}
           prompt='options'
           onValueChange={(item)=> {
@@ -242,7 +247,7 @@ const CreateProducts = ({navigation, route}) => {
             setSelectedSubCategory('')
           }}
           >
-          <Picker.Item label="Select" value="" />
+          <Picker.Item label="CATEGORY" value="" />
           {categories && categories.map(category => (
             <Picker.Item 
               key={category._id} 
@@ -251,16 +256,13 @@ const CreateProducts = ({navigation, route}) => {
             />
           ))}
         </Picker>
-
-
-        <Text style={{marginTop:12, fontWeight: 800,  borderBottomWidth: 1}}>SubCategory{selectedCategory?.name || ''}</Text>
         
         <Picker style={FormStyles.Input}
           prompt='options'
           selectedValue={selectedSubCategory}
           onValueChange={(item)=> setSelectedSubCategory(item)}
           >
-          <Picker.Item label="Select" value="" />
+          <Picker.Item label="SUB CATEGORY" value="" />
           {categories?.find(category => category._id === selectedCategory)
             ?.subcategories.map(subcategory => (
             <Picker.Item key={subcategory} label={subcategory} value={subcategory} 
@@ -268,20 +270,20 @@ const CreateProducts = ({navigation, route}) => {
           ))}
         </Picker>
 
-        <Text style={{marginTop:12, fontWeight: 800,  borderBottomWidth: 1}}>Select Shop</Text>
         <Picker style={FormStyles.Input}
           prompt='options'
           selectedValue={selectedShop}
           onValueChange={(item)=> setSelectedShop(item)}
           >
-          <Picker.Item label="Select Shop" value="" />
+          <Picker.Item label="SELECT SHOP" value="" />
           {shops && shops.map(shop => (
             <Picker.Item key={shop} label={shop.name} value={shop._id} 
           />
           ))}
         </Picker>
-        <Text>Description</Text>
         <TextInput style={FormStyles.Input} 
+          label='PRODUCT DESCRIPTION'
+          mode='outlined'
           type="text"
           multiline={true}
           value={description}
@@ -290,27 +292,18 @@ const CreateProducts = ({navigation, route}) => {
 
           <ImagePlaceHolder source={null || image}/>
 
-
-        <TouchableOpacity style={FormStyles.button} onPress={()=> uploadImage("gallery")}>
-            {isLoading ? (<LoadingBox size="small" color="white"/>) : (
-              <Button textColor='white'>
-                <Text>Choose Image</Text>
-              </Button>
-            )}
-        </TouchableOpacity>
+        {isLoadingUpload ? (
+          <LoadingBox size="small"/>
+        ):(
+          <Button textColor='white' icon='camera' onPress={uploadImage} style={FormStyles.button}>Choose Photo(s)</Button>
+        )}
 
     {product ? (
-        <TouchableOpacity style={FormStyles.button} onPress={()=>handleUpdate(product)}>
-        <Button textColor='white'>Update</Button>
-    </TouchableOpacity>
+        <Button textColor='white' onPress={()=>handleUpdate(product)} style={FormStyles.button}>Update</Button>
       ):(
-        <TouchableOpacity style={FormStyles.button} onPress={()=>handleSubmit()}>
-        <Button textColor='white' style={{alignSelf: "center"}}>Submit</Button>
-    </TouchableOpacity>
+        <Button textColor='white' style={FormStyles.button} onPress={()=>handleSubmit()}>Submit</Button>
       )}
-      </View> 
     </ScrollView>
-    </SafeScreen>
   )
 }
 

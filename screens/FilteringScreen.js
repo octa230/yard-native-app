@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import LoadingBox from '../components/LoadingBox'
 import Product from '../components/Product'
-import { View, Text, FlatList} from 'react-native'
+import { View, Text, SafeAreaView, ScrollView} from 'react-native'
 import axios from 'axios'
 import { url } from '../utils'
 import SafeScreen from '../components/SafeScreen'
@@ -43,25 +43,18 @@ const FilteringScreen = ({route}) => {
     }, [])
 
 
-
-
-
-
-
-
-
-
   return isLoading ? (<LoadingBox/>):(
-    <View>
-        {products.length > 0 ? (
-            <FlatList data={products}
-            renderItem={({item})=> <Product product={item.product}/>}
-            keyExtractor={(item)=> item.product._id}
-        />
-        ):(
-          <Text style={{alignSelf:"center", paddingVertical: 22}}>NO PRODUCTS ADDED YET</Text>
+    <SafeAreaView>
+      <ScrollView>
+        {products.length > 0 ? products.map((item)=> (
+          <Product product={item.product} key={item.product._id}/>
+        )): (
+          <View style={{alignSelf: "center"}}>
+            <Text>No DATA</Text>
+          </View>
         )}
-    </View>
+    </ScrollView>
+    </SafeAreaView>
   )
 }
 

@@ -70,7 +70,7 @@ const ShopsScreen = () => {
 
   return isLoading ? (<LoadingBox/>) : 
   (
-    <SafeScreen>
+  <>
     <ShopsSearchBar onSearch={handleSearch}/>
     <View style={{display: 'flex', justifyContent:"space-evenly", flexDirection:"row", alignItems:"center"}}>
   <View style={{padding: 8}}>
@@ -123,7 +123,7 @@ const ShopsScreen = () => {
       renderItem={({item})=> <Shop shop={item}/>}
       keyExtractor={(item)=> item._id}
     />
-   </SafeScreen>
+   </>
   )
 }
 

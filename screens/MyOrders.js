@@ -71,9 +71,10 @@ const MyOrders = () => {
 
 
   return isLoading ? (<LoadingBox/>):(
-    <SafeScreen>
-    <View>
-      <Picker
+  <View style={{backgroundColor:"white"}}>
+    <FlatList data={orders}
+        ListHeaderComponent={
+          <Picker
       style={FormStyles.Input}
       prompt='options'
       selectedValue={selectedShop}
@@ -87,17 +88,21 @@ const MyOrders = () => {
       <Picker.Item label="No shops available" value="" />
     )}
     </Picker>
-    <FlatList data={orders}
+        }
         renderItem={({ item }) => (
-        <Card style={{padding: 2, margin: 12,}}>
+        <Card style={{width: "100%", marginVertical: 3, borderWidth: 0.09, borderColor:"green", backgroundColor:"white", borderRadius: 2}} >
+        <Card.Title title={`ID:${item._id}`} titleVariant="headlineSmall"/>
+        <Card.Title title={`DELIVERED:${ item.processed ? 'YES' : 'NO'}`} titleVariant="headlineSmall"/>
         <Card.Content>
-        <Text style={{ fontWeight: 'bold' }}>Order ID: {item._id}</Text>
-        <Text>Processed: {item?.processed ? 'Yes' : 'No'}</Text>
-        <Text style={{ marginTop: 10, fontWeight: 'bold' }}>Products:</Text>
-        {item.products?.map(product => (
-          <View key={product._id} style={{padding: 3, margin: 3, borderBottomWidth: 1, borderBottomColor: "black"}}>
-            <Image source={{uri: product && product.image}} style={{height: 100, width: 100, borderRadius: 12, objectFit:"scale-down", marginBottom: 3}}/>
-            <Text >{product.name} - Quantity: {product.quantity},{" " + " "} ugx: {product.ugx || product.price}</Text>
+          {item.products?.map(product => (
+          <View key={product._id} style={{padding: 3, margin: 2, borderBottomWidth: 1, borderBottomColor: "black"}}>
+            <Text ellipsizeMode='tail' numberOfLines={1}>{product.name}</Text> 
+            <Card.Cover source={{uri: product && product.image}} 
+              style={{height: 50, width: 50, borderRadius: 12, objectFit:"scale-down", marginBottom: 3}}/>
+            <View style={{justifyContent:"space-between", width:"100%", flexDirection:"row", flexWrap:"wrap"}}>
+            <Text>Quantity: {product.quantity},{" " + " "}</Text>
+            <Text>ugx: {product.ugx || product.price}</Text>
+            </View>
           </View>
         ))}
         <Text style={{padding: 2, margin: 3}}>Date: {new Date(item.createdAt).toDateString()}</Text>
@@ -105,9 +110,8 @@ const MyOrders = () => {
     </Card>
     )}
       keyExtractor={(item) => item._id}
-      />
+    />
     </View>
-    </SafeScreen>
   )
 }
 

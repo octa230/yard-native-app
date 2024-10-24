@@ -1,6 +1,6 @@
 import axios from 'axios'
 import React, { useContext, useEffect, useState } from 'react'
-import { View, Text, SafeAreaView, FlatList, Image, TouchableOpacity, Alert } from 'react-native'
+import { View, Text, FlatList, Image, Alert } from 'react-native'
 import { Picker } from '@react-native-picker/picker'
 import { url } from '../utils'
 import { Store } from '../Store'
@@ -71,23 +71,22 @@ const ManageProducts = ({navigation}) => {
 
   
   return(
-    <SafeScreen>
-      <View style={{flexDirection: 'row', margin:12, alignItems:"center", justifyContent:"space-between"}}>
-      <Text style={{fontWeight: 800}}>Select Shop</Text>
-      <TouchableOpacity style={buttonStyles.button} onPress={()=> navigation.navigate('new-product')}>
-        <Button icon="arrow-right" textColor='white'>
+    <>
+      <Button textColor='white' mode='contained' style={FormStyles.button}>
           Create Product
         </Button>
-      </TouchableOpacity>
-      </View>
-      <View>
-      <Picker
+      {isLoading ? (
+        <LoadingBox/>
+      ): products ? (
+      <FlatList
+        ListHeaderComponent={
+        <Picker
       style={FormStyles.Input}
       prompt='options'
       selectedValue={selectedShop}
       onValueChange={(item) => setSelectedShop(item)}
       >
-      <Picker.Item label="Select" value="" />
+      <Picker.Item label="Select Shop" value="" />
     {shops && shops.length > 0 ? (
       shops.map((shop) => (
         <Picker.Item key={shop._id} label={shop.name} value={shop._id} />
@@ -96,11 +95,7 @@ const ManageProducts = ({navigation}) => {
       <Picker.Item label="No shops available" value="" />
     )}
   </Picker>
-      </View>
-      {isLoading ? (
-        <LoadingBox/>
-      ): products ? (
-        <FlatList
+        }
         data={products}
         renderItem={({item})=> 
         <View style={shopStyles.container}>
@@ -110,7 +105,7 @@ const ManageProducts = ({navigation}) => {
             <View style={{flex: 1, justifyContent: 'space-between', alignItems:"center", flexDirection: "row"}}>
                 <Button icon="pen" textColor='green' 
                     onPress={()=> {
-                      navigation.navigate('new-product', {
+                      navigation.navigate('New Product', {
                         item: item
                       })
                     }}
@@ -125,7 +120,7 @@ const ManageProducts = ({navigation}) => {
         keyExtractor={(item) => item._id}
       />
       ):(<Text>SELECT SHOP</Text>)}
-    </SafeScreen>
+    </>
   )
 }
 

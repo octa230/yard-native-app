@@ -47,7 +47,7 @@ const Trip = (props) => {
         <Text variant="bodyMedium" style={{color: "red", fontWeight: 800}}>
           KGS LEFT: {trip.availableWeight}
         </Text>
-        <TextInput style={{borderColor: "#fafafa", borderWidth: 1.5, borderRadius: 6, padding: 5, backgroundColor:"white", marginVertical: 2}}
+        <TextInput style={{borderColor: "#fafdfd", borderWidth: 3, borderRadius: 6, padding: 5, backgroundColor:"white", marginVertical: 2}}
             keyboardType='numeric'
             placeholder='type trip weight in kilos'
             onChangeText={(text)=> setBookedWeight(text)}

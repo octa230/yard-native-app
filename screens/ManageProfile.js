@@ -4,8 +4,7 @@ import { View, Text, TouchableOpacity, Alert } from 'react-native'
 import { Switch} from 'react-native-paper'
 import axios from 'axios'
 import { url } from '../utils'
-import SafeScreen from '../components/SafeScreen'
-
+import { Button } from 'react-native-paper'
 const ManageProfile = ({navigation}) => {
     const {state, dispatch: ctxDispatch} = useContext(Store)
     const {userInfo} = state
@@ -40,45 +39,80 @@ const ManageProfile = ({navigation}) => {
 
     
   return (
-    <SafeScreen>
-      <View style={{padding: 12, flexDirection: "column", flex: 1}}>
-      <Text style={{
-        padding: 8, fontWeight: 800, borderWidth: 1, margin: 4, borderColor:"#fefefe", borderRadius:8, margin: 4, backgroundColor: "white", padding:12}}>
-
+    <>
+      <Text style={
+        {
+          justifyContent: "space-between", 
+          flexDirection: "row", 
+          alignItems:"center", 
+          padding: 13, 
+          fontWeight: 800, 
+          borderWidth: 1, 
+          borderColor:"#fefefe", 
+          borderRadius:8, 
+          margin: 4, 
+          backgroundColor: "white"
+        }}>
           EMAIL: {userInfo?.email}
-          </Text>
-      <Text style={{
-        padding: 8, fontWeight: 800, borderWidth: 1, margin: 4, borderColor:"#fefefe", borderRadius:8, margin: 4, backgroundColor: "white", padding:12}}>
+        </Text>
 
+      <Text style={
+        {
+          justifyContent: "space-between", 
+          flexDirection: "row", 
+          alignItems:"center", 
+          padding: 13, 
+          fontWeight: 800, 
+          borderWidth: 1, 
+          borderColor:"#fefefe", 
+          borderRadius:8, 
+          margin: 4, 
+          backgroundColor: "white", 
+        }}>
           NAME: {userInfo?.name}
-          </Text>
-      <Text style={{
-        padding: 12, fontWeight: 800, borderWidth: 1, color:"white", margin: 12, backgroundColor: "white",
-        borderColor:"#fefefe", borderRadius:6, backgroundColor: "green" }}>
+        </Text>
 
-          YOU CAN'T UNDO THESE ACTIONS 
-          </Text>
+      <View style={
+        {
+          justifyContent: "space-between", 
+          flexDirection: "row", 
+          alignItems:"center", 
+          padding: 13, 
+          fontWeight: 800, 
+          borderWidth: 1, 
+          borderColor:"#fefefe", 
+          borderRadius:8, 
+          margin: 2, 
+          backgroundColor: "white"
 
-      <View style={{justifyContent: "space-between", flexDirection: "row", alignItems:"center", padding: 3, 
-        fontWeight: 800, borderWidth: 1, borderColor:"#fefefe", borderRadius:8, margin: 4, backgroundColor: "white"}}
-        >
+        }
+      }>
       <Text style={{maxWidth: 100}}>SELLER: {userInfo?.seller ? "YES" : "NO"}</Text>
       <Switch value={seller} onValueChange={()=> setSeller(!seller)}/>
       {userInfo?.seller && (
-        <TouchableOpacity style={{
-          padding: 12, fontWeight: 800, borderWidth: 1, backgroundColor: "white",
-          borderColor:"#fefefe", borderRadius:8, backgroundColor: "green" }}
-          onPress={()=> navigation.navigate('new-shop')}
+        <Button mode='outlined'
+          onPress={()=> navigation.navigate('Create Shop')}
         >
-            <Text style={{color:"white"}}>CREATE SHOP</Text>
-        </TouchableOpacity>
+          CREATE SHOP
+        </Button>
       )}
       </View>
 
-      <View style={{justifyContent: "space-between", flexDirection: "row", alignItems:"center", padding: 3, 
-        fontWeight: 800, borderWidth: 1, borderColor:"#fefefe", borderRadius:8, margin: 4, backgroundColor: "white"}}
-        >
-      <Text style={{maxWidth: 100}}>TRANSPORTER: {userInfo?.transporter ? "YES" : "NO"}</Text>
+      <View style={
+        {
+          justifyContent: "space-between", 
+          flexDirection: "row", 
+          alignItems:"center", 
+          padding: 13, 
+          fontWeight: 800, 
+          borderWidth: 1, 
+          borderColor:"#fefefe", 
+          borderRadius:8, 
+          margin: 4, 
+          backgroundColor: "white"
+        }
+      }>
+      <Text style={{maxWidth: "100%"}}>TRANSPORTER: {userInfo?.transporter ? "YES" : "NO"}</Text>
       <Switch value={transporter} onValueChange={()=> setTransporter(!transporter)}/>
 
       {userInfo?.transporter && (
@@ -91,8 +125,7 @@ const ManageProfile = ({navigation}) => {
         </TouchableOpacity>
       )}
       </View>
-    </View>
-    </SafeScreen>
+    </>
   )
 }
 

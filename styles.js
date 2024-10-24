@@ -5,57 +5,55 @@ export const FormStyles = StyleSheet.create({
   Form: {
       backgroundColor: '#fefefe',
       //flex: 1,
-      alignItems: "center",
+      //alignItems: "center",
       borderRadius: 10,
       borderColor: '#fafffe',
       borderWidth: 1,
-      margin: 12,
   },
   Input: {
       width: '90%',
-      padding: 8,
-      borderWidth: 1,
+      //padding: 8,
+      borderWidth: 0.1,
       margin: 8,
-      borderRadius: 6,
+      //border:"none",
+      borderRadius: 4,
       borderColor: '#D3D3D3',
+      backgroundColor:"#f3f3f3"
   },
   FormHeader: {
       color: 'black',
       fontWeight: '800',
-      letterSpacing: 10,
+      fontSize: 22,
       padding:12
   },
   button: {
       backgroundColor: 'green',
       flexDirection: 'row',
-      width: '80%',
+      width: '90%',
       padding: 8,
       margin: 12,
       borderRadius: 5,
-      alignItems: 'center',
+      alignSelf: 'center',
       justifyContent: 'center',
   },
 });
 
-export const badge = StyleSheet.create({
-  badge : {
-    position: 'absolute',
-    top: 0,
-    right: 0,
-    backgroundColor: 'red',
-    borderRadius: 10,
-    width: 20,
-    height: 20,
+export const containerBlur = StyleSheet.create({
+  blurContainer: {
+    flex: 1,
+    padding: 20,
+    margin: 16,
+    textAlign: 'center',
     justifyContent: 'center',
-    alignItems: 'center',
+    overflow: 'hidden',
+    borderRadius: 20,
   },
-  badgeText: {
-    color: 'white',
-    fontSize: 12,
+  background: {
+    //flex: 1,
+    //flexWrap: 'wrap',
+    ...StyleSheet.absoluteFill,
   },
-  
 })
-
 
 
 export const searchBarStyles = StyleSheet.create({
@@ -94,44 +92,27 @@ export const WrapperStyles = StyleSheet.create({
 
   export const productStyles = {
     container: {
-      margin: 4,
+      //margin: 4,
       borderRadius: 10,
       backgroundColor:"white",
+      flexDirection:"row",
+      justifyContent:"space-between",
       padding: 12
       
     },
 
     cardHeader: {
-      fontSize: 20,
+      fontSize: 19,
       fontWeight: 'bold',
-      padding: 4,
-      alignSelf: "center",
-      maxWidth: 200
+      padding: 3,
+      alignSelf: "start",
+      maxWidth: "98%"
     },
-    cardDetails: {
-      flexDirection: 'row',
-      justifyContent: 'space-between',
-      paddingVertical: 3
-    },
+    
     cardDetailText: {
-      fontSize: 14,
-      fontWeight: "light",
-    },
-    overlay: {
-      position: 'absolute',
-      top: 0,
-      right: 0,
-      bottom: 0,
-      left: 0,
-      justifyContent: 'flex-end',
-      alignItems: 'flex-end',
-      padding: 23,
-    },
-    iconButton: {
-      backgroundColor: 'rgba(0, 100,0, 10)',
-      borderRadius: 50,
-      //margin: 5,
-      padding: 6
+      fontSize: 18,
+      fontWeight: "medium",
+      padding: 2
     },
   };
 
@@ -170,6 +151,9 @@ export const shopStyles = StyleSheet.create({
     borderWidth: 1,
     borderColor: "#fafafe",
     borderRadius: 6
+  },
+  p:{
+    fontSize: 12
   }
 })
 
@@ -190,7 +174,7 @@ export const profileStyles = StyleSheet.create({
   container:{
     flex : 1,
     flexDirection: "column",
-    padding: 12,
+    padding: 1,
     height: "100%",
     //margin: 12
   }

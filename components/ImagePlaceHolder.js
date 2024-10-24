@@ -6,7 +6,7 @@ const ImagePlaceHolder = (props) => {
     const imageSource = source ? { uri: source } : { uri: "https://fakeimg.pl/600x400" };
   return <Image 
   source={imageSource}
-  style={{height: 150, width: 200, borderRadius: 8, margin: 12, objectFit: "contain"}}
+  style={{height: 150, width: "100%", borderRadius: 8, margin: 2, objectFit: "contain"}}
  />
 }
 

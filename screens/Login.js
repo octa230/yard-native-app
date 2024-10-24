@@ -1,11 +1,10 @@
-import React, { useContext, useEffect, useState } from 'react'
-import { TextInput, View, SafeAreaView, Text, TouchableOpacity, Alert } from 'react-native'
+import React, { useContext, useState } from 'react'
+import { View, Text, TouchableOpacity, Alert } from 'react-native'
 import { FormStyles } from '../styles'
-import { Button } from 'react-native-paper'
+import { Button, TextInput } from 'react-native-paper'
 import axios from 'axios'
 import { url } from '../utils'
 import { Store } from '../Store'
-import SafeScreen from '../components/SafeScreen'
 
 const Login = ({navigation}) => {
 
@@ -34,32 +33,30 @@ const Login = ({navigation}) => {
     //navigation.navigate("UGYARD")
     
   return (
-        <SafeScreen>
-            <View style={FormStyles.Form}>
-            <View>
-                <Text style={FormStyles.FormHeader}>LOGIN</Text>
-            </View>
+        <View style={FormStyles.Form}>
+        <Text style={FormStyles.FormHeader}>LOGIN</Text>
             <TextInput style={FormStyles.Input}
-                placeholder='email'
+                label='email'
+                mode='outlined'
                 type="text"
                 value={email}
                 onChangeText={text => setEmail(text)}
             />
             <TextInput style={FormStyles.Input}
-                placeholder='password'
+                label='password'
+                mode='outlined'
                 type="text"
                 value={password}
                 secureTextEntry={true}
                 onChangeText={text => setPassword(text)}
             />
-            <TouchableOpacity style={FormStyles.button} onPress={()=> handleSubmit()}>
-                <Text>Login</Text>
-            </TouchableOpacity>
+            <Button style={FormStyles.button} textColor="white" icon='arrow-right' onPress={()=> handleSubmit()}>
+                LOGIN
+            </Button>
             <Button onPress={()=> navigation.navigate("signup")}>
-                <Text>Create Account</Text>
+                Create Account
             </Button>
         </View>
-        </SafeScreen>
   )
 }
 

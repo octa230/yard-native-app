@@ -33,14 +33,12 @@ const TripScreen = ({navigation}) => {
 
   //console.log(trips)
   return isLoading ? (<LoadingBox/>) : (     
-      <SafeScreen>
-        <View>
+        <View style={{backgroundColor: "white"}}>
         <FlatList data={trips} 
           renderItem={({item})=> <Trip trip={item.trip}/>}
           keyExtractor={(item)=> item._id}
         />
       </View>
-      </SafeScreen>
   )
 }
 

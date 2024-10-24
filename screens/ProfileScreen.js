@@ -1,153 +1,51 @@
 import React, { useContext, useState } from 'react'
-import { Text, ScrollView, View, TouchableOpacity } from 'react-native'
+import { Text, ScrollView, View } from 'react-native'
 import Icon from 'react-native-vector-icons/FontAwesome5'
-import { profileStyles, shopStyles } from '../styles'
-import { Badge, Button } from 'react-native-paper'
+import { FormStyles, profileStyles, shopStyles } from '../styles'
+import { Button } from 'react-native-paper'
 import { Store } from '../Store'
-import SafeScreen from '../components/SafeScreen'
+
 
 
 const ProfileScreen = ({navigation}) => {
   const {state, dispatch: ctxDispatch} = useContext(Store)
-  const {userInfo, cart} = state
-
 
   const handleLogout =()=>{
     ctxDispatch({type:"LOGOUT_USER"})
-    navigation.navigate('login')
+    navigation.navigate('Login')
   }
 
 
   return (
-    <SafeScreen>
       <ScrollView>
-        <View style={profileStyles.topBar}>
-        <TouchableOpacity onPress={()=> {
-          if(!userInfo){
-             navigation.navigate('login')
-          }
-        }}> 
-          <Icon name="user" size={30}/>
-        </TouchableOpacity>
-        <Badge style={{alignSelf:"center"}}>
-          {cart.cartItems?.length}
-        </Badge>
-        <Text onPress={()=> navigation.navigate('cart')}>
-          <Icon name='shopping-basket' size={30}/>
-        </Text>
-        </View>
-        <View>
         <View style={profileStyles.container}>
-          <Text>USER ACTIONS</Text>
-          <TouchableOpacity style={shopStyles.container} onPress={()=> navigation.navigate('user-orders')}>
-            <Text>
-              My Orders
-            </Text>
-            <Button>
-        <Icon name="angle-right"/>
-      </Button>
-        </TouchableOpacity>
-          <TouchableOpacity style={shopStyles.container} onPress={()=> navigation.navigate('profile-settings')}>
-            <Text>
-              Profile Settings
-            </Text>
-            <Button>
-        <Icon name="angle-right"/>
-      </Button>
-        </TouchableOpacity>
-          <TouchableOpacity style={shopStyles.container} onPress={()=> navigation.navigate('shipping')}>
-            <Text>
-              My addresses
-            </Text>
-            <Button>
-        <Icon name="angle-right"/>
-      </Button>
-      </TouchableOpacity>
+        <Text style={FormStyles.FormHeader}>USER ACTIONS</Text>
+
+          <Button style={shopStyles.container} icon='chevron-right' onPress={()=> navigation.navigate('UserOrders')} labelStyle={{fontSize: 20}}>My Orders</Button>
+          <Button style={shopStyles.container} icon='chevron-right' onPress={()=> navigation.navigate('ProfileSettings')} labelStyle={{fontSize: 20}}>Profile Settings</Button>
+          <Button style={shopStyles.container} icon='chevron-right' onPress={()=> navigation.navigate('Shipping')} labelStyle={{fontSize: 20}}>My addresses</Button>
         </View>
+
         <View style={profileStyles.container}>
-          <Text>SELLER ACTIONS</Text>
-          <TouchableOpacity style={shopStyles.container} onPress={()=> navigation.navigate('my-shops')}>
-            <Text>
-              My Shops
-            </Text>
-            <Button>
-        <Icon name="angle-right"/>
-      </Button>
-          </TouchableOpacity>
-          <TouchableOpacity style={shopStyles.container} onPress={()=> navigation.navigate('my-orders')}>
-            <Text>
-              Manage Orders
-            </Text>
-            <Button>
-        <Icon name="angle-right"/>
-      </Button>
-          </TouchableOpacity>
-          <TouchableOpacity style={shopStyles.container} onPress={()=> navigation.navigate('manage-products')}>
-            <Text>
-              Manage Products
-            </Text>
-            <Button>
-        <Icon name="angle-right"/>
-      </Button>
-          </TouchableOpacity>
-          <TouchableOpacity style={shopStyles.container} onPress={()=> navigation.navigate('new-product')}>
-            <Text>
-              Create Products
-            </Text>
-            <Button>
-        <Icon name="angle-right"/>
-      </Button>
-          </TouchableOpacity>
+          <Text style={FormStyles.FormHeader}>SELLER ACTIONS</Text>
+          <Button style={shopStyles.container} icon='chevron-right' onPress={()=> navigation.navigate('My Orders')} labelStyle={{fontSize: 20}}>Manage Orders</Button>
+          <Button style={shopStyles.container} icon='chevron-right' onPress={()=> navigation.navigate('My Stores')} labelStyle={{fontSize: 20}}>My Shops</Button>
+          <Button style={shopStyles.container} icon='chevron-right' onPress={()=> navigation.navigate('Manage Products')} labelStyle={{fontSize: 20}}>Manage Products</Button>
+          <Button style={shopStyles.container} icon='chevron-right' onPress={()=> navigation.navigate('New Product')} labelStyle={{fontSize: 20}}>Create Products</Button>
         </View>
         
         <View style={profileStyles.container}>
-          <Text>TRANSPORTER ACTIONS</Text>
-           <TouchableOpacity style={shopStyles.container} onPress={()=> navigation.navigate('trip-bookings')}>
-            <Text>
-              My Bookings
-            </Text>
-            <Button>
-        <Icon name="angle-right"/>
-      </Button>
-          </TouchableOpacity> 
-          <TouchableOpacity style={shopStyles.container} onPress={()=> navigation.navigate('new-trip')}>
-            <Text>
-              Create Trip
-            </Text>
-            <Button>
-        <Icon name="angle-right"/>
-      </Button>
-          </TouchableOpacity>
-          <TouchableOpacity style={shopStyles.container} onPress={()=> navigation.navigate('manage-trips')}>
-            <Text>
-              Manage Trips
-            </Text>
-            <Button>
-        <Icon name="angle-right"/>
-      </Button>
-          </TouchableOpacity>
-           <TouchableOpacity style={shopStyles.container} onPress={()=> navigation.navigate('transporter-profile')}>
-            <Text>
-              Create Profile
-            </Text>
-            <Button>
-        <Icon name="angle-right"/>
-      </Button>
-          </TouchableOpacity> 
+          <Text style={FormStyles.FormHeader}>TRANSPORTER ACTIONS</Text>
+          <Button style={shopStyles.container} icon='chevron-right' onPress={()=> navigation.navigate('Trip Bookings')} labelStyle={{fontSize: 20}}>My Bookings</Button>
+          <Button style={shopStyles.container} icon='chevron-right' onPress={()=> navigation.navigate('New Trip')} labelStyle={{fontSize: 20}}>Create Trip</Button>
+          <Button style={shopStyles.container} icon='chevron-right' onPress={()=> navigation.navigate('Manage Trips')} labelStyle={{fontSize: 20}}>Manage Trips</Button>
+          <Button style={shopStyles.container} icon='chevron-right' onPress={()=> navigation.navigate('Transporter Profile')} labelStyle={{fontSize: 20}}>Create Profile</Button> 
         </View>
-          <View style={profileStyles.container}>
-          <TouchableOpacity style={shopStyles.container} onPress={()=> handleLogout()}>
-            <Text>
-            Logout
-            </Text>
-            <Button>
-        <Icon name="angle-right"/>
-      </Button>
-          </TouchableOpacity>
-          </View>
+
+        <View style={profileStyles.container}>
+        <Button style={shopStyles.container} onPress={()=> handleLogout()} icon='arrow-right' labelStyle={{fontSize: 20}}>Logout</Button>
         </View>
     </ScrollView>
-    </SafeScreen>
   )
 }
 

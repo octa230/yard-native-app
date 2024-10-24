@@ -1,15 +1,14 @@
 import React, { useState, useCallback, useContext } from 'react'
-import { View, Text,ScrollView, TextInput, TouchableOpacity, Alert } from 'react-native'
+import { Text,ScrollView, TouchableOpacity, Alert } from 'react-native'
 import { DatePickerModal } from 'react-native-paper-dates';
 import { FormStyles } from '../styles';
-import { Button } from 'react-native-paper';
+import { Button, TextInput } from 'react-native-paper';
 import ImagePlaceHolder from '../components/ImagePlaceHolder';
 import { uploadImage } from '../middleware/Imageupload';
 import { Store } from '../Store';
 import axios from 'axios';
 import { url } from '../utils';
 import LoadingBox from '../components/LoadingBox';
-import SafeScreen from '../components/SafeScreen';
 
 const CreateTrip = ({navigation}) => {
 
@@ -25,7 +24,8 @@ const CreateTrip = ({navigation}) => {
   const [visaCopy, setVisaCopy] = useState()
   const [date, setDate] = useState({})
   const [open, setOpen ] = useState(false)
-  const [isLoading, setIsLoading] = useState(false)
+  const [isLoadingVisa, setIsLoadingVisa] = useState(false)
+  const [isLoadingTicket, setIsLoadingTicket] = useState(false)
 
 
   const onDismiss = useCallback(()=> {
@@ -39,15 +39,15 @@ const CreateTrip = ({navigation}) => {
 
   const ticketUpload=async()=>{
     const mode = "gallery"
-    setIsLoading(true)
+    setIsLoadingTicket(true)
     await uploadImage(mode, userInfo, setTicketCopy); 
-    setIsLoading(false)
+    setIsLoadingTicket(false)
   }
   const visaUpload=async()=>{
     const mode = "gallery"
-    setIsLoading(true)
+    setIsLoadingVisa(true)
     await uploadImage(mode, userInfo, setVisaCopy); 
-    setIsLoading(false)
+    setIsLoadingVisa(false)
   }
   const handleSubmit=async(e)=>{
    
@@ -76,53 +76,39 @@ const CreateTrip = ({navigation}) => {
     
   }
   return (
-    <SafeScreen>
       <ScrollView>
-        <View style={FormStyles.Form}>
           <Text style={FormStyles.FormHeader}>Create Trip</Text>
-          <Text>Total Trip KGs</Text>
 
-          <TextInput style={FormStyles.Input} 
+          <TextInput 
+            style={FormStyles.Input} 
+            mode='outlined'
+            label='WEIGHT'
             value={availableWeight}
             onChangeText={text => setAvailableWeight(text)}
             keyboardType='numeric'
           
             />
-          <Text>KG Price In UGX</Text>
-          <TextInput style={FormStyles.Input} 
+          <TextInput 
+            style={FormStyles.Input} 
+            mode='outlined'
+            label='KG PRICE (UGX)'
             keyboardType='numeric'
             value={weightPrice}
             onChangeText={text => setweightPrice(text)}
             />
 
-          <Text>TicketCopy</Text>
           <ImagePlaceHolder source={ticketCopy}/>
-          <TouchableOpacity style={FormStyles.button} onPress={ticketUpload}>
-            {isLoading ? (<LoadingBox size="small" color="white"/>) : 
-            (<Button icon="camera" textColor='white'>
-              TicketCopy Photo
-            </Button>)
-            }
-          </TouchableOpacity>
+          {isLoadingVisa ? (<LoadingBox size="small"/>) : (
+            <Button icon="camera" textColor='white' style={FormStyles.button} onPress={ticketUpload}>TICKET PHOTO</Button>
+          )}
 
-          <Text>VisaCopy</Text>
           <ImagePlaceHolder source={visaCopy}/>
-          <TouchableOpacity style={FormStyles.button} onPress={visaUpload}>
-            {isLoading ? (<LoadingBox size="small" color="white"/>) : 
-            (<Button icon="camera" textColor='white'>
-              VISA PHOTO
-            </Button>)}
-          </TouchableOpacity>
+          {isLoadingVisa ? (<LoadingBox size="small"/>) : (
+            <Button icon="camera" textColor='white' style={FormStyles.button} onPress={visaUpload}>VISA PHOTO</Button>
+          )}
 
           <Text style={{padding: 8, fontWeight: 800, color:"red"}}>PLEASE SELECT DATES FOR WHEN YOU LEAVE AND TRAVEL BACK TO KAMPALA</Text>
-            <TouchableOpacity style={FormStyles.button} onPress={() => setOpen(true)}>
-              <Button icon="calendar" textColor='white'>
-                {isLoading ? (<LoadingBox size="small" color="white"/>) : 
-                (
-                  <Button textColor='white'>SELECT TRIP DATES</Button>
-                )}
-              </Button>
-            </TouchableOpacity>
+          <Button style={FormStyles.button} textColor='white' icon='calendar' onPress={()=>setOpen(true)}>SELECT TRIP DATES</Button>
           <DatePickerModal
             locale="en-GB"
             mode='range'
@@ -132,12 +118,8 @@ const CreateTrip = ({navigation}) => {
             endDate={date.endDate}
             onConfirm={onConfirm}
           />
-          <TouchableOpacity style={FormStyles.button} onPress={handleSubmit}>
-              <Button textColor='white'>Submit</Button>
-          </TouchableOpacity>
-          </View>
+            <Button textColor='white' style={FormStyles.button} onPress={handleSubmit}>DONE</Button>
     </ScrollView>
-    </SafeScreen>
   )
 }
 

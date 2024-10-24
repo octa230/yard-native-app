@@ -1,7 +1,7 @@
 import axios from 'axios'
 import React, { useContext, useEffect, useState } from 'react'
-import { View, Text, FlatList, TouchableOpacity, Image, Alert } from 'react-native'
-import { shopStyles,buttonStyles } from '../styles'
+import { View, Text, FlatList, TouchableOpacity, Image, Alert, ScrollView } from 'react-native'
+import { shopStyles,buttonStyles, FormStyles } from '../styles'
 import { url } from '../utils'
 import { Store } from '../Store'
 import LoadingBox from '../components/LoadingBox'
@@ -53,15 +53,7 @@ const MyShops = ({navigation}) => {
 
 
   return isLoading ? (<LoadingBox/>) : (
-    <SafeScreen>
-      <View style={{flexDirection: 'row', margin: 10, alignItems:"center", justifyContent:"space-between"}}>
-      <Text style={{fontWeight: 800}}>{' '}</Text>
-      <TouchableOpacity style={buttonStyles.button} onPress={()=> navigation.navigate('new-shop')}>
-        <Button icon="arrow-right" textColor='white'>
-          Create Shop
-        </Button>
-      </TouchableOpacity>
-      </View>
+    <View>
       <FlatList
         data={shops}
         renderItem={({item})=> 
@@ -72,7 +64,7 @@ const MyShops = ({navigation}) => {
             <View style={{flex: 1, justifyContent: 'space-between', alignItems:"center", flexDirection: "row"}}>
                 <Button icon="pen" textColor='green' 
                     onPress={()=> {
-                      navigation.navigate('new-shop', {
+                      navigation.navigate('Create Shop', {
                         shop: item
                       })
                     }}
@@ -94,10 +86,18 @@ const MyShops = ({navigation}) => {
                 }
             />
             <Button icon="trash-can" textColor='black' onPress={()=> handleDelete(item)}/>
-        </View>}
+        </View>
+        }
         keyExtractor={(item) => item._id}
+        ListHeaderComponentStyle={{backgroundColor: "white"}}
+        ListHeaderComponent={
+        <Button icon="bolt" textColor='white' style={FormStyles.button}
+          onPress={()=> navigation.navigate('Create Shop')}>
+          CREATE SHOP
+        </Button>
+        }
       />
-    </SafeScreen>
+    </View>
   )
 }
 

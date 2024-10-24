@@ -1,7 +1,5 @@
 import React, { useCallback, useEffect, useState } from 'react'
 import {Text, Image, FlatList, TouchableOpacity, View, ScrollView } from 'react-native'
-import SearchBar from '../components/ProductSearchBar'
-import SafeScreen from '../components/SafeScreen'
 import axios from 'axios'
 import { url } from '../utils'
 import Product from '../components/Product'
@@ -9,9 +7,6 @@ import CategoriesBar from '../components/CategoriesBar'
 import LoadingBox from '../components/LoadingBox'
 import ProductSearchBar from '../components/ProductSearchBar'
 import { Card } from 'react-native-paper'
-import { productStyles } from '../styles'
-import { FontAwesome5 } from '@expo/vector-icons'; 
-
 
 
 const Explore = ({navigation}) => {
@@ -48,68 +43,33 @@ const Explore = ({navigation}) => {
 
 
   return isLoading ? (<LoadingBox/>):(
-    <SafeScreen>
-      <ScrollView>
+    <View>
       <CategoriesBar categories={categories} navigation={navigation}/>
-        <ProductSearchBar/>
-        
-        <FlatList
-          data={showCase}
-          horizontal
-          renderItem={({ item }) => (
-            <TouchableOpacity style={{margin: 4}}>
-              <Card style={{ padding: 8, backgroundColor:"white" }} 
-              onPress={()=>{navigation.navigate(
-              'Filter', {
-                categoryName: item.name
-              }
-            )}}>
-              <Text numberOfLines={1} ellipsizeMode="tail" style={{ maxWidth: 100}}>
+        <ProductSearchBar/> 
+        <ScrollView>
+        <View style={{flexDirection:"row", flexWrap:"wrap", justifyContent: "space-between"}}>
+        {showCase.map((item, index)=> (
+          <TouchableOpacity style={{margin: 3, width: '30%'}} key={index}>
+          <Card style={{ padding: 5, backgroundColor:"white", borderRadius: 5}} mode='contained'
+            onPress={()=>{navigation.navigate(
+            'Filter', {
+              categoryName: item.name
+            }
+          )}}>
+            <Text ellipsizeMode='tail' numberOfLines={1} style={{fontWeight: "800", color:"#517067" }}>
               {item.name}
             </Text>
-              <Image
-                style={{ width: 100, height: 100, borderRadius: 50 }}
-                source={{ uri: item.icon }}
-              />
-            </Card>
-            </TouchableOpacity>
-          )}
-        />   
-        <Text style={productStyles.cardHeader}>FEATURED PRODUCTS</Text>
-      <FlatList data={products}
-        horizontal
-        renderItem={({item})=> <Product product={item}/>}
-      /> 
-      <View style={{display: "flex", justifyContent:"space-between", flexDirection:"row", flexWrap:"wrap", padding: 4}}>
-      <Card 
-        style={{width: "48%", margin: 2, height: 150, backgroundColor:"white",  justifyContent:"center",}}>
-        <Card.Title title="COOKED FOOD"/>
-        <FontAwesome5 name='hamburger' size={50} style={{alignSelf:"center"}} color={'#004d25'}/>
-      </Card> 
-      <Card style={{width: "48%", margin: 2, height: 150, backgroundColor:"white",  justifyContent:"center",}}>
-        <Card.Title title="RAW FOOD"/>
-        <FontAwesome5 name='mortar-pestle' size={50} style={{alignSelf:"center"}} color={'#004d25'}/>
-      </Card> 
-      <Card style={{width: "48%", margin: 2, height: 150, backgroundColor:"white",  justifyContent:"center"}}>
-        <Card.Title title="SELL ON UGYARD"/>
-        <FontAwesome5 name='money-bill' size={50} style={{alignSelf:"center"}} color={'#004d25'}/>
-      </Card> 
-      <Card style={{width: "48%", margin: 2, height: 150, backgroundColor:"white",  justifyContent:"center"}}>
-        <Card.Title title="TRANSPORT ON UGYARD"/>
-        <FontAwesome5 name='plane-departure' size={50} style={{alignSelf:"center"}} color={'#004d25'}/>
-      </Card> 
-      <Card style={{width: "48%", margin: 2, height: 150, backgroundColor:"white",  justifyContent:"center"}}>
-        <Card.Title title="STORES UAE"/>
-        <FontAwesome5 name='store-alt' size={50} style={{alignSelf:"center"}} color={'#004d25'}/>
-      </Card> 
-      <Card style={{width: "48%", margin: 2, height: 150, backgroundColor:"white",  justifyContent:"center"}}>
-        <Card.Title title="STORES KAMPALA"/>
-        <FontAwesome5 name='warehouse' size={50} style={{alignSelf:"center"}} color={'#004d25'}/>
-      </Card> 
-        </View>    
-      </ScrollView>
-  
-    </SafeScreen>
+            <Card.Cover
+              style={{ width: 50, height: 50, borderRadius: 50, alignSelf:"center"}}
+              source={{ uri: item.icon }}
+            />
+          </Card>
+          </TouchableOpacity>
+          ))}
+        </View>
+        
+        </ScrollView>
+    </View>
   )
 }
 

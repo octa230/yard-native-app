@@ -39,10 +39,9 @@ const ProductScreen = ({route}) => {
         <Image source={{uri: selectedImage || product.image}} style={{
             height: 400,
             width: "auto",
-            resizeMode: "cover"
+            resizeMode: "contain"
         }}/>
-      <Text style={styles.name}>{product.name}</Text>
-      <Text style={{fontWeight: 500}}>{product.shopName}</Text>
+      <Text style={{fontWeight: 500}}>SELLER: {product.shopName}</Text>
       <View style={styles.row}>
         <View style={styles.cell}>
           <Text style={styles.header}>UGX</Text>
@@ -62,10 +61,14 @@ const ProductScreen = ({route}) => {
         </View>
     </View>
     <TouchableOpacity>
-    <Button onPress={() => addToCartHandler(product)} textColor='white' style={{backgroundColor: 'rgb(0, 100, 0)', margin: 3, padding:2, borderRadius: 4}}>
-      <FontAwesome5 name={'plus'} mode="contained" color={'white'} size={12} />
+    <Button 
+      onPress={() => addToCartHandler(product)} 
+      textColor='white' 
+      icon='basket'
+      style={{backgroundColor: 'rgb(0, 100, 0)', margin: 3, padding:2, borderRadius: 4}}
+    >
         ADD TO BASKET
-    </Button>
+      </Button>
     </TouchableOpacity>
     <FlatList data={product.images}
         horizontal

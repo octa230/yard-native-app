@@ -1,7 +1,7 @@
 import React, { useContext, useState } from 'react'
-import { TextInput, View, Alert, Text, TouchableOpacity } from 'react-native'
+import { View, Alert, Text, ScrollView } from 'react-native'
 import { FormStyles } from '../styles'
-import { Button } from 'react-native-paper'
+import { Button, TextInput } from 'react-native-paper'
 import { Store } from '../Store'
 import SafeScreen from '../components/SafeScreen'
 
@@ -40,58 +40,56 @@ const ShippingAddress = ({navigation}) => {
             }
         });
         //console.log(fullName, address, city, postalCode, country)
-        navigation.navigate('payment');
+        navigation.navigate('Payment');
     }
 
   return (
-    <SafeScreen>
-        <View style={FormStyles.Form}>
-            <View>
-                <Text style={FormStyles.FormHeader}>NEW ADDRESS</Text>
-            </View>
+        <ScrollView>
+            <Text style={FormStyles.FormHeader}>ADDRESS</Text>
             <TextInput style={FormStyles.Input}
-                placeholder='full name'
+                label='Full Name'
                 type="text"
+                mode='outlined'
                 required
                 value={fullName}
                 onChangeText={text => setFullName(text)}
             />
             <TextInput style={FormStyles.Input}
-                placeholder='Address'
+                label="Address"
                 type="text"
+                mode='outlined'
                 required
                 value={address}
                 onChangeText={text => setAddress(text)}
             />
             <TextInput style={FormStyles.Input}
-                placeholder='city'
+                label='City'
                 type="text"
+                mode='outlined'
                 required
                 value={city}
                 onChangeText={text => setCity(text)}
             />
             <TextInput style={FormStyles.Input}
-                placeholder='post Code'
+                label='Post Code'
                 type="text"
+                mode='outlined'
                 required
                 value={postalCode}
                 onChangeText={text => setPostalCode(text)}
             />
             <TextInput style={FormStyles.Input}
-                placeholder='country'
+                label='Country'
                 type="text"
+                mode='outlined'
                 required
                 value={country}
                 onChangeText={text => setCountry(text)}
             />
-            <TouchableOpacity style={FormStyles.button} onPress={handleSubmit}>
-                <Text>Done</Text>
-            </TouchableOpacity>
-            <Button onPress={()=> navigation.goBack()} icon="arrow-left">
-                <Text>Back</Text>
+            <Button textColor="white" style={FormStyles.button} onPress={handleSubmit}>
+                DONE
             </Button>
-        </View>
-    </SafeScreen>
+        </ScrollView>
   )
 }
 

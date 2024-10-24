@@ -3,14 +3,12 @@ import ImagePlaceHolder from '../components/ImagePlaceHolder'
 import { uploadImage } from '../middleware/Imageupload'
 import { Picker } from '@react-native-picker/picker'
 import axios from 'axios'
-import { Button } from 'react-native-paper'
 import { FormStyles, buttonStyles } from '../styles'
 import { url } from '../utils'
-
-import { View, Text,SafeAreaView, TextInput, TouchableOpacity, Alert } from 'react-native'
+import {TextInput, Button} from 'react-native-paper'
+import { Text,ScrollView, Alert } from 'react-native'
 import { Store } from '../Store'
 import LoadingBox from '../components/LoadingBox'
-import SafeScreen from '../components/SafeScreen'
 
 
 
@@ -31,6 +29,7 @@ const CreateShop = ({ route }) => {
     const [name, setName] = useState(shop?.name || '')
     const [description, setDescription] = useState('')
     const [isLoading, setIsLoading] = useState(false)
+    const [isLoadingUpload, setIsLoadingUpload] = useState(false)
 
 
     const countries = ["Uganda", "UAE"]
@@ -45,12 +44,13 @@ const CreateShop = ({ route }) => {
 
       const logoUpload = async()=>{
         const mode = "gallery"
-        setIsLoading(true)
+        setIsLoadingUpload(true)
         await uploadImage(mode, userInfo, setLogo); 
-        setIsLoading(false)
+        setIsLoadingUpload(false)
       }
 
        const handleUpdate = async(shop)=>{
+        setIsLoading(true)
         await axios.put(`${url}/shops/update/${shop._id}`, {
           industry,
           logo,
@@ -61,10 +61,16 @@ const CreateShop = ({ route }) => {
             Authorization: `Bearer ${userInfo.token}`
           }
         })
+        setIsLoading(false)
         Alert.alert('UPDATED')
       } 
 
       const handleSubmit = async()=>{
+        if(!industry || !description || !logo || !area || !name){
+          Alert.alert('All Fields Required')
+          return
+        }
+        setIsLoading(true)
         await axios.post(`${url}/shops/new`, {
           industry,
           description,
@@ -77,29 +83,28 @@ const CreateShop = ({ route }) => {
           }
         }) 
         Alert.alert('CREATED')
+        setIsLoading(false)
       }
 
       
   return (
-    <SafeScreen>
-      <SafeAreaView style={FormStyles.Form}>
-        <Text>SHOP NAME:</Text>
-      <TextInput type="text"
+    <ScrollView>
+      <TextInput 
+        type="text"
+        mode='outlined'
+        label="Shop Name"
         style={FormStyles.Input}
         value={name}
         onChangeText={text => setName(text)}
       />
-      <Text>OPERATION AREA</Text>
-      <TextInput type="text"
+      <TextInput 
+        type="text"
+        label='Area'
+        mode='outlined'
         style={FormStyles.Input}
         value={area}
         onChangeText={text => setArea(text)}
-      />
-      <TextInput type="text"/>
-
-
-      <Text style={{marginTop: 2, fontWeight: 800}}>INDUSTRY: {industry?.name || ''}</Text>
-                
+      />                
         <Picker style={FormStyles.Input}
             prompt='options'
             selectedValue={industry}
@@ -114,7 +119,6 @@ const CreateShop = ({ route }) => {
             ))}
         </Picker>
 
-        <Text>COUNTRY</Text>
         <Picker style={FormStyles.Input}
             prompt='options'
             selectedValue={country}
@@ -125,32 +129,35 @@ const CreateShop = ({ route }) => {
             />
             ))}
         </Picker>
-        <ImagePlaceHolder source={null || logo}/>
-        <Text>Shop Description</Text>
-        <TextInput style={FormStyles.Input} 
+        <TextInput label='Decription'
+          mode='outlined'
+          style={FormStyles.Input} 
           type="text"
           multiline={true}
           value={description}
           onChangeText={text => setDescription(text)}
           />
+        <ImagePlaceHolder source={null || logo}/>
 
-        <TouchableOpacity style={buttonStyles.button} onPress={logoUpload}>
-            {isLoading ? (<LoadingBox size="small"/>) :
-            (<Button icon="camera" textColor='white'>Logo</Button>)
-            }
-        </TouchableOpacity>
+        <>
+          {isLoadingUpload ? (<LoadingBox size="small"/>): (
+            <Button icon='camera' onPress={logoUpload} labelStyle={{fontWeight:"800"}}>
+              UPLOAD LOGO
+            </Button>
+          )}
+        </>
 
           {shop ? (
-            <TouchableOpacity style={FormStyles.button} onPress={()=>handleUpdate(shop)}>
-            <Button textColor='white'>UPDATE</Button>
-        </TouchableOpacity>
+          <Button style={FormStyles.button} textColor='white'
+            onPress={()=>handleUpdate(shop)}>
+            LOGO
+        </Button>
           ):(
-            <TouchableOpacity style={FormStyles.button} onPress={()=>handleSubmit()}>
-            <Button textColor='white'>SUBMIT</Button>
-        </TouchableOpacity>
+          <Button textColor='white' style={FormStyles.button} onPress={()=>handleSubmit()}>
+            DONE
+        </Button>
           )}
-    </SafeAreaView>
-    </SafeScreen>
+    </ScrollView>
   )
 }
 

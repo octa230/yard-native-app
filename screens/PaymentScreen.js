@@ -1,14 +1,12 @@
 import React, { useContext, useState, useCallback } from 'react';
-import { View, Text, TouchableOpacity, TextInput } from 'react-native';
-import { buttonStyles, FormStyles } from '../styles';
+import { View, Text, TouchableOpacity, ScrollView} from 'react-native';
+import { FormStyles } from '../styles';
 import { Store } from '../Store';
 import Axios from 'axios'
-import { SafeAreaView } from 'react-native';
-import { Button } from 'react-native-paper';
+import { Button, TextInput } from 'react-native-paper';
 import { DatePickerModal } from 'react-native-paper-dates';
 import {url} from '../utils'
 import LoadingBox from '../components/LoadingBox'
-import SafeScreen from '../components/SafeScreen';
 
 const PaymentScreen = ({navigation}) => {
   const [selectedPaymentMethod, setSelectedPaymentMethod] = useState('');
@@ -99,15 +97,15 @@ const PaymentScreen = ({navigation}) => {
       case "stripe":
         return (
           <View style={{alignItems:"center", flexDirection: "column"}}>
-            <TextInput
+            <TextInput style={FormStyles.Input}
               placeholder="Card Number"
               onChangeText={(text) => setFormData({ ...formData, cardNumber: text })}
             />
-            <TextInput
+            <TextInput style={FormStyles.Input}
               placeholder="Expiry Date (MM/YY)"
               onChangeText={(text) => setFormData({ ...formData, expiryDate: text })}
             />
-            <TextInput
+            <TextInput style={FormStyles.Input}
               placeholder="CVC"
               onChangeText={(text) => setFormData({ ...formData, cvc: text })}
             />
@@ -130,36 +128,35 @@ const PaymentScreen = ({navigation}) => {
         
       default:
         return (
-          // Render form for cash payment
-          <View style={{alignItems: "center"}}>
             <TouchableOpacity style={FormStyles.button} onPress={()=> placeOrderHandler()}>
             {isLoading ? (<LoadingBox size="small" color="white"/> ) :
             (<Button textColor='white'>PlaceOrder: {paymentMethod}</Button>) 
             }
           </TouchableOpacity>
-          </View>
         );;
     }
   };
   return (
-    <SafeScreen>
-         <View style={{margin: 18, borderWidth: 1, borderColor:"white", borderRadius: 12, backgroundColor: "white"}}>
-      <View style={{alignItems: "center", padding: 22, borderWidth: 1.5, borderRadius:8, borderColor:"#fafafa", backgroundColor: "#fafafa", margin: 5}}>
-      <Text style={{alignSelf: "center", fontWeight: 800}}>Delivery Message / Notes</Text>
-      </View>
+      <ScrollView style={{margin: 1, borderWidth: 1, borderColor:"white", borderRadius: 12, backgroundColor: "white"}}>
+        <Text style={FormStyles.FormHeader}>PAYMENT METHOD</Text>
       <View>
-        <TextInput type="text" style={FormStyles.Input}
+        <TextInput style={FormStyles.Input}
+          mode='outlined'
+          multiline={true}
+          label='Notes'
+          type="text"
           value={deliveryMessage}
           onChangeText={text => setDeliveryMessage(text)}
         />
       </View>
-      <View style={{padding: 20}}>
-          <TouchableOpacity onPress={() => setOpen(true)} style={buttonStyles.button}>
-                <Button textColor='white'>
-                Select Date
-                </Button>
-              </TouchableOpacity>
-            </View>
+      <View style={{alignItems: "center", padding: 22, borderWidth: 1.5, borderRadius:8, borderColor:"#fafafa", backgroundColor: "#fafafa", margin: 5}}>
+          <Button textColor='black' buttonColor='#fafafa' icon='calendar' labelStyle={{fontWeight: "800"}}
+            onPress={() => setOpen(true)}
+        >
+                SELECT DATE
+            </Button>
+          {deliveryDate && (<Text>DELIVER ON: {deliveryDate && deliveryDate.toLocaleDateString()}</Text>)}
+        </View>
        <DatePickerModal
             title="DeliveryDate"
             locale="en-GB"
@@ -173,25 +170,18 @@ const PaymentScreen = ({navigation}) => {
         <Text style={{fontWeight:800}}>SELECT PAYMENT METHOD</Text>
       </View>
       <View style={{flexDirection: "row", justifyContent:"space-around", margin: 12}}>
-      <TouchableOpacity onPress={() => handlePaymentMethodSelect('cash')} style={buttonStyles.button}>
-        <Button
-          textColor='white'
-        >{selectedPaymentMethod === 'cash' ? 'Selected - ' : ''}Cash</Button>
-      </TouchableOpacity>
-      <TouchableOpacity onPress={() => handlePaymentMethodSelect('stripe')} style={buttonStyles.button}>
-        <Button
-          textColor='white'
-        >{selectedPaymentMethod === 'stripe' ? 'Selected - ' : ''}Stripe</Button>
-      </TouchableOpacity>
-      <TouchableOpacity onPress={() => handlePaymentMethodSelect('paypal')} style={buttonStyles.button}>
-        <Button
-          textColor='white'
-        >{selectedPaymentMethod === 'paypal' ? 'Selected - ' : ''}PayPal</Button>
-      </TouchableOpacity>
+        <Button textColor='black' icon='cash' labelStyle={{fontWeight:"800"}} onPress={() => handlePaymentMethodSelect('cash')} buttonColor='#fafafa'>
+          {selectedPaymentMethod === 'cash' ? 'Selected - ' : ''}Cash
+        </Button>
+        <Button onPress={() => handlePaymentMethodSelect('stripe')}textColor='black' icon='cash' labelStyle={{fontWeight:"800"}} buttonColor='#fafafa'>
+          {selectedPaymentMethod === 'stripe' ? 'Selected - ' : ''}Stripe
+        </Button>
+        <Button textColor='black' icon='cash' labelStyle={{fontWeight:"800"}} buttonColor='#fafafa'>
+            {selectedPaymentMethod === 'paypal' ? 'Selected - ' : ''}PayPal
+          </Button>
     </View>
     {renderForm()}
-    </View>
-    </SafeScreen>
+    </ScrollView>
   );
 };
 

@@ -5,10 +5,9 @@ import { url } from '../utils'
 import { Store } from '../Store'
 import axios from 'axios'
 import { FormStyles} from '../styles'
-import { Alert, Text, View, TextInput, TouchableOpacity } from 'react-native'
-import { Button } from 'react-native-paper'
+import { Alert, Text, ScrollView } from 'react-native'
+import { Button, TextInput } from 'react-native-paper'
 import LoadingBox from '../components/LoadingBox'
-import SafeScreen from '../components/SafeScreen'
 
 const TransporterProfile = ({route}) => {
 
@@ -22,12 +21,13 @@ const TransporterProfile = ({route}) => {
   const [photo, setPhoto] = useState(transporter?.photo || '')
   const [phone, setPhone] = useState(transporter?.phone || '')
   const [isLoading, setIsLoading] = useState(false)
+  const [isLoadingPhoto, setIsLoadingPhoto] = useState(false)
 
   const uploadProfilePic= async()=>{
     const mode = "gallery"
-    setIsLoading(true)
+    setIsLoadingPhoto(true)
     await uploadImage(mode, userInfo, setPhoto)
-    setIsLoading(false)
+    setIsLoadingPhoto(false)
   }
 
   const submitHandler = async () => {
@@ -89,60 +89,51 @@ const TransporterProfile = ({route}) => {
     }
   }
   return (
-  <SafeScreen>
-    <View style={FormStyles.Form}>
-    <Text>BUSINESS NAME:</Text>
+  <ScrollView>
+    
   <TextInput type="text"
+    mode="outlined"
+    label='BUSINESS NAME'
     style={FormStyles.Input}
     value={name}
     onChangeText={text => setName(text)}
   />
-    <Text>PHONE:</Text>
+
   <TextInput type="text"
+    mode='outlined'
+    label='PHONE'
     style={FormStyles.Input}
     value={phone}
     keyboardType='numeric'
     onChangeText={text => setPhone(text)}
   />
-  <Text>OPERATION AREA</Text>
   <TextInput type="text"
+    mode='outlined'
+    label='OPERATION AREA'
     style={FormStyles.Input}
     value={area}
     onChangeText={text => setArea(text)}
   />
-  <TextInput type="text"/>
-
   
   
-  <Text style={{marginTop: 2, fontWeight: 800}}>FACE PROFILE PHOTO</Text>
+  <Text style={FormStyles.FormHeader}>FACE PHOTO</Text>
             
     <ImagePlaceHolder source={null || photo}/>
-    <TouchableOpacity style={FormStyles.button} onPress={uploadProfilePic}>
-        {isLoading ? (
-          <LoadingBox size="small" color="white"/>
+        {isLoadingPhoto ? (
+          <LoadingBox size="small" color='green'/>
         ): (
-          <Button icon="camera" textColor='white'>Profile Photo</Button>
+          <Button icon="camera" textColor='white' style={FormStyles.button} onPress={uploadProfilePic}>Profile Photo</Button>
         )}
-    </TouchableOpacity>
 
-      {transporter ? (
-        <TouchableOpacity style={FormStyles.button} onPress={updateHandler} >
-        {isLoading ? (<LoadingBox size="small" color="white"/>) : (
-          <Button buttonColor='green' textColor='white'>
-          UPDATE
-        </Button>
-        )}
-      </TouchableOpacity>
-      ):(
-        <TouchableOpacity style={FormStyles.button} onPress={submitHandler} >
-        {isLoading ? (<LoadingBox/>) : (
-          <Button textColor='white'>SUBMIT</Button>
-        )}
-      </TouchableOpacity>
+      {transporter ? (isLoading ? (<LoadingBox size="small" color="white"/>) : (
+        <Button buttonColor='green' textColor='white'>UPDATE</Button>
+      )
+      ):(isLoading ? (<LoadingBox/>) : (
+          <Button textColor='white'  style={FormStyles.button} onPress={submitHandler}>DONE</Button>
+        )
       )}
-</View>
-  </SafeScreen>
-  )
+</ScrollView>
+)
 }
 
 export default TransporterProfile
